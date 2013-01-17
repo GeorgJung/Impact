@@ -78,6 +78,7 @@
 <node CREATED="1358344413427" ID="ID_1391083753" MODIFIED="1358369879228" TEXT="Simple manipulation to accomodate electronics"/>
 </node>
 </node>
+<node CREATED="1358453753396" ID="ID_1957662305" MODIFIED="1358453761383" TEXT="Dimensions"/>
 </node>
 <node CREATED="1358344657856" ID="ID_1422890026" MODIFIED="1358369879228" TEXT="Sensor design">
 <font NAME="SansSerif" SIZE="12"/>
