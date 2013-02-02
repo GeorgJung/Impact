@@ -54,7 +54,7 @@
 %%% The "real" document content comes below...
 
 \title{BSc Project Proposal}
-\author{El-Hassan Bilal Makled\\Media Engineering and Technology\\ German University in Cairo\\ Cairo, Egypt}
+\author{Media Engineering and Technology\\ German University in Cairo\\ Cairo, Egypt}
 %\date{} % Activate to display a given date or no date (if empty),
          % otherwise the current date is printed 
 
@@ -75,13 +75,14 @@ Motion and gesture input systems are spreading in software development during th
 The spread of this application ranged to affect video games and fitness programs. However, none of the fitness programs focused on actual contact sports techniques. 
 In this project, we will use Microsoft Kinect to create an application that will take a group of JiuJutsu (a form of martial arts) moves as an input during a practice session, 
 and compares them to a library of moves that are used as reference to calculate the delta. 
-The project will also focus on measuring the impact of certain striking moves in different 
-methods either by sound or by a sensor equiped Thai-pad depending on the situation of the practice session being captured.  
+The project will also either measure or receive the value of the impact of the recognized move depending on the
+situation of the practice. The impact's value will be received through a sensor equipped Thai-pad, a thick pad that covers the arms of the trainer so that the trainee would punch or kick for practice, that will measure the impact and send it as a parameter to the program. Another way would be used in case of the absence of the sensor equipped Thai-pads however, the presence of any other Thai pad (not sensor equipped) is important. The Kinect will be used to measure the sound of the impact and from this the impact will be calculated and used instead. In the end the program will associate the technique executed by the user with its respective impact and compare it with previous executions of the technique and from all previously collected data of techniques and their impacts, the program will choose the best execution of the technique to be used as the reference for future executions.
 
 \subsection*{Tasks}
 \begin{itemize}
 \item Creating the libarary for the moves to be used as a reference.
-\item Measuring and calculating the delta between the two moves, reference and captured move or previous user moves.
+\item Calculating the delta between the execution and the reference move.
+\item Calculating the impact using the sound produced from the technique.
 \end{itemize}
 
 \end{document}
