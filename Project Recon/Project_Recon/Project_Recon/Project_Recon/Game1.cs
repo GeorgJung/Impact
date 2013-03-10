@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Kinect;
 
 namespace Project_Recon
 {
@@ -18,6 +19,20 @@ namespace Project_Recon
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        KinectSensor kinect;
+
+        byte[] colorData;
+        Texture2D colorTex;
+
+        short[] rawDepthData;
+        float[] depthData;
+        Texture2D depthTex;
+
+        Skeleton[] rawSkeletons;
+        Skeleton skeleton;
+
+        Texture2D circleTex;
 
         public Game1()
         {
@@ -35,6 +50,27 @@ namespace Project_Recon
         {
             // TODO: Add your initialization logic here
 
+            kinect = KinectSensor.KinectSensors[0];
+
+            kinect.ColorStream.Enable(ColorImageFormat.RgbResolution640x480Fps30);
+
+            kinect.DepthStream.Enable(DepthImageFormat.Resolution320x240Fps30);
+
+            kinect.SkeletonStream.Enable();
+
+            kinect.Start();
+
+            kinect.ElevationAngle = 0;
+
+            colorData = new byte[640 * 480 * 4];
+            colorTex = new Texture2D(GraphicsDevice, 640, 480);
+
+            rawDepthData = new short[320 * 240];
+            depthData = new float[320 * 240];
+            depthTex = new Texture2D(GraphicsDevice, 320, 240, false, SurfaceFormat.Single);
+
+            rawSkeletons = new Skeleton[kinect.SkeletonStream.FrameSkeletonArrayLength];
+
             base.Initialize();
         }
 
@@ -47,30 +83,58 @@ namespace Project_Recon
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            circleTex = Content.Load<Texture2D>("circle");
+
             // TODO: use this.Content to load your game content here
         }
-
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
-        /// </summary>
-        protected override void UnloadContent()
-        {
-            // TODO: Unload any non ContentManager content here
-        }
-
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
 
-            // TODO: Add your update logic here
+            var colorFrame = kinect.ColorStream.OpenNextFrame(0);
+            if (colorFrame != null)
+            {
+                colorFrame.CopyPixelDataTo(colorData);
+                colorFrame.Dispose();
+
+                for (int i = 0; i < colorData.Length; i += 4)
+                {
+                    byte temp = colorData[i];
+                    colorData[i] = colorData[i + 2];
+                    colorData[i + 2] = temp;
+                    colorData[i + 3] = 255;
+                }
+
+                GraphicsDevice.Textures[0] = null;
+                colorTex.SetData(colorData);
+            }
+
+            var depthFrame = kinect.DepthStream.OpenNextFrame(0);
+            if (depthFrame != null)
+            {
+                depthFrame.CopyPixelDataTo(rawDepthData);
+                depthFrame.Dispose();
+
+                for (int i = 0; i < depthData.Length; i++)
+                {
+                    var val = (float)rawDepthData[i] / (depthFrame.MaxDepth * 8);
+                    depthData[i] = val;
+                }
+
+                GraphicsDevice.Textures[0] = null;
+                depthTex.SetData(depthData);
+            }
+
+            var skelFrame = kinect.SkeletonStream.OpenNextFrame(0);
+            if (skelFrame != null)
+            {
+                skelFrame.CopySkeletonDataTo(rawSkeletons);
+                skelFrame.Dispose();
+
+                skeleton = rawSkeletons.FirstOrDefault(s => s.TrackingState == SkeletonTrackingState.Tracked);
+            }
 
             base.Update(gameTime);
         }
@@ -81,9 +145,31 @@ namespace Project_Recon
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            if (skeleton != null && skeleton.Joints[JointType.HandRight].Position.Y > 0)
+                GraphicsDevice.Clear(Color.Red);
+            else
+                GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
+            //    DepthStencilState.Default, RasterizerState.CullNone);
+            spriteBatch.Begin();
+
+            //spriteBatch.Draw(depthTex, Vector2.Zero, Color.White);
+            spriteBatch.Draw(colorTex, Vector2.Zero, Color.White);
+
+            if (skeleton != null)
+            {
+                foreach (Joint joint in skeleton.Joints)
+                {
+                    var p = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
+                        joint.Position, ColorImageFormat.RgbResolution640x480Fps30);
+
+                    var shade = (float)joint.JointType / 20f;
+                    spriteBatch.Draw(circleTex, new Vector2(p.X - 20, p.Y - 20), new Color(shade, shade, shade, 1));
+                }
+            }
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
