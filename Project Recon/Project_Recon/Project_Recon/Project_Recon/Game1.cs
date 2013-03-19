@@ -29,6 +29,8 @@ namespace Project_Recon
         float[] depthData;
         Texture2D depthTex;
 
+        SpriteFont font;
+
         Skeleton[] rawSkeletons;
         Skeleton skeleton;
 
@@ -52,6 +54,7 @@ namespace Project_Recon
 
             kinect = KinectSensor.KinectSensors[0];
 
+            //kinect.ColorStream.Enable(ColorImageFormat.RgbResolution640x480Fps30);
             kinect.ColorStream.Enable(ColorImageFormat.RgbResolution640x480Fps30);
 
             kinect.DepthStream.Enable(DepthImageFormat.Resolution320x240Fps30);
@@ -67,7 +70,7 @@ namespace Project_Recon
 
             rawDepthData = new short[320 * 240];
             depthData = new float[320 * 240];
-            depthTex = new Texture2D(GraphicsDevice, 320, 240, false, SurfaceFormat.Single);
+          //  depthTex = new Texture2D(GraphicsDevice, 320, 240, false, SurfaceFormat.Single);
 
             rawSkeletons = new Skeleton[kinect.SkeletonStream.FrameSkeletonArrayLength];
 
@@ -85,6 +88,7 @@ namespace Project_Recon
 
             circleTex = Content.Load<Texture2D>("circle");
 
+            font = Content.Load<SpriteFont>("MainFont");
             // TODO: use this.Content to load your game content here
         }
         protected override void Update(GameTime gameTime)
@@ -124,7 +128,7 @@ namespace Project_Recon
                 }
 
                 GraphicsDevice.Textures[0] = null;
-                depthTex.SetData(depthData);
+                //depthTex.SetData(depthData);
             }
 
             var skelFrame = kinect.SkeletonStream.OpenNextFrame(0);
@@ -145,9 +149,11 @@ namespace Project_Recon
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            
             if (skeleton != null && skeleton.Joints[JointType.HandRight].Position.Y > 0)
                 GraphicsDevice.Clear(Color.Red);
             else
+            
                 GraphicsDevice.Clear(Color.CornflowerBlue);
 
             //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
@@ -155,7 +161,9 @@ namespace Project_Recon
             spriteBatch.Begin();
 
             //spriteBatch.Draw(depthTex, Vector2.Zero, Color.White);
-            spriteBatch.Draw(colorTex, Vector2.Zero, Color.White);
+            spriteBatch.Draw(colorTex, new Vector2(80,0), Color.White);
+
+            spriteBatch.DrawString(font, "Project Recon v1.0", new Vector2(80, 0), Color.Red);
 
             if (skeleton != null)
             {
@@ -165,7 +173,7 @@ namespace Project_Recon
                         joint.Position, ColorImageFormat.RgbResolution640x480Fps30);
 
                     var shade = (float)joint.JointType / 20f;
-                    spriteBatch.Draw(circleTex, new Vector2(p.X - 20, p.Y - 20), new Color(shade, shade, shade, 1));
+                    spriteBatch.Draw(circleTex, new Vector2(p.X +60, p.Y -20), new Color(shade, shade, shade, 1));
                 }
             }
 
