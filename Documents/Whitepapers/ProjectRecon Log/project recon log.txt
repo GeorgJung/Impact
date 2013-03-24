@@ -1,0 +1,5 @@
+Project Recon Log:
+
+3/23/2013 (Solved Frame Rate Issue)
+3/23/2013 (Added recognition to whether user is covering his face or not or not)
+3/24/2013 (Recognized Coach) [Still needs more development and need to add more restrictions to who the coach is]

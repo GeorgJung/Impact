@@ -25,16 +25,15 @@ namespace Project_Recon
         byte[] colorData;
         Texture2D colorTex;
 
-        short[] rawDepthData;
-        float[] depthData;
-        Texture2D depthTex;
-
         SpriteFont font;
 
         Skeleton[] rawSkeletons;
         Skeleton skeleton;
+        Skeleton coachSkeleton;
 
         Texture2D circleTex;
+
+        Boolean keepcover;
 
         public Game1()
         {
@@ -54,7 +53,6 @@ namespace Project_Recon
 
             kinect = KinectSensor.KinectSensors[0];
 
-            //kinect.ColorStream.Enable(ColorImageFormat.RgbResolution640x480Fps30);
             kinect.ColorStream.Enable(ColorImageFormat.RgbResolution640x480Fps30);
 
             kinect.DepthStream.Enable(DepthImageFormat.Resolution320x240Fps30);
@@ -68,11 +66,9 @@ namespace Project_Recon
             colorData = new byte[640 * 480 * 4];
             colorTex = new Texture2D(GraphicsDevice, 640, 480);
 
-            rawDepthData = new short[320 * 240];
-            depthData = new float[320 * 240];
-          //  depthTex = new Texture2D(GraphicsDevice, 320, 240, false, SurfaceFormat.Single);
-
             rawSkeletons = new Skeleton[kinect.SkeletonStream.FrameSkeletonArrayLength];
+
+            keepcover = true;
 
             base.Initialize();
         }
@@ -96,7 +92,7 @@ namespace Project_Recon
             // Allows the game to exit
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
-
+            
             var colorFrame = kinect.ColorStream.OpenNextFrame(0);
             if (colorFrame != null)
             {
@@ -114,23 +110,7 @@ namespace Project_Recon
                 GraphicsDevice.Textures[0] = null;
                 colorTex.SetData(colorData);
             }
-
-            var depthFrame = kinect.DepthStream.OpenNextFrame(0);
-            if (depthFrame != null)
-            {
-                depthFrame.CopyPixelDataTo(rawDepthData);
-                depthFrame.Dispose();
-
-                for (int i = 0; i < depthData.Length; i++)
-                {
-                    var val = (float)rawDepthData[i] / (depthFrame.MaxDepth * 8);
-                    depthData[i] = val;
-                }
-
-                GraphicsDevice.Textures[0] = null;
-                //depthTex.SetData(depthData);
-            }
-
+           
             var skelFrame = kinect.SkeletonStream.OpenNextFrame(0);
             if (skelFrame != null)
             {
@@ -138,8 +118,37 @@ namespace Project_Recon
                 skelFrame.Dispose();
 
                 skeleton = rawSkeletons.FirstOrDefault(s => s.TrackingState == SkeletonTrackingState.Tracked);
+                coachSkeleton = rawSkeletons.LastOrDefault(s => s.TrackingState == SkeletonTrackingState.Tracked);
+
+            }
+            
+            /*
+            //Gesture Recognition
+            */
+
+            //Keep Cover!
+            if (skeleton != null)
+            {
+                if (skeleton.Joints[JointType.HandRight].Position.Y < skeleton.Joints[JointType.Head].Position.Y
+                    && skeleton.Joints[JointType.HandRight].Position.Y > skeleton.Joints[JointType.ShoulderCenter].Position.Y 
+                    || skeleton.Joints[JointType.HandLeft].Position.Y < skeleton.Joints[JointType.Head].Position.Y
+                    && skeleton.Joints[JointType.HandLeft].Position.Y > skeleton.Joints[JointType.ShoulderCenter].Position.Y)
+                    keepcover = false;
+                else
+                    keepcover = true;                 
             }
 
+            //Forward Thrust!
+            if (skeleton != null)
+            {
+                if (skeleton.Joints[JointType.FootRight].Position.Y < skeleton.Joints[JointType.KneeLeft].Position.Y
+                    && skeleton.Joints[JointType.HandRight].Position.Y > skeleton.Joints[JointType.ShoulderCenter].Position.Y
+                    || skeleton.Joints[JointType.HandLeft].Position.Y < skeleton.Joints[JointType.Head].Position.Y
+                    && skeleton.Joints[JointType.HandLeft].Position.Y > skeleton.Joints[JointType.ShoulderCenter].Position.Y)
+                    keepcover = false;
+                else
+                    keepcover = true;
+            }
             base.Update(gameTime);
         }
 
@@ -156,14 +165,14 @@ namespace Project_Recon
             
                 GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
-            //    DepthStencilState.Default, RasterizerState.CullNone);
             spriteBatch.Begin();
 
-            //spriteBatch.Draw(depthTex, Vector2.Zero, Color.White);
             spriteBatch.Draw(colorTex, new Vector2(80,0), Color.White);
-
+            
             spriteBatch.DrawString(font, "Project Recon v1.0", new Vector2(80, 0), Color.Red);
+
+            if (keepcover) 
+                spriteBatch.DrawString(font, "Keep Cover!", new Vector2(150, 80), Color.Red);
 
             if (skeleton != null)
             {
@@ -177,6 +186,10 @@ namespace Project_Recon
                 }
             }
 
+            if (coachSkeleton != null && coachSkeleton != skeleton)
+            {
+                spriteBatch.DrawString(font, "Coach Recognized!", new Vector2(450, 80), Color.Green);
+            }
             spriteBatch.End();
 
             base.Draw(gameTime);

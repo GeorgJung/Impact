@@ -23,7 +23,7 @@
     <Settings>
       <ContentProjectGUID>{9C3AEFDE-1C64-44F1-B697-D7B57E8F7572}</ContentProjectGUID>
       <TargetPlatform>Windows</TargetPlatform>
-      <TargetProfile>Reach</TargetProfile>
+      <TargetProfile>HiDef</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
       <RootDirectory>C:\Users\Makled\Downloads\GUC\Semester 12\Bachelor Project\Project Impact\Impact\Project Recon\Project_Recon\Project_Recon\Project_ReconContent\</RootDirectory>
