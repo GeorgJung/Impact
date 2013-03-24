@@ -34,3 +34,5 @@
 *.for
 auto
 *~
+.DS_Store
+
