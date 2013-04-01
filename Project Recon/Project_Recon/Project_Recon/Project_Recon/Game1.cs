@@ -162,6 +162,7 @@ namespace Project_Recon
                 else
                     keepcover = true;
             }
+            
             base.Update(gameTime);
         }
 
@@ -175,6 +176,7 @@ namespace Project_Recon
 
             spriteBatch.Begin();
 
+            
             spriteBatch.Draw(colorTex, new Vector2(80,0), Color.White);
             
             spriteBatch.DrawString(font, "Project Recon v1.0", new Vector2(80, 0), Color.Red);
@@ -184,6 +186,20 @@ namespace Project_Recon
 
             if (skeleton != null)
             {
+                //Creating The Vector
+                Vector3 a = new Vector3((skeleton.Joints[JointType.HipCenter].Position.X) - (skeleton.Joints[JointType.HipLeft].Position.X)
+                    , (skeleton.Joints[JointType.HipCenter].Position.Y) - (skeleton.Joints[JointType.HipLeft].Position.Y),
+                    (skeleton.Joints[JointType.HipCenter].Position.Z) - (skeleton.Joints[JointType.HipLeft].Position.Z));
+
+                Vector3 b = new Vector3((skeleton.Joints[JointType.HipCenter].Position.X) - (skeleton.Joints[JointType.HipRight].Position.X)
+                    , (skeleton.Joints[JointType.HipCenter].Position.Y) - (skeleton.Joints[JointType.HipRight].Position.Y),
+                    (skeleton.Joints[JointType.HipCenter].Position.Z) - (skeleton.Joints[JointType.HipRight].Position.Z));
+
+                Vector3 Normal = new Vector3(a.Y * b.Z - a.Z * b.Y, a.Z * b.X - a.X * b.Z, a.X * b.Y - a.Y * b.X);
+
+                Vector3 Normal_2 = new Vector3(20*(a.Y * b.Z - a.Z * b.Y), 20*(a.Z * b.X - a.X * b.Z), 20*(a.X * b.Y - a.Y * b.X));
+
+                //Drawing Joints
                 foreach (Joint joint in skeleton.Joints)
                 {
                     var p = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
@@ -232,8 +248,10 @@ namespace Project_Recon
                         var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
                             joint2.Position, ColorImageFormat.RgbResolution640x480Fps30);
 
-                        spriteBatch.Draw(lineTex, new Vector2(p.X + 80, p.Y), 
-                            null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X +80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2), 
+                        var shade = (float)joint.JointType / 20f;
+
+                        spriteBatch.Draw(lineTex, new Vector2(p.X + 80, p.Y),
+                            null, new Color(shade, shade, shade, 1), (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2), 
                             new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
                     
                         }
@@ -281,6 +299,8 @@ namespace Project_Recon
                     }
                 }
             }
+
+            
 
             spriteBatch.End();
 
