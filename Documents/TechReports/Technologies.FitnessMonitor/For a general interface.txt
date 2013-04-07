@@ -1,0 +1,6 @@
+For the Interface to be very generic, the following data should be sent through the data stream channel :
+1. The average of the type of data sent.
+2. The actual reading of the sensor.
+Additional stuff :
+3. High values.
+4. Low values.

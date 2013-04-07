@@ -1,0 +1,5 @@
+Scenario (Done with Makled):
+1. The sensor connects to a free socket.
+2. Sends a signal to the interface (HandShake begin).
+3. The interface replies with a "OK" signal (HandShake end).
+4. The sensor begins sending the actual data.
