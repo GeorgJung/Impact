@@ -3,3 +3,8 @@ Scenario (Done with Makled):
 2. Sends a signal to the interface (HandShake begin).
 3. The interface replies with a "OK" signal (HandShake end).
 4. The sensor begins sending the actual data.
+5. The interface receives the data through the sockets and sends it to the interpreter.
+6. The interpreter translates the data to actuall numbers and info and sends it to the monitor (to display the data received) and the database manager (to save the data).
+7. The database manager sends the data + the history to the statistics engine.
+8. The statistics engine generates the analysis and sends it to the monitor.
+9. At last, the monitor displays everything.
