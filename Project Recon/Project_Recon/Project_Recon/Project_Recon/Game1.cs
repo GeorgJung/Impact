@@ -33,6 +33,7 @@ namespace Project_Recon
 
         Texture2D circleTex;
         Texture2D lineTex;
+        Texture2D lineTexRed;
 
         Boolean keepcover;
 
@@ -95,6 +96,7 @@ namespace Project_Recon
 
             circleTex = Content.Load<Texture2D>("circle");
             lineTex = Content.Load<Texture2D>("4KWjQ");
+            lineTexRed = Content.Load<Texture2D>("4KWjQR");
 
             font = Content.Load<SpriteFont>("MainFont");
             // TODO: use this.Content to load your game content here
@@ -186,7 +188,11 @@ namespace Project_Recon
 
             if (skeleton != null)
             {
-                //Creating The Vector
+                //Creating The Normal Vector
+              
+                SkeletonPoint Normal_joint = skeleton.Joints[JointType.HipCenter].Position;
+                SkeletonPoint Normal2_joint = Normal_joint;
+
                 Vector3 a = new Vector3((skeleton.Joints[JointType.HipCenter].Position.X) - (skeleton.Joints[JointType.HipLeft].Position.X)
                     , (skeleton.Joints[JointType.HipCenter].Position.Y) - (skeleton.Joints[JointType.HipLeft].Position.Y),
                     (skeleton.Joints[JointType.HipCenter].Position.Z) - (skeleton.Joints[JointType.HipLeft].Position.Z));
@@ -197,7 +203,25 @@ namespace Project_Recon
 
                 Vector3 Normal = new Vector3(a.Y * b.Z - a.Z * b.Y, a.Z * b.X - a.X * b.Z, a.X * b.Y - a.Y * b.X);
 
-                Vector3 Normal_2 = new Vector3(20*(a.Y * b.Z - a.Z * b.Y), 20*(a.Z * b.X - a.X * b.Z), 20*(a.X * b.Y - a.Y * b.X));
+                Vector3 Normal_2 = new Vector3(0.07f*(a.Y * b.Z - a.Z * b.Y), 0.07f*(a.Z * b.X - a.X * b.Z), 0.07f*(a.X * b.Y - a.Y * b.X));
+
+                Normal_joint.X = Normal.X;
+                Normal_joint.Y = Normal.Y;
+                Normal_joint.Z = Normal.Z;
+
+                Normal2_joint.X = Normal_2.X;
+                Normal2_joint.Y = Normal_2.Y;
+                Normal2_joint.Z = Normal_2.Z;
+
+                var n = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
+                        Normal_joint, ColorImageFormat.RgbResolution640x480Fps30);
+
+                var n2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
+                        skeleton.Joints[JointType.HipCenter].Position, ColorImageFormat.RgbResolution640x480Fps30);
+
+                spriteBatch.Draw(lineTexRed, new Vector2(n2.X + 80, n2.Y),
+                    null, Color.White, (float)Math.Atan2((n.Y) - n2.Y, ((n.X) + 80) - (n2.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
+                    new Vector2(Vector2.Distance(new Vector2(n2.X + 80, n2.Y), new Vector2((n.X) + 80, (n.Y))), 1f), SpriteEffects.None, 0f);
 
                 //Drawing Joints
                 foreach (Joint joint in skeleton.Joints)
@@ -209,6 +233,8 @@ namespace Project_Recon
                     spriteBatch.Draw(circleTex, new Vector2(p.X +75, p.Y -5), new Color(shade, shade, shade, 1));
                 }
             }
+
+            
 
             if (coachSkeleton != null && coachSkeleton != skeleton)
             {

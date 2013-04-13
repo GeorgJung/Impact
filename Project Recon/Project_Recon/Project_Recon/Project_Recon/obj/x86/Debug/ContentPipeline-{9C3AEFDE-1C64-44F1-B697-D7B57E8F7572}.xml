@@ -28,6 +28,15 @@
       <Output>C:\Users\Makled\Downloads\GUC\Semester 12\Bachelor Project\Project Impact\Impact\Project Recon\Project_Recon\Project_Recon\Project_Recon\bin\x86\Debug\Content\4KWjQ.xnb</Output>
       <Time>2013-03-25T00:35:56.6363083+02:00</Time>
     </Item>
+    <Item>
+      <Source>4KWjQR.png</Source>
+      <Name>4KWjQR</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Makled\Downloads\GUC\Semester 12\Bachelor Project\Project Impact\Impact\Project Recon\Project_Recon\Project_Recon\Project_Recon\bin\x86\Debug\Content\4KWjQR.xnb</Output>
+      <Time>2013-04-13T23:47:46.4925539+02:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <ContentProjectGUID>{9C3AEFDE-1C64-44F1-B697-D7B57E8F7572}</ContentProjectGUID>
