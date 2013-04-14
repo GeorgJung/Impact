@@ -219,9 +219,9 @@ namespace Project_Recon
                 var n2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
                         skeleton.Joints[JointType.HipCenter].Position, ColorImageFormat.RgbResolution640x480Fps30);
 
-                spriteBatch.Draw(lineTexRed, new Vector2(n2.X + 80, n2.Y),
-                    null, Color.White, (float)Math.Atan2((n.Y) - n2.Y, ((n.X) + 80) - (n2.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
-                    new Vector2(Vector2.Distance(new Vector2(n2.X + 80, n2.Y), new Vector2((n.X) + 80, (n.Y))), 1f), SpriteEffects.None, 0f);
+                //spriteBatch.Draw(lineTexRed, new Vector2(n2.X + 80, n2.Y),
+                  //  null, Color.White, (float)Math.Atan2((n.Y) - n2.Y, ((n.X) + 80) - (n2.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
+                    //new Vector2(Vector2.Distance(new Vector2(n2.X + 80, n2.Y), new Vector2((n.X) + 80, (n.Y))), 1f), SpriteEffects.None, 0f);
 
                 //Drawing Joints
                 foreach (Joint joint in skeleton.Joints)
@@ -240,7 +240,7 @@ namespace Project_Recon
             {
                 spriteBatch.DrawString(font, "Coach Recognized!", new Vector2(450, 80), Color.Green);
             }
-
+            
             //NEW
             if (skeleton != null)
             {
