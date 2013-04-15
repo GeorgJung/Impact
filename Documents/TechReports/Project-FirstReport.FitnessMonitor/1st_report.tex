@@ -13,11 +13,11 @@
         anchorcolor=darkblue,
         linkcolor=darkblue,
         citecolor=darkblue,
-        pdfauthor={Tarek Samy},
+        pdfauthor={Mohannad Banayosi},
         pdfkeywords={educational tools, pseudo-code, virtual machine,
           parser, interpreter},
-        pdftitle={Psudo-code virtual machine},
-        pdfsubject={Bachelor topic proposal for the faculty for MET,
+        pdftitle={Real-time fitness monitor.},
+        pdfsubject={Real-time fitness monitor,
           the German University in Cairo GUC
           (http://met.guc.edu.eg/)}]{hyperref}
 \usepackage{url}
@@ -131,8 +131,10 @@ The monitor is the front end component of the interface that displays all the in
 \end{figure}
 
 \subsection{Hand shaking}
+This is the process where each plugin reserves a web socket to start the data stream with the interface. This begins when the plugin sends a request to the interface via a socket, then the interface reserves the socket for the plugin and sends an OK signal. Once the OK signal is received, the plugin can start the data stream at any time.
 
 \subsection{Data stream}
+The data stream contains the type of the data sent (on-session or off-session), a timestamp and the actual data.
 
 \end{document}
 
