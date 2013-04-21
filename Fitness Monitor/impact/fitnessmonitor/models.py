@@ -11,5 +11,7 @@ class Session(models.Model):
 
 class Round(models.Model):
 	trainee = models.ForeignKey(Practitioner)
+	session = models.ForeignKey(Session)
     start = models.DateTimeField(null=True)
     end = models.DateTimeField(null=True)
+    # duration
