@@ -35,4 +35,4 @@
 auto
 *~
 .DS_Store
-
+*.pyc
