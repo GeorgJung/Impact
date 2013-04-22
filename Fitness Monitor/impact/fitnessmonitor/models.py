@@ -5,8 +5,8 @@ from django.contrib.auth.models import User,UserManager
 class Practitioner(User):
     level = models.IntegerField(null=True, blank=True,default=0)
 
-    def __unicode__(self):
-        return self.first_name
+    # def __unicode__(self):
+    #     return self.first_name
 
 class Session(models.Model):
     trainee = models.ForeignKey(Practitioner)
