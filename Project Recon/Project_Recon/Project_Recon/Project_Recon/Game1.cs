@@ -31,11 +31,23 @@ namespace Project_Recon
         Skeleton skeleton;
         Skeleton coachSkeleton;
 
+        SkeletonPoint littleguy_lankle, littleguy_rankle,
+            littleguy_lelbow, littleguy_relbow,
+            littleguy_lfoot, littleguy_rfoot,
+            littleguy_lhand, littleguy_rhand,
+            littleguy_head, littleguy_chip,
+            littleguy_lhip, littleguy_rhip,
+            littleguy_lknee, littleguy_rknee,
+            littleguy_cshoulder, littleguy_lshoulder,
+            littleguy_rshoulder, littleguy_spine,
+            littleguy_lwrist, littleguy_rwrist;
+
         Texture2D circleTex;
         Texture2D lineTex;
         Texture2D lineTexRed;
+        Texture2D rightTex, leftTex;
 
-        Boolean keepcover;
+        Boolean keepcover, flip;
 
         public Game1()
         {
@@ -71,7 +83,8 @@ namespace Project_Recon
             rawSkeletons = new Skeleton[kinect.SkeletonStream.FrameSkeletonArrayLength];
 
             keepcover = true;
-
+            flip = false;
+            
             base.Initialize();
         }
 
@@ -80,15 +93,6 @@ namespace Project_Recon
         /// all of your content.
         /// </summary>
 
-        /*public static void DrawLine(this SpriteBatch spriteBatch, Texture2D texture, Vector2 start, Vector2 end)
-        {
-            spriteBatch.Draw(texture, start, null, Color.White,
-                             (float)Math.Atan2(end.Y - start.Y, end.X - start.X),
-                             new Vector2(0f, (float)texture.Height / 2),
-                             new Vector2(Vector2.Distance(start, end), 1f),
-                             SpriteEffects.None, 0f);
-        }
-        */
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -97,6 +101,8 @@ namespace Project_Recon
             circleTex = Content.Load<Texture2D>("circle");
             lineTex = Content.Load<Texture2D>("4KWjQ");
             lineTexRed = Content.Load<Texture2D>("4KWjQR");
+            rightTex = Content.Load<Texture2D>("richt");
+            leftTex = Content.Load<Texture2D>("links");
 
             font = Content.Load<SpriteFont>("MainFont");
             // TODO: use this.Content to load your game content here
@@ -135,6 +141,103 @@ namespace Project_Recon
                 skeleton = rawSkeletons.FirstOrDefault(s => s.TrackingState == SkeletonTrackingState.Tracked);
                 coachSkeleton = rawSkeletons.LastOrDefault(s => s.TrackingState == SkeletonTrackingState.Tracked);
 
+            }
+            if (skeleton != null)
+            {
+                //Little Guy
+                foreach (Joint joint in skeleton.Joints)
+                {
+                    //Ankle
+                    if ((joint.Equals(skeleton.Joints[JointType.AnkleLeft])))
+                    {
+                        littleguy_lankle = skeleton.Joints[JointType.AnkleLeft].Position;
+                    }
+                    if ((joint.Equals(skeleton.Joints[JointType.AnkleRight])))
+                    {
+                        littleguy_rankle = skeleton.Joints[JointType.AnkleRight].Position;
+                    }
+
+                    //Elbow
+                    if ((joint.Equals(skeleton.Joints[JointType.ElbowLeft])))
+                    {
+                        littleguy_lelbow = skeleton.Joints[JointType.ElbowLeft].Position;
+                    }
+                    if ((joint.Equals(skeleton.Joints[JointType.ElbowRight])))
+                    {
+                        littleguy_relbow = skeleton.Joints[JointType.ElbowRight].Position;
+                    }
+
+                    //Hand
+                    if ((joint.Equals(skeleton.Joints[JointType.HandLeft])))
+                    {
+                        littleguy_lhand = skeleton.Joints[JointType.HandLeft].Position;
+                    }
+                    if ((joint.Equals(skeleton.Joints[JointType.HandRight])))
+                    {
+                        littleguy_rhand = skeleton.Joints[JointType.HandRight].Position;
+                    }
+
+                    //Head
+                    if ((joint.Equals(skeleton.Joints[JointType.Head])))
+                    {
+                        littleguy_head = skeleton.Joints[JointType.Head].Position;
+                    }
+
+                    //Hip
+                    if ((joint.Equals(skeleton.Joints[JointType.HipCenter])))
+                    {
+                        littleguy_chip = skeleton.Joints[JointType.HipCenter].Position;
+                    }
+
+                    if ((joint.Equals(skeleton.Joints[JointType.HipLeft])))
+                    {
+                        littleguy_lhip = skeleton.Joints[JointType.HipLeft].Position;
+                    }
+                    if ((joint.Equals(skeleton.Joints[JointType.HipRight])))
+                    {
+                        littleguy_rhip = skeleton.Joints[JointType.HipRight].Position;
+                    }
+
+                    //Knee
+                    if ((joint.Equals(skeleton.Joints[JointType.KneeLeft])))
+                    {
+                        littleguy_lknee = skeleton.Joints[JointType.KneeLeft].Position;
+                    }
+                    if ((joint.Equals(skeleton.Joints[JointType.KneeRight])))
+                    {
+                        littleguy_rhip = skeleton.Joints[JointType.KneeRight].Position;
+                    }
+
+                    //Shoulder
+                    if ((joint.Equals(skeleton.Joints[JointType.ShoulderCenter])))
+                    {
+                        littleguy_cshoulder = skeleton.Joints[JointType.ShoulderCenter].Position;
+                    }
+                    if ((joint.Equals(skeleton.Joints[JointType.ShoulderLeft])))
+                    {
+                        littleguy_lshoulder = skeleton.Joints[JointType.ShoulderLeft].Position;
+                    }
+                    if ((joint.Equals(skeleton.Joints[JointType.ShoulderRight])))
+                    {
+                        littleguy_rshoulder = skeleton.Joints[JointType.ShoulderRight].Position;
+                    }
+
+                    //Spine
+                    if ((joint.Equals(skeleton.Joints[JointType.Spine])))
+                    {
+                        littleguy_spine = skeleton.Joints[JointType.Spine].Position;
+                    }
+
+                    //Wrist
+                    if ((joint.Equals(skeleton.Joints[JointType.WristLeft])))
+                    {
+                        littleguy_lwrist = skeleton.Joints[JointType.WristLeft].Position;
+                    }
+                    if ((joint.Equals(skeleton.Joints[JointType.WristRight])))
+                    {
+                        littleguy_rwrist = skeleton.Joints[JointType.WristRight].Position;
+                    }
+                }
             }
             
             /*
@@ -179,12 +282,12 @@ namespace Project_Recon
             spriteBatch.Begin();
 
             
-            spriteBatch.Draw(colorTex, new Vector2(80,0), Color.White);
+            //spriteBatch.Draw(colorTex, new Vector2(80,0), Color.White);
             
             spriteBatch.DrawString(font, "Project Recon v1.0", new Vector2(80, 0), Color.Red);
 
             if (keepcover) 
-                spriteBatch.DrawString(font, "Keep Cover!", new Vector2(150, 80), Color.Red);
+                //spriteBatch.DrawString(font, "Keep Cover!", new Vector2(150, 80), Color.Red);
 
             if (skeleton != null)
             {
@@ -203,11 +306,11 @@ namespace Project_Recon
 
                 Vector3 Normal = new Vector3(a.Y * b.Z - a.Z * b.Y, a.Z * b.X - a.X * b.Z, a.X * b.Y - a.Y * b.X);
 
-                Vector3 Normal_2 = new Vector3(0.07f*(a.Y * b.Z - a.Z * b.Y), 0.07f*(a.Z * b.X - a.X * b.Z), 0.07f*(a.X * b.Y - a.Y * b.X));
+                Vector3 Normal_2 = new Vector3(-10f*(a.Y * b.Z - a.Z * b.Y), -10f*(a.Z * b.X - a.X * b.Z), 10f*(a.X * b.Y - a.Y * b.X));
 
-                Normal_joint.X = Normal.X;
-                Normal_joint.Y = Normal.Y;
-                Normal_joint.Z = Normal.Z;
+                Normal_joint.X = Normal_2.X;
+                Normal_joint.Y = Normal_2.Y;
+                Normal_joint.Z = Normal_2.Z;
 
                 Normal2_joint.X = Normal_2.X;
                 Normal2_joint.Y = Normal_2.Y;
@@ -219,9 +322,50 @@ namespace Project_Recon
                 var n2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
                         skeleton.Joints[JointType.HipCenter].Position, ColorImageFormat.RgbResolution640x480Fps30);
 
-                //spriteBatch.Draw(lineTexRed, new Vector2(n2.X + 80, n2.Y),
-                  //  null, Color.White, (float)Math.Atan2((n.Y) - n2.Y, ((n.X) + 80) - (n2.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
-                    //new Vector2(Vector2.Distance(new Vector2(n2.X + 80, n2.Y), new Vector2((n.X) + 80, (n.Y))), 1f), SpriteEffects.None, 0f);
+                spriteBatch.Draw(lineTexRed, new Vector2(n2.X + 80, n2.Y),
+                    null, Color.White, (float)Math.Atan2((n.Y) - n2.Y, ((n.X) + 80) - (n2.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
+                    new Vector2(Vector2.Distance(new Vector2(n2.X + 80, n2.Y), new Vector2((n.X) + 80, (n.Y))), 1f), SpriteEffects.None, 0f);
+
+                double lengthofNormal = Math.Sqrt(Math.Pow(Math.Abs(Normal_2.X - skeleton.Joints[JointType.HipCenter].Position.X), 2)
+                    + Math.Pow(Math.Abs(Normal_2.Y - skeleton.Joints[JointType.HipCenter].Position.Y), 2));
+
+                String length_Normal= lengthofNormal.ToString();
+                String Normal_x = Normal_2.X.ToString();
+                String Normal_y = Normal_2.Y.ToString();
+                String Normal_z = Normal_2.Z.ToString();
+
+                spriteBatch.DrawString(font, "Length: " + length_Normal, new Vector2(80, 40), Color.Blue);
+                spriteBatch.DrawString(font, "X: " + Normal_x, new Vector2(80, 60), Color.Blue);
+                spriteBatch.DrawString(font, "Y: " + Normal_y, new Vector2(80, 85), Color.Blue);
+                spriteBatch.DrawString(font, "Z: " + Normal_z, new Vector2(80, 105), Color.Blue);
+
+                //flipping the skeleton
+                
+                /*
+                if (Normal_2.Z < 0)
+                {
+                    flip = true;
+                    foreach (Joint joint in skeleton.Joints)
+                    {
+                        foreach (Joint joint2 in skeleton.Joints)
+                        {
+                            if((joint.Equals(skeleton.Joints[JointType.HipLeft]) && joint2.Equals(skeleton.Joints[JointType.HipRight]))
+                                || (joint.Equals(skeleton.Joints[JointType.ShoulderLeft]) && joint2.Equals(skeleton.Joints[JointType.ShoulderRight]))
+                                || (joint.Equals(skeleton.Joints[JointType.ElbowLeft]) && joint2.Equals(skeleton.Joints[JointType.ElbowRight]))
+                                || (joint.Equals(skeleton.Joints[JointType.WristLeft]) && joint2.Equals(skeleton.Joints[JointType.WristRight]))
+                                || (joint.Equals(skeleton.Joints[JointType.HandLeft]) && joint2.Equals(skeleton.Joints[JointType.HandRight]))
+                                || (joint.Equals(skeleton.Joints[JointType.KneeLeft]) && joint2.Equals(skeleton.Joints[JointType.KneeRight]))
+                                || (joint.Equals(skeleton.Joints[JointType.AnkleLeft]) && joint2.Equals(skeleton.Joints[JointType.AnkleRight]))
+                                || (joint.Equals(skeleton.Joints[JointType.FootLeft]) && joint2.Equals(skeleton.Joints[JointType.FootRight])))
+                            {
+                                Vector3 position = new Vector3(joint.Position.X, joint.Position.Y, joint.Position.Z);
+                                joint.Position = joint2.Position;
+                            
+                            }
+                        }
+                    }
+                }
+                */
 
                 //Drawing Joints
                 foreach (Joint joint in skeleton.Joints)
@@ -230,10 +374,9 @@ namespace Project_Recon
                         joint.Position, ColorImageFormat.RgbResolution640x480Fps30);
 
                     var shade = (float)joint.JointType / 20f;
-                    spriteBatch.Draw(circleTex, new Vector2(p.X +75, p.Y -5), new Color(shade, shade, shade, 1));
+                    spriteBatch.Draw(circleTex, new Vector2(p.X + 75, p.Y - 5), new Color(shade, shade, shade, 1));
                 }
             }
-
             
 
             if (coachSkeleton != null && coachSkeleton != skeleton)
@@ -253,38 +396,54 @@ namespace Project_Recon
                     {
                         if ((joint.Equals(skeleton.Joints[JointType.Head]) && joint2.Equals(skeleton.Joints[JointType.ShoulderCenter]))
                             || (joint.Equals(skeleton.Joints[JointType.ShoulderCenter]) && joint2.Equals(skeleton.Joints[JointType.Spine]))
-                            || (joint.Equals(skeleton.Joints[JointType.Spine]) && joint2.Equals(skeleton.Joints[JointType.HipCenter]))
-                            || (joint.Equals(skeleton.Joints[JointType.HipCenter]) && joint2.Equals(skeleton.Joints[JointType.HipLeft]))
+                            || (joint.Equals(skeleton.Joints[JointType.Spine]) && joint2.Equals(skeleton.Joints[JointType.HipCenter])))
+                        {
+                        var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
+                            joint2.Position, ColorImageFormat.RgbResolution640x480Fps30);
+
+                        spriteBatch.Draw(lineTex, new Vector2(p.X + 80, p.Y),
+                            null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2), 
+                            new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
+                    
+                        }
+
+                        if ((joint.Equals(skeleton.Joints[JointType.HipCenter]) && joint2.Equals(skeleton.Joints[JointType.HipLeft]))
                             || (joint.Equals(skeleton.Joints[JointType.HipLeft]) && joint2.Equals(skeleton.Joints[JointType.KneeLeft]))
                             || (joint.Equals(skeleton.Joints[JointType.KneeLeft]) && joint2.Equals(skeleton.Joints[JointType.AnkleLeft]))
                             || (joint.Equals(skeleton.Joints[JointType.AnkleLeft]) && joint2.Equals(skeleton.Joints[JointType.FootLeft]))
-                            || (joint.Equals(skeleton.Joints[JointType.HipCenter]) && joint2.Equals(skeleton.Joints[JointType.HipRight]))
+                            || (joint.Equals(skeleton.Joints[JointType.ShoulderCenter]) && joint2.Equals(skeleton.Joints[JointType.ShoulderLeft]))
+                            || (joint.Equals(skeleton.Joints[JointType.ShoulderLeft]) && joint2.Equals(skeleton.Joints[JointType.ElbowLeft]))
+                            || (joint.Equals(skeleton.Joints[JointType.ElbowLeft]) && joint2.Equals(skeleton.Joints[JointType.WristLeft]))
+                            || (joint.Equals(skeleton.Joints[JointType.WristLeft]) && joint2.Equals(skeleton.Joints[JointType.HandLeft])))
+                        {
+                            var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
+                            joint2.Position, ColorImageFormat.RgbResolution640x480Fps30);
+
+                            spriteBatch.Draw(leftTex, new Vector2(p.X + 80, p.Y),
+                                null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
+                                new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
+                        }
+
+                        if ((joint.Equals(skeleton.Joints[JointType.HipCenter]) && joint2.Equals(skeleton.Joints[JointType.HipRight]))
                             || (joint.Equals(skeleton.Joints[JointType.HipRight]) && joint2.Equals(skeleton.Joints[JointType.KneeRight]))
                             || (joint.Equals(skeleton.Joints[JointType.KneeRight]) && joint2.Equals(skeleton.Joints[JointType.AnkleRight]))
                             || (joint.Equals(skeleton.Joints[JointType.AnkleRight]) && joint2.Equals(skeleton.Joints[JointType.FootRight]))
                             || (joint.Equals(skeleton.Joints[JointType.ShoulderCenter]) && joint2.Equals(skeleton.Joints[JointType.ShoulderRight])) //here
                             || (joint.Equals(skeleton.Joints[JointType.ShoulderRight]) && joint2.Equals(skeleton.Joints[JointType.ElbowRight]))
                             || (joint.Equals(skeleton.Joints[JointType.ElbowRight]) && joint2.Equals(skeleton.Joints[JointType.WristRight]))
-                            || (joint.Equals(skeleton.Joints[JointType.WristRight]) && joint2.Equals(skeleton.Joints[JointType.HandRight]))
-                            || (joint.Equals(skeleton.Joints[JointType.ShoulderCenter]) && joint2.Equals(skeleton.Joints[JointType.ShoulderLeft]))
-                            || (joint.Equals(skeleton.Joints[JointType.ShoulderLeft]) && joint2.Equals(skeleton.Joints[JointType.ElbowLeft]))
-                            || (joint.Equals(skeleton.Joints[JointType.ElbowLeft]) && joint2.Equals(skeleton.Joints[JointType.WristLeft]))
-                            || (joint.Equals(skeleton.Joints[JointType.WristLeft]) && joint2.Equals(skeleton.Joints[JointType.HandLeft])))
+                            || (joint.Equals(skeleton.Joints[JointType.WristRight]) && joint2.Equals(skeleton.Joints[JointType.HandRight])))
                         {
-                        var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
+                            var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
                             joint2.Position, ColorImageFormat.RgbResolution640x480Fps30);
 
-                        var shade = (float)joint.JointType / 20f;
-
-                        spriteBatch.Draw(lineTex, new Vector2(p.X + 80, p.Y),
-                            null, new Color(shade, shade, shade, 1), (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2), 
-                            new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
-                    
+                            spriteBatch.Draw(rightTex, new Vector2(p.X + 80, p.Y),
+                                null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
+                                new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
                         }
                     }
                 }                
             }
-
+           /* 
             if (coachSkeleton != null)
             {
                 foreach (Joint joint in coachSkeleton.Joints)
@@ -323,9 +482,9 @@ namespace Project_Recon
 
                         }
                     }
-                }
+                } 
             }
-
+            */
             
 
             spriteBatch.End();

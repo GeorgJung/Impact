@@ -37,6 +37,24 @@
       <Output>C:\Users\Makled\Downloads\GUC\Semester 12\Bachelor Project\Project Impact\Impact\Project Recon\Project_Recon\Project_Recon\Project_Recon\bin\x86\Debug\Content\4KWjQR.xnb</Output>
       <Time>2013-04-13T23:47:46.4925539+02:00</Time>
     </Item>
+    <Item>
+      <Source>links.png</Source>
+      <Name>links</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Makled\Downloads\GUC\Semester 12\Bachelor Project\Project Impact\Impact\Project Recon\Project_Recon\Project_Recon\Project_Recon\bin\x86\Debug\Content\links.xnb</Output>
+      <Time>2013-04-25T16:08:41.220358+02:00</Time>
+    </Item>
+    <Item>
+      <Source>richt.png</Source>
+      <Name>richt</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Makled\Downloads\GUC\Semester 12\Bachelor Project\Project Impact\Impact\Project Recon\Project_Recon\Project_Recon\Project_Recon\bin\x86\Debug\Content\richt.xnb</Output>
+      <Time>2013-04-25T16:08:52.6340108+02:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <ContentProjectGUID>{9C3AEFDE-1C64-44F1-B697-D7B57E8F7572}</ContentProjectGUID>
