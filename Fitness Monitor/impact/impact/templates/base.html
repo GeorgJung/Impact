@@ -1,5 +1,28 @@
-base
+<html dir="ltr">
+	<head>
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/bootstrap.min.css"/>
+		<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}/css/base.css"/>
+	</head>
+	<body>
+		<div class="wrapper">
+            <div class="navbar navbar-fixed-top" id="mainnav" style="position:fixed;">
+                <div class="navbar-inner">
+                    <div class="container" id="maincon">
+                    	<a class="brand" href="#">Fitness Monitor</a>
+					    <ul class="nav">
+					      <li class="active"><a href="#">Home</a></li>
+					      <li><a href="#">Discover</a></li>
+					      <li><a href="#">My Profile</a></li>
+					    </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="container" id="dashboard">
+                {% block body %}
 
-{% block body %}
-
-{% endblock body %}
+				{% endblock body %}
+            </div> 
+        </div>
+	</body>
+</html>
