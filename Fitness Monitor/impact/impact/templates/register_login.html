@@ -2,18 +2,29 @@
 
 {% block body %}
 <div class="hero-unit">
-	Register
-	</br>
-	username <input id="username" type="text" name="username" maxlength="32" placeholder="Username" class="input-xlarge" value="">
-	</br>
-	password <input id="password" type="password" name="password" maxlength="75" placeholder="Password">
+	<form id="register" name="register" method="post" action="/register/">
+		{% csrf_token %}
+		Register
+		</br>
+		username <input id="username_register" type="text" name="username_register" maxlength="32" placeholder="Username" class="input-xlarge" value="">
+		</br>
+		password <input id="password_register" type="password" name="password_register" maxlength="75" placeholder="Password">
+		</br>
+		<button type="submit" id="register_button" class="btn">Register</button>
+	</form>
 </div>
 
 <div class="hero-unit">
-	Login
-	</br>
-	username <input id="username" type="text" name="username" maxlength="32" placeholder="Username" class="input-xlarge" value="">
-	</br>
-	password <input id="password" type="password" name="password" maxlength="75" placeholder="Password">
+	<h5>{{state}}</h5>
+	<form id="login" name="login" method="post" action="/login/">
+		{% csrf_token %}
+		Login
+		</br>
+		username <input id="username_login" type="text" name="username_login" maxlength="32" placeholder="Username" class="input-xlarge" value="">
+		</br>
+		password <input id="password_login" type="password" name="password_login" maxlength="75" placeholder="Password">
+		</br>
+		<button type="submit" id="login_button" class="btn">Login</button>
+	</form>
 </div>
 {% endblock body %}

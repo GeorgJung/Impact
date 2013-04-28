@@ -16,12 +16,13 @@ def login(request):
 	if request.user.is_authenticated():
 		return render_to_response("home.html", RequestContext(request))
 	else:
-		username = request.POST['username']
+		username = request.POST['username_login']
 		try:
 			username = User.objects.get(username=username)
 		except:
-			return render_to_response("register_login.html", RequestContext(request))
-		password = request.POST['password']
+			state = "please register"
+			return render_to_response("register_login.html", {'state':state}, RequestContext(request))
+		password = request.POST['password_login']
 		user = authenticate(username=username, password=password)
 		if user is not None:
 			login(request, user)
