@@ -10,6 +10,7 @@
                 <div class="navbar-inner">
                     <div class="container" id="maincon">
                     	<a class="brand" href="#">Fitness Monitor</a>
+                    	{% ifnotequal request.user.id None %}
 					    <ul class="nav">
 					      <!-- <li class="active"><a href="#">New Session</a></li> -->
 					      <li><a href="#">New Session</a></li>
@@ -19,6 +20,7 @@
 					      <li><a href="#">My Profile</a></li>
 					      <li><a href="#">Sign Out</a></li>
 					    </ul>
+					    {% endifnotequal %}
                     </div>
                 </div>
             </div>
