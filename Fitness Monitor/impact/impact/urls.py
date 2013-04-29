@@ -20,4 +20,5 @@ urlpatterns += patterns('fitnessmonitor.views',
     url(r'^test/$', "test", name="home"),
     url(r'^$', "home", name="home"),
     url(r'^login/$', "login", name="login"),
+    url(r'^register/$', "register", name="register"),
 )
