@@ -15,7 +15,7 @@ def home(request):
 	else:
 		return render_to_response("register_login.html", RequestContext(request))
 
-def login(request):
+def login_user(request):
 	state = ""
 	if request.user.is_authenticated():
 		return render_to_response("home.html", RequestContext(request))
