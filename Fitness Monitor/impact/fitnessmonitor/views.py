@@ -44,12 +44,6 @@ def register(request):
 	password = request.POST['password_register']
 	practitioner = Practitioner.objects.create(username=username)
 	practitioner.set_password(password)
-	# employer =Employer.objects.create(last_login=datetime.datetime.now(),date_joined=datetime.date.today(),
-	# username=form.cleaned_data["username"],first_name=form.cleaned_data['first_name'],
-	# last_name=form.cleaned_data['last_name'],email=form.cleaned_data['email'],address=form.cleaned_data['address'],
-	# phone=form.cleaned_data['phone'])
-	# employer.set_password(form.cleaned_data['password'])
-	# employer.permissions()
 	practitioner.save()
 	return HttpResponseRedirect('/')
 
