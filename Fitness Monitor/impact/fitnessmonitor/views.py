@@ -18,7 +18,7 @@ def home(request):
 def login_user(request):
 	state = ""
 	if request.user.is_authenticated():
-		return render_to_response("home.html", RequestContext(request))
+		return HttpResponseRedirect('/')
 	else:
 		username = request.POST['username_login']
 		try:
