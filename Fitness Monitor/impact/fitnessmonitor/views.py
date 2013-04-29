@@ -51,4 +51,11 @@ def register(request):
 	# employer.set_password(form.cleaned_data['password'])
 	# employer.permissions()
 	practitioner.save()
-	return HttpResponseRedirect('/') 	
+	return HttpResponseRedirect('/')
+
+def new_session(request):
+	return render_to_response("session.html", RequestContext(request))
+	
+def signout(request):
+	logout(request)
+	return HttpResponseRedirect('/')
