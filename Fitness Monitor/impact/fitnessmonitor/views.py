@@ -1,10 +1,12 @@
 # Create your views here.
 from django.shortcuts import render_to_response, redirect, render
 from django.template import RequestContext
-from fitnessmonitor.models import Practitioner
+from fitnessmonitor.models import Practitioner, Session, Round
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login
+from datetime import datetime
+from django.shortcuts import get_object_or_404
 
 def test(request):
     return render_to_response("test.html", RequestContext(request))
@@ -48,7 +50,33 @@ def register(request):
 	return HttpResponseRedirect('/')
 
 def new_session(request):
-	return render_to_response("session.html", RequestContext(request))
+	rounds_num = request.POST['rounds_num']
+	rounds_dur = request.POST['rounds_dur']
+	breaks_dur = request.POST['breaks_dur']
+	# trainee = get_object_or_404(Practitioner, id=request.user.id)
+	trainee = Practitioner.objects.get(id=request.user.id)
+	TheSession = Session.objects.create(trainee=trainee,rounds_num=rounds_num,rounds_dur=rounds_dur,breaks_dur=breaks_dur,start=datetime.now())
+	for i in range(0, int(rounds_num)):
+		Round.objects.create(trainee=trainee,session=TheSession,duration=rounds_dur,number=i+1)
+	return render_to_response("session.html", {'session':TheSession}, RequestContext(request))
+
+def begin_round(request):
+	round_num = request.POST['round_num']
+	session_id = request.POST['session_id']
+	session = Session.objects.get(pk=session_id)
+	the_round = Round.objects.get(session=session,number=round_num)
+	the_round.start = datetime.now()
+	the_round.save()
+	return HttpResponse(" ")
+
+def end_round(request):
+	round_num = request.POST['round_num']
+	session_id = request.POST['session_id']
+	session = Session.objects.get(pk=session_id)
+	the_round = Round.objects.get(session=session,number=round_num)
+	the_round.end = datetime.now()
+	the_round.save()
+	return HttpResponse(" ")
 	
 def signout(request):
 	logout(request)

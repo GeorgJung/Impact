@@ -36,3 +36,4 @@ auto
 *~
 .DS_Store
 *.pyc
+venv

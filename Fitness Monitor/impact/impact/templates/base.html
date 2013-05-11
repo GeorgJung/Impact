@@ -1,6 +1,7 @@
 <html dir="ltr">
 	<head>
 		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/bootstrap.min.css"/>
+		<script type="text/javascript" src="{{STATIC_URL}}js/jquery-1.8.0.min.js"></script>
 		<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}/css/base.css"/>
 	</head>
@@ -13,8 +14,8 @@
                     	{% ifnotequal request.user.id None %}
 						    <ul class="nav">
 						      <!-- <li class="active"><a href="#">New Session</a></li> -->
-						      <li><a href="/new_session/">New Session</a></li>
-						      <li><a href="#">My Sessions</a></li>
+						      <li><a data-toggle="modal" href="#createSession">New Session</a></li>
+						      <li><a href="/">My Sessions</a></li>
 						    </ul>
 						    <ul class="nav pull-right">
 						      <li><a href="#">My Profile</a></li>
@@ -32,3 +33,53 @@
         </div>
 	</body>
 </html>
+<div class="modal hide fade" id="createSession">
+	<div class="modal-header">
+		<div class="modal-close" data-dismiss="modal">
+			<label>X</label>
+		</div>
+		<label class="modal-title">Begin a new Session</label>
+	</div>
+	<div class="modal-body">
+		<form id="postform" class="short" action="/new_session/" method="post" >
+			{% csrf_token %}
+			<input type="text" id='rounds_num' name='rounds_num'/>
+			<input type="text" id='rounds_dur' name='rounds_dur'/>
+			<input type="text" id='breaks_dur' name='breaks_dur'/>
+	</div>
+	<div class="modal-footer">
+		<button type="submit" id="begin_button" class="btn btn-primary middle">Begin</button>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+var csrftoken = getCookie('csrftoken');
+                    function getCookie(name) {
+                        var cookieValue = null;
+                        if (document.cookie && document.cookie != '') {
+                            var cookies = document.cookie.split(';');
+                            for (var i = 0; i < cookies.length; i++) {
+                                var cookie = jQuery.trim(cookies[i]);
+                                // Does this cookie string begin with the name we want?
+                                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                    break;
+                                }
+                            }
+                        }
+                        return cookieValue;
+                    }
+                
+                    function csrfSafeMethod(method) {
+                        // these HTTP methods do not require CSRF protection
+                        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+                    }
+                    $.ajaxSetup({
+                        crossDomain: false, // obviates need for sameOrigin test
+                        beforeSend: function(xhr, settings) {
+                            if (!csrfSafeMethod(settings.type)) {
+                                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                            }
+                        }
+                    });
+</script>
