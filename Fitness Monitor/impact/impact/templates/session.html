@@ -18,12 +18,22 @@ var roundNum = roundsDone + 1;
 
 function driver() {
 	startSession();
+	$.ajax({
+	    type: "POST",
+	    url:"/begin_session/",
+	    data: {
+            "session_id" : "{{session.id}}",
+        },
+        success: function(req){
+        }
+	});
 	startRound();
 }
 
 function startRound() {
 	if (roundsDone < roundsNum) {
 		roundNum = roundsDone + 1;
+		$("#session").html(roundNum);
 		$.ajax({
 		    type: "POST",
 		    url:"/begin_round/",
@@ -51,12 +61,23 @@ function startRound() {
 		$(".numbers-round").css("animation", "none");
 		$('#the-timer-break').css('opacity', '0.4');
 		$('#the-timer-round').css('opacity', '0.4');
+		$.ajax({
+		    type: "POST",
+		    url:"/end_session/",
+		    data: {
+                "session_id" : "{{session.id}}",
+            },
+	        success: function(req){
+	        	window.location.assign("http://www.w3schools.com")
+	        }
+    	});
 	}
 }
 
 function startBreak() {
 	if (roundsDone < roundsNum) {
 		roundNum = roundsDone + 1;
+		$("#session").html("Break");
 		$.ajax({
 		    type: "POST",
 		    url:"/end_round/",
@@ -83,6 +104,16 @@ function startBreak() {
 		$(".numbers-round").css("animation", "none");
 		$('#the-timer-break').css('opacity', '0.4');
 		$('#the-timer-round').css('opacity', '0.4');
+		$.ajax({
+		    type: "POST",
+		    url:"/end_session/",
+		    data: {
+                "session_id" : "{{session.id}}",
+            },
+	        success: function(req){
+	        	window.location.assign("/")
+	        }
+    	});
 	}
 }
 
@@ -98,6 +129,117 @@ function getTimeNow(){
 }
 
 // var lol = setInterval(function getTime2(){clearInterval(lol);alert("Time over");},5000);
+</script>
+<script src="http://www.amcharts.com/lib/amcharts.js" type="text/javascript"></script>
+<script type="text/javascript">
+	var chart2;
+	var legend2;
+
+	var chartData2 = [{
+	    move: "Front Snap Punch",
+	    value: 260},
+	{
+	    move: "High Parry",
+	    value: 201},
+	{
+	    move: "Side Breakfall",
+	    value: 65},
+	{
+	    move: "Forward Roll",
+	    value: 39},
+	{
+	    move: "Escape Wrist Grab",
+	    value: 17},
+	{
+	    move: "Escape Front Strangle",
+	    value: 12}];
+
+	AmCharts.ready(function() {
+	    // PIE CHART
+	    chart2 = new AmCharts.AmPieChart();
+	    chart2.dataProvider = chartData2;
+	    chart2.titleField = "move";
+	    chart2.valueField = "value";
+	    chart2.outlineColor = "#FFFFFF";
+	    chart2.outlineAlpha = 0.8;
+	    chart2.outlineThickness = 2;
+	    // this makes the chart 3D
+	    chart2.depth3D = 15;
+	    chart2.angle = 30;
+
+	    // WRITE
+	    chart2.write("chartdiv");
+	});
+</script>
+
+
+<script type="text/javascript">
+var chart;
+
+var chartData = [{
+    move: "Front Snap Punch",
+    times: 260,
+    color: "#FF0F00"},
+{
+    move: "High Parry",
+    times: 201,
+    color: "#FF6600"},
+{
+    move: "Side Breakfall",
+    times: 65,
+    color: "#FF9E01"},
+{
+    move: "Forward Roll",
+    times: 39,
+    color: "#FCD202"},
+{
+    move: "Escape Wrist Grab",
+    times: 17,
+    color: "#04D215"},
+{
+    move: "Escape Front Strangle",
+    times: 12,
+    color: "#000000"}];
+
+
+AmCharts.ready(function() {
+    // SERIAL CHART
+    chart = new AmCharts.AmSerialChart();
+    chart.dataProvider = chartData;
+    chart.categoryField = "move";
+    chart.marginRight = 0;
+    chart.marginTop = 0;    
+    chart.autoMarginOffset = 0;
+    // the following two lines makes chart 3D
+    chart.depth3D = 20;
+    chart.angle = 30;
+
+    // AXES
+    // category
+    var categoryAxis = chart.categoryAxis;
+    categoryAxis.labelRotation = 90;
+    categoryAxis.dashLength = 5;
+    categoryAxis.gridPosition = "start";
+
+    // value
+    var valueAxis = new AmCharts.ValueAxis();
+    valueAxis.title = "Visitors";
+    valueAxis.dashLength = 5;
+    chart.addValueAxis(valueAxis);
+
+    // GRAPH            
+    var graph = new AmCharts.AmGraph();
+    graph.valueField = "times";
+    graph.colorField = "color";
+    graph.balloonText = "[[category]]: [[value]]";
+    graph.type = "column";
+    graph.lineAlpha = 0;
+    graph.fillAlphas = 1;
+    chart.addGraph(graph);
+
+    // WRITE
+    chart.write("chartdiv2");
+});
 </script>
 
 <div class="container" style="width:500;">
@@ -207,6 +349,11 @@ function getTimeNow(){
 		<!-- <label onclick='$(".numbers").css("animation", "none");'>Stop</label>
 		<label >Reset</label> -->
 	</div>
+	<div id="session">Session not yet started</div>
+	<!-- chart1 -->
+	<div id="chartdiv" style="width: 100%; height: 362px;"></div>
+	<!-- chart2 -->
+	<div id="chartdiv2" style="width: 100%; height: 355px;"></div>
 </div>
 
 

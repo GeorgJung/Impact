@@ -25,4 +25,6 @@ urlpatterns += patterns('fitnessmonitor.views',
     url(r'^new_session/$', "new_session", name="new_session"),
     url(r'^begin_round/$', "begin_round", name="begin_round"),
     url(r'^end_round/$', "end_round", name="end_round"),
+    url(r'^begin_session/$', "begin_session", name="begin_session"),
+    url(r'^end_session/$', "end_session", name="end_session"),
 )
