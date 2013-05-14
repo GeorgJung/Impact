@@ -27,4 +27,6 @@ urlpatterns += patterns('fitnessmonitor.views',
     url(r'^end_round/$', "end_round", name="end_round"),
     url(r'^begin_session/$', "begin_session", name="begin_session"),
     url(r'^end_session/$', "end_session", name="end_session"),
+    url(r'^my_sessions/$', "my_sessions", name="my_sessions"),
+    url(r'^session/(?P<task_id>\d+)/$', "rounds", name="rounds"),
 )

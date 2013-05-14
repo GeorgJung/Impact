@@ -15,7 +15,7 @@
 						    <ul class="nav">
 						      <!-- <li class="active"><a href="#">New Session</a></li> -->
 						      <li><a data-toggle="modal" href="#createSession">New Session</a></li>
-						      <li><a href="/">My Sessions</a></li>
+						      <li><a href="/my_sessions/">My Sessions</a></li>
 						    </ul>
 						    <ul class="nav pull-right">
 						      <li><a href="#">My Profile</a></li>
@@ -43,9 +43,9 @@
 	<div class="modal-body">
 		<form id="postform" class="short" action="/new_session/" method="post" >
 			{% csrf_token %}
-			<input type="text" id='rounds_num' name='rounds_num'/>
-			<input type="text" id='rounds_dur' name='rounds_dur'/>
-			<input type="text" id='breaks_dur' name='breaks_dur'/>
+			<input type="text" id='rounds_num' name='rounds_num' placeholder="Number of rounds"/>
+			<input type="text" id='rounds_dur' name='rounds_dur' placeholder="Duration of the rounds"/>
+			<input type="text" id='breaks_dur' name='breaks_dur' placeholder="Duration of the breaks"/>
 	</div>
 	<div class="modal-footer">
 		<button type="submit" id="begin_button" class="btn btn-primary middle">Begin</button>

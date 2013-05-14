@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+	{% for around in rounds %}
+		<div>A round that started on {{around.start}} </div>
+	{% endfor %}
+	
+{% endblock body %}

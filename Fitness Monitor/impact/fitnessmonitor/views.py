@@ -95,3 +95,13 @@ def end_session(request):
 def signout(request):
 	logout(request)
 	return HttpResponseRedirect('/')
+
+def my_sessions(request):
+	trainee = Practitioner.objects.get(id=request.user.id)
+	sessions = Session.objects.filter(trainee=trainee)
+	return render_to_response("my_sessions.html", {'sessions':sessions}, RequestContext(request))
+
+def rounds(request, session_id):
+	trainee = Practitioner.objects.get(id=request.user.id)
+	sessions = Session.objects.filter(trainee=trainee)
+	return render_to_response("my_sessions.html", {'sessions':sessions}, RequestContext(request))

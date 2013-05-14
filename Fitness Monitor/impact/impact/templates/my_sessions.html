@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+	{% for asession in sessions %}
+		<div>A session that started on {{asession.start}} </div>
+	{% endfor %}
+	
+{% endblock body %}
