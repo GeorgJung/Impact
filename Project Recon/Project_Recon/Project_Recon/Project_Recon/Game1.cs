@@ -43,6 +43,7 @@ namespace Project_Recon
             littleguy_lwrist, littleguy_rwrist;
 
         SkeletonPoint[] littleGuy;
+        SkeletonPoint[] prevPositions;
 
         Texture2D circleTex;
         Texture2D lineTex;
@@ -84,7 +85,9 @@ namespace Project_Recon
 
             rawSkeletons = new Skeleton[kinect.SkeletonStream.FrameSkeletonArrayLength];
 
-            SkeletonPoint[] littleGuy = new SkeletonPoint[20];
+            prevPositions = new SkeletonPoint[20];
+
+            littleGuy = new SkeletonPoint[20];
 
             keepcover = true;
             flip = false;
@@ -145,6 +148,7 @@ namespace Project_Recon
                 skeleton = rawSkeletons.FirstOrDefault(s => s.TrackingState == SkeletonTrackingState.Tracked);
                 coachSkeleton = rawSkeletons.LastOrDefault(s => s.TrackingState == SkeletonTrackingState.Tracked && coachSkeleton != skeleton);
             }
+            
             if (skeleton != null)
             {
                 //Little Guy
@@ -155,11 +159,13 @@ namespace Project_Recon
                     {
                         littleguy_lankle = skeleton.Joints[JointType.AnkleLeft].Position;
                         littleGuy[0] = littleguy_lankle;
+                        prevPositions[14] = joint.Position;
                     }
                     if ((joint.Equals(skeleton.Joints[JointType.AnkleRight])))
                     {
                         littleguy_rankle = skeleton.Joints[JointType.AnkleRight].Position;
                         littleGuy[1] = littleguy_rankle;
+                        prevPositions[18] = joint.Position;
                     }
 
                     //Elbow
@@ -167,11 +173,13 @@ namespace Project_Recon
                     {
                         littleguy_lelbow = skeleton.Joints[JointType.ElbowLeft].Position;
                         littleGuy[2] = littleguy_lelbow;
+                        prevPositions[5] = joint.Position;
                     }
                     if ((joint.Equals(skeleton.Joints[JointType.ElbowRight])))
                     {
                         littleguy_relbow = skeleton.Joints[JointType.ElbowRight].Position;
                         littleGuy[3] = littleguy_relbow;
+                        prevPositions[9] = joint.Position;
                     }
 
                     //Foot
@@ -179,11 +187,13 @@ namespace Project_Recon
                     {
                         littleguy_lfoot = skeleton.Joints[JointType.FootLeft].Position;
                         littleGuy[4] = littleguy_lfoot;
+                        prevPositions[15] = joint.Position;
                     }
                     if ((joint.Equals(skeleton.Joints[JointType.FootRight])))
                     {
                         littleguy_rfoot = skeleton.Joints[JointType.FootRight].Position;
                         littleGuy[5] = littleguy_rfoot;
+                        prevPositions[19] = joint.Position;
                     }
 
                     //Hand
@@ -191,11 +201,13 @@ namespace Project_Recon
                     {
                         littleguy_lhand = skeleton.Joints[JointType.HandLeft].Position;
                         littleGuy[6] = littleguy_lhand;
+                        prevPositions[7] = joint.Position;
                     }
                     if ((joint.Equals(skeleton.Joints[JointType.HandRight])))
                     {
                         littleguy_rhand = skeleton.Joints[JointType.HandRight].Position;
                         littleGuy[7] = littleguy_rhand;
+                        prevPositions[11] = joint.Position;
                     }
 
                     //Head
@@ -203,6 +215,7 @@ namespace Project_Recon
                     {
                         littleguy_head = skeleton.Joints[JointType.Head].Position;
                         littleGuy[8] = littleguy_head;
+                        prevPositions[3] = joint.Position;
                     }
 
                     //Hip
@@ -210,17 +223,20 @@ namespace Project_Recon
                     {
                         littleguy_chip = skeleton.Joints[JointType.HipCenter].Position;
                         littleGuy[9] = littleguy_chip;
+                        prevPositions[0] = joint.Position;
                     }
 
                     if ((joint.Equals(skeleton.Joints[JointType.HipLeft])))
                     {
                         littleguy_lhip = skeleton.Joints[JointType.HipLeft].Position;
                         littleGuy[10] = littleguy_lhip;
+                        prevPositions[12] = joint.Position;
                     }
                     if ((joint.Equals(skeleton.Joints[JointType.HipRight])))
                     {
                         littleguy_rhip = skeleton.Joints[JointType.HipRight].Position;
                         littleGuy[11] = littleguy_rhip;
+                        prevPositions[16] = joint.Position;
                     }
 
                     //Knee
@@ -228,11 +244,13 @@ namespace Project_Recon
                     {
                         littleguy_lknee = skeleton.Joints[JointType.KneeLeft].Position;
                         littleGuy[12] = littleguy_lknee;
+                        prevPositions[13] = joint.Position;
                     }
                     if ((joint.Equals(skeleton.Joints[JointType.KneeRight])))
                     {
-                        littleguy_rhip = skeleton.Joints[JointType.KneeRight].Position;
+                        littleguy_rknee = skeleton.Joints[JointType.KneeRight].Position;
                         littleGuy[13] = littleguy_rknee;
+                        prevPositions[16] = joint.Position;
                     }
 
                     //Shoulder
@@ -240,16 +258,19 @@ namespace Project_Recon
                     {
                         littleguy_cshoulder = skeleton.Joints[JointType.ShoulderCenter].Position;
                         littleGuy[14] = littleguy_cshoulder;
+                        prevPositions[2] = joint.Position;
                     }
                     if ((joint.Equals(skeleton.Joints[JointType.ShoulderLeft])))
                     {
                         littleguy_lshoulder = skeleton.Joints[JointType.ShoulderLeft].Position;
                         littleGuy[15] = littleguy_lshoulder;
+                        prevPositions[4] = joint.Position;
                     }
                     if ((joint.Equals(skeleton.Joints[JointType.ShoulderRight])))
                     {
                         littleguy_rshoulder = skeleton.Joints[JointType.ShoulderRight].Position;
                         littleGuy[16] = littleguy_rshoulder;
+                        prevPositions[8] = joint.Position;
                     }
 
                     //Spine
@@ -257,6 +278,7 @@ namespace Project_Recon
                     {
                         littleguy_spine = skeleton.Joints[JointType.Spine].Position;
                         littleGuy[17] = littleguy_spine;
+                        prevPositions[1] = joint.Position;
                     }
 
                     //Wrist
@@ -264,11 +286,13 @@ namespace Project_Recon
                     {
                         littleguy_lwrist = skeleton.Joints[JointType.WristLeft].Position;
                         littleGuy[18] = littleguy_lwrist;
+                        prevPositions[6] = joint.Position;
                     }
                     if ((joint.Equals(skeleton.Joints[JointType.WristRight])))
                     {
                         littleguy_rwrist = skeleton.Joints[JointType.WristRight].Position;
                         littleGuy[19] = littleguy_rwrist;
+                        prevPositions[10] = joint.Position;
                     }
                 }
             }
@@ -300,8 +324,8 @@ namespace Project_Recon
                 else
                     keepcover = true;
             }
-            
-            base.Update(gameTime);
+
+                base.Update(gameTime);
         }
 
         /// <summary>
@@ -336,29 +360,115 @@ namespace Project_Recon
                 Vector3 b = new Vector3((skeleton.Joints[JointType.HipCenter].Position.X) - (skeleton.Joints[JointType.HipRight].Position.X)
                     , (skeleton.Joints[JointType.HipCenter].Position.Y) - (skeleton.Joints[JointType.HipRight].Position.Y),
                     (skeleton.Joints[JointType.HipCenter].Position.Z) - (skeleton.Joints[JointType.HipRight].Position.Z));
+                
+                if (!flip)
+                {
+                    Vector3 Normal = Vector3.Cross(a, b);
+                    Vector3 Normal_2 = new Vector3(-10f * Normal.X, -10f * Normal.Y, 10f * Normal.Z);
+                    
+                    Normal_joint.X = Normal_2.X;
+                    Normal_joint.Y = Normal_2.Y;
+                    Normal_joint.Z = Normal_2.Z;
 
-                Vector3 Normal = new Vector3(a.Y * b.Z - a.Z * b.Y, a.Z * b.X - a.X * b.Z, a.X * b.Y - a.Y * b.X);
+                    Normal2_joint.X = Normal_2.X;
+                    Normal2_joint.Y = Normal_2.Y;
+                    Normal2_joint.Z = Normal_2.Z;
 
-                Vector3 Normal_2 = new Vector3(-10f*(a.Y * b.Z - a.Z * b.Y), -10f*(a.Z * b.X - a.X * b.Z), 10f*(a.X * b.Y - a.Y * b.X));
+                    //flipping the skeleton
+                    if ((littleguy_lhip == prevPositions[16] || littleguy_lelbow == prevPositions[9]
+                        || littleguy_lshoulder == prevPositions[8])) 
+                    {
+                          flip = !flip;
+                          for (int i = 0; i < littleGuy.Length; i++)
+                          {
+                            for (int j = 0; j < littleGuy.Length; j++)
+                            {
+                                if (((littleGuy[i] == littleguy_lhip) && (littleGuy[j] == littleguy_rhip))
+                                    || ((littleGuy[i] == littleguy_lshoulder) && (littleGuy[j] == littleguy_rshoulder))
+                                    || ((littleGuy[i] == littleguy_lelbow) && (littleGuy[j] == littleguy_relbow))
+                                    || ((littleGuy[i] == littleguy_lwrist) && (littleGuy[j] == littleguy_rwrist))
+                                    || ((littleGuy[i] == littleguy_lhand) && (littleGuy[j] == littleguy_rhand))
+                                    || ((littleGuy[i] == littleguy_lknee) && (littleGuy[j] == littleguy_rknee))
+                                    || ((littleGuy[i] == littleguy_lankle) && (littleGuy[j] == littleguy_rankle))
+                                    || ((littleGuy[i] == littleguy_lfoot) && (littleGuy[j] == littleguy_rfoot)))
+                                    
+                                {        
+                                    Vector3 position = new Vector3(littleGuy[i].X, littleGuy[i].Y, littleGuy[i].Z);
+                                    littleGuy[i].X = littleGuy[j].X;
+                                    littleGuy[i].Y = littleGuy[j].Y;
+                                    littleGuy[i].Z = littleGuy[j].Z;
 
-                Normal_joint.X = Normal_2.X;
-                Normal_joint.Y = Normal_2.Y;
-                Normal_joint.Z = Normal_2.Z;
+                                    littleGuy[j].X = position.X;
+                                    littleGuy[j].Y = position.Y;
+                                    littleGuy[j].Z = position.Z;
 
-                Normal2_joint.X = Normal_2.X;
-                Normal2_joint.Y = Normal_2.Y;
-                Normal2_joint.Z = Normal_2.Z;
+                                        // in the condition make it all the littleguy's joint that are switched (Easier computation)
+
+                                }
+                            }
+                        } 
+                    }
+                }
+                else
+                {
+                    Vector3 Normal = Vector3.Cross(b, a);
+                    Vector3 Normal_2 = new Vector3(-10f * Normal.X, -10f * Normal.Y, 10f * Normal.Z);
+                    
+                    Normal_joint.X = Normal_2.X;
+                    Normal_joint.Y = Normal_2.Y;
+                    Normal_joint.Z = Normal_2.Z;
+
+                    Normal2_joint.X = Normal_2.X;
+                    Normal2_joint.Y = Normal_2.Y;
+                    Normal2_joint.Z = Normal_2.Z;
+                
+                    //flipping the skeleton
+                    if ((littleguy_lhip == prevPositions[16] || littleguy_lelbow == prevPositions[9]
+                        || littleguy_lshoulder == prevPositions[8]))
+                    {
+                        flip = !flip;
+                        for (int i = 0; i < littleGuy.Length; i++)
+                        {
+                            for (int j = 0; j < littleGuy.Length; j++)
+                            {
+                                if (((littleGuy[i] == littleguy_lhip) && (littleGuy[j] == littleguy_rhip))
+                                    || ((littleGuy[i] == littleguy_lshoulder) && (littleGuy[j] == littleguy_rshoulder))
+                                    || ((littleGuy[i] == littleguy_lelbow) && (littleGuy[j] == littleguy_relbow))
+                                    || ((littleGuy[i] == littleguy_lwrist) && (littleGuy[j] == littleguy_rwrist))
+                                    || ((littleGuy[i] == littleguy_lhand) && (littleGuy[j] == littleguy_rhand))
+                                    || ((littleGuy[i] == littleguy_lknee) && (littleGuy[j] == littleguy_rknee))
+                                    || ((littleGuy[i] == littleguy_lankle) && (littleGuy[j] == littleguy_rankle))
+                                    || ((littleGuy[i] == littleguy_lfoot) && (littleGuy[j] == littleguy_rfoot)))
+                                {
+                                    Vector3 position = new Vector3(littleGuy[i].X, littleGuy[i].Y, littleGuy[i].Z);
+
+                                    littleGuy[i].X = littleGuy[j].X;
+                                    littleGuy[i].Y = littleGuy[j].Y;
+                                    littleGuy[i].Z = littleGuy[j].Z;
+
+                                    littleGuy[j].X = position.X;
+                                    littleGuy[j].Y = position.Y;
+                                    littleGuy[j].Z = position.Z;
+
+                                    // in the condition make it all the littleguy's joint that are switched (Easier computation)
+
+                                }
+                            }
+                        }
+                    }
+                
+                }          
 
                 var n = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
                         Normal_joint, ColorImageFormat.RgbResolution640x480Fps30);
 
                 var n2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
                         skeleton.Joints[JointType.HipCenter].Position, ColorImageFormat.RgbResolution640x480Fps30);
-
+                /*
                 spriteBatch.Draw(lineTexRed, new Vector2(n2.X + 80, n2.Y),
                     null, Color.White, (float)Math.Atan2((n.Y) - n2.Y, ((n.X) + 80) - (n2.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
                     new Vector2(Vector2.Distance(new Vector2(n2.X + 80, n2.Y), new Vector2((n.X) + 80, (n.Y))), 1f), SpriteEffects.None, 0f);
-
+                /*
                 double lengthofNormal = Math.Sqrt(Math.Pow(Math.Abs(Normal_2.X - skeleton.Joints[JointType.HipCenter].Position.X), 2)
                     + Math.Pow(Math.Abs(Normal_2.Y - skeleton.Joints[JointType.HipCenter].Position.Y), 2));
 
@@ -371,42 +481,10 @@ namespace Project_Recon
                 spriteBatch.DrawString(font, "X: " + Normal_x, new Vector2(80, 60), Color.Blue);
                 spriteBatch.DrawString(font, "Y: " + Normal_y, new Vector2(80, 85), Color.Blue);
                 spriteBatch.DrawString(font, "Z: " + Normal_z, new Vector2(80, 105), Color.Blue);
+                */
 
-                //flipping the skeleton
-                
-                
-                if (Normal_2.Z < 0)
-                {
-                    flip = true;
-                    for(int i = 0; i<=littleGuy.Length; i++)
-                    {
-                        for (int j = 0; j <= littleGuy.Length; j++)
-                        {
-                            if(((littleGuy[i] == littleguy_lhip) && (littleGuy[j] == littleguy_rhip))
-                                || ((littleGuy[i] == littleguy_lshoulder) && (littleGuy[j] == littleguy_rshoulder))
-                                || ((littleGuy[i] == littleguy_lelbow) && (littleGuy[j] == littleguy_relbow))
-                                || ((littleGuy[i] == littleguy_lwrist) && (littleGuy[j] == littleguy_rwrist))
-                                || ((littleGuy[i] == littleguy_lhand) && (littleGuy[j] == littleguy_rhand))
-                                || ((littleGuy[i] == littleguy_lknee) && (littleGuy[j] == littleguy_rknee))
-                                || ((littleGuy[i] == littleguy_lankle) && (littleGuy[j] == littleguy_rankle))
-                                || ((littleGuy[i] == littleguy_lfoot) && (littleGuy[j] == littleguy_rfoot)))
-                            {
-                                Vector3 position = new Vector3(littleGuy[i].X, littleGuy[i].Y, littleGuy[i].Z);
-                                littleGuy[i].X = littleGuy[j].X;
-                                littleGuy[i].Y = littleGuy[j].Y;
-                                littleGuy[i].Z = littleGuy[j].Z;
-                                
-                                littleGuy[j].X = position.X;
-                                littleGuy[j].Y = position.Y;
-                                littleGuy[j].Z = position.Z;
-                               
-                  // in the condition make it all the littleguy's joint that are switched (Easier computation)
-                            
-                            }
-                        }
-                    }
-                }
-                
+                String flipstr = flip.ToString();
+                spriteBatch.DrawString(font, flipstr, new Vector2(80, 40), Color.Blue);
 
                 //Drawing Joints
                 foreach (Joint joint in skeleton.Joints)
@@ -425,9 +503,64 @@ namespace Project_Recon
                 spriteBatch.DrawString(font, "Coach Recognized!", new Vector2(450, 80), Color.Green);
             }
             
-            //Drawing BigGuy
+            //Drawing littleGuy
             if (skeleton != null)
             {
+                for (int i = 0; i < littleGuy.Length; i++){
+                    var p = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
+                        littleGuy[i], ColorImageFormat.RgbResolution640x480Fps30);
+
+                    for (int j = 0; j < littleGuy.Length; j++)
+                    {
+                        if ((littleGuy[i] == littleguy_head && littleGuy[j] == littleguy_cshoulder)
+                            || (littleGuy[i] == littleguy_cshoulder && littleGuy[j] == littleguy_spine)
+                            || (littleGuy[i] == littleguy_spine && littleGuy[j] == littleguy_chip))
+                        {
+                            var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
+                                littleGuy[j], ColorImageFormat.RgbResolution640x480Fps30);
+
+                            spriteBatch.Draw(lineTex, new Vector2(p.X + 80, p.Y),
+                                null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
+                                new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
+
+                        }
+
+                        if ((littleGuy[i] == littleguy_chip && littleGuy[j] == littleguy_lhip)
+                            || (littleGuy[i] == littleguy_lhip && littleGuy[j] == littleguy_lknee)
+                            || (littleGuy[i] == littleguy_lknee && littleGuy[j] == littleguy_lankle)
+                            || (littleGuy[i] == littleguy_lankle && littleGuy[j] == littleguy_lfoot)
+                            || (littleGuy[i] == littleguy_cshoulder && littleGuy[j] == littleguy_lshoulder)
+                            || (littleGuy[i] == littleguy_lshoulder && littleGuy[j] == littleguy_lelbow)
+                            || (littleGuy[i] == littleguy_lelbow && littleGuy[j] == littleguy_lwrist)
+                            || (littleGuy[i] == littleguy_lwrist && littleGuy[j] == littleguy_lhand))
+                        {
+                            var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
+                            littleGuy[j], ColorImageFormat.RgbResolution640x480Fps30);
+
+                            spriteBatch.Draw(leftTex, new Vector2(p.X + 80, p.Y),
+                                null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
+                                new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
+                        }
+
+                        if ((littleGuy[i] == littleguy_chip && littleGuy[j] == littleguy_rhip)
+                            || (littleGuy[i] == littleguy_rhip && littleGuy[j] == littleguy_rknee)
+                            || (littleGuy[i] == littleguy_rknee && littleGuy[j] == littleguy_rankle)
+                            || (littleGuy[i] == littleguy_rankle && littleGuy[j] == littleguy_rfoot)
+                            || (littleGuy[i] == littleguy_cshoulder && littleGuy[j] == littleguy_rshoulder)
+                            || (littleGuy[i] == littleguy_rshoulder && littleGuy[j] == littleguy_relbow)
+                            || (littleGuy[i] == littleguy_relbow && littleGuy[j] == littleguy_rwrist)
+                            || (littleGuy[i] == littleguy_rwrist && littleGuy[j] == littleguy_rhand))
+                        {
+                            var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
+                            littleGuy[j], ColorImageFormat.RgbResolution640x480Fps30);
+
+                            spriteBatch.Draw(rightTex, new Vector2(p.X + 80, p.Y),
+                                null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
+                                new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
+                        }
+                    }
+                    }
+                /*
                 foreach (Joint joint in skeleton.Joints)
                 {
                     var p = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
@@ -482,7 +615,7 @@ namespace Project_Recon
                                 new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
                         }
                     }
-                }
+                }*/
             }
 
             spriteBatch.End();
