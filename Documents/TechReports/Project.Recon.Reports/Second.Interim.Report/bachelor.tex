@@ -1,0 +1,112 @@
+\documentclass[12pt, a4paper]{book}%, oneside
+
+\usepackage[headings]{fullpage}
+\usepackage{setspace}
+
+% \usepackage[top=1.5cm,right=1.5cm,bottom=1.5cm,left=1.5cm]{geometry}
+% \usepackage{fancyhdr}
+% \setlength{\headheight}{20pt} 
+% \usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{array}
+% \usepackage{xtab}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{appendix}
+\usepackage[pdfborder={0 0 0}, colorlinks=true, linkcolor=black, citecolor=blue]{hyperref}
+\usepackage[printonlyused]{acronym}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{ifpdf}
+% \setlength{\parindent}{0pt}
+
+\newcommand{\submissionDay}{05}
+\newcommand{\submissionMonth}{May}
+\newcommand{\submissionYear}{2013}
+\newcommand{\submissionDate}{\submissionDay~\submissionMonth,~\submissionYear}
+\newcommand{\typeOfThesis}{Bachelor Thesis}
+
+\newcommand{\titleOfThesisOne}{Bachelor Thesis Title}
+
+\newcommand{\authorOfThesis}{ElHassan Makled}
+\newcommand{\supervisorOne}{Assoc. Prof. Georg Jung}
+\newcommand{\supervisorTwo}{Sup 2}
+\newcommand{\supervisorThree}{Sup 3}
+
+\newcommand{\includefig}[4]{
+    \begin{figure}[ht]
+     \centering
+      \includegraphics[width=#1\textwidth]{images/#2}
+      \caption{#3}
+      \label{#4}
+    \end{figure}
+}
+
+\newcommand{\includefigWSC}[5]{
+    \begin{figure}[ht]
+     \centering
+      \includegraphics[width=#1\textwidth]{images/#2}
+      \caption[#3]{#4}
+      \label{#5}
+    \end{figure}
+}
+
+\newcommand{\includeeps}[4]{
+\includefig{#1}{#2.eps}{#3}{#4}
+}
+
+\newcommand{\includeepsWSC}[5]{
+\includefigWSC{#1}{#2.eps}{#3}{#4}{#5}
+}
+
+
+\ifpdf
+\pdfinfo {
+	/Author (\authorOfThesis)
+	/Title (\titleOfThesisOne)
+	/Subject (\typeOfThesis)
+	/Keywords ()
+	/CreationDate (D:20090707085533)
+}
+\fi
+
+\begin{document}
+% \overfullrule=5pt
+\pagestyle{plain}
+\pagenumbering{Roman}
+
+\include{GUC_TitlePage}
+
+\include{acknowledgments}
+
+\include{abstract}
+\tableofcontents
+% \addcontentsline{toc}{chapter}{Contents}
+\clearpage 
+
+\pagestyle{headings}
+\pagenumbering{arabic}
+
+% \setlength\parskip{15pt}
+\setlength\parskip{.5\baselineskip plus .2\baselineskip
+	minus .4\baselineskip}
+% \setlength\parskip{.5\baselineskip \@plus .1\baselineskip \@minus ..1\baselineskip}
+
+
+\include{introduction}
+\include{background}
+
+% add more chapters here
+
+\include{conclusion}
+\include{future_work}
+\include{appendix}
+
+\bibliographystyle{plain}
+\bibliography{bachelor}
+\addcontentsline{toc}{chapter}{References}
+
+\end{document}
