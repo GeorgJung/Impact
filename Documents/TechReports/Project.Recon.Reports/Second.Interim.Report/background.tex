@@ -122,23 +122,6 @@ After visualizing the joints, the next step was to link the joints with a line t
 \centerline{fig.4.5 (Color stream data visualization and skeleton visualization)}
 \\
 \\
-A challenge that remains, as stated above is the fact that the Kinect has trouble recognizing whether or not the user is facing it or not. In order to solve this problem, since in practice a regular jiu jitsu practitioner will want to move freely, two solutions were considered. The first utilized the fact that a person faces the same direction their waist faces. So a plane was created between three fixed points, the center hip, the left and the right hips. A normal vector was created from this plane in order to allow the program to recognize where the person is facing.
-\\
-\\
-As the person turns and the normal vector points to the negative Z axis. Project Recon will swap the left joints with the right joints. And here another problem emerges. When creating the normal vector the left and right hips are used as two points on the plane and a cross product function between them is executed. When the swap occurs so does the value of the normal vector, making it negative. The skeleton returns the same way without any change occurring. A solution to this problem could be a flag that is set once the swap occurs and according to this boolean value the cross product order changes as well.
-\\
-\\
-In the figure below the user is facing their left, having the normal vector (red line) erected out from the hip and defining the direction the user is facing.
-\\
-\\
-\centerline{\includegraphics[scale=0.5]{skeleton_normal.png}}
-\\
-\centerline{fig.4.6 (Skeleton with a normal vector defining where it is facing)}
-\\
-\\
-
-The second solution is using Kinect's face detection capabilities, which may be hard and require high processing. More research is needed in this part to better understand it.
-
 \subsection{Connections and Communications}
 The communication between Project Recon and the interface is seen as a client-server communication. When browsing the possible technologies to use, socket programming came at the top of the list.
 \\
@@ -148,4 +131,56 @@ Socket Programming uses the client server model of network communication, in whi
 \\
 There are three different data streams, a data stream responsible for system-related gestures, like a gesture to start the session or end it. The other stream consists of technique details. Finally, the third stream is contains the impact of the technique. All of the three streams have a timestamp in order to associate each impact with the proper technique used.
 \section{Project Requirements}
-In this section we will discuss the requirements of the project.
+In order to ensure best performance, certain constraints need to be handled. First let us discuss the requirements for the system and what is needed to achieve the best level of performance. 
+\\
+\\
+As stated early, the practice that is targeted by the project is fast paced. Which means the system needs to be fast enough to recognize fast motion and recognize it in real time. Also for it being a dynamic practice, meaning a lot of movement takes place during practice and the user will not necessiraly be always facing the Kinect, we need to resolve the constraint with Kinect being only able to recognize users facing it. Helping users to move freely around the room.
+\\
+\\
+Two solutions were considered. The first utilized the fact that a person faces the same direction their waist faces. So a plane was created between three fixed points, the center hip, the left and the right hips. A normal vector was created from this plane in order to allow the program to recognize where the person is facing. 
+\\
+\\
+\centerline{\includegraphics[scale=0.5]{skeleton_frame3.png}}
+\centerline{fig.4.6 (In the figure the three joints are pointed out and named)}
+\\
+\\
+To calculate the normal vector, we subtract the right and left hip joints from the center hip joint and then we calculate the cross product of the two subtractions.
+\\
+\\
+Direction = (rhip - chip) X (lhip - chip)
+\\
+\\
+We then calculate the normal by using the Normalize method.
+\\
+\\
+\begin{verbatim}
+var dir = Vector3.Cross(rhip - chip, lhip - chip);
+var norm = Vector3.Normalize(dir);
+\end{verbatim}
+As the person turns and the normal vector points to the negative Z axis. Project Recon will swap the left joints with the right joints. And here another problem emerges. When the swap begins, an error occurs. Mainly, the programmer can not edit the value of the position of the joints. The value is read from the skeleton stream of the Kinect. In order to resolve this a pseudo skeleton needs to be created, littleGuy. littleGuy is an array of SkeletonPoints, where every SkeletonPoint represents a joint, and gets the value from these joints. This helps in allowing us to edit and the SkeletonPoints as we wish and in the end draw this pseudo skeleton instead.
+\\
+\\
+With this problem addressed, another one unfortunetly emerges. However it is a potential one as it is not yet tested. When creating the normal vector the left and right hips are used as two points on the plane and a cross product function between them is executed. 
+When the swap occurs so does the value of the normal vector, making it negative. The skeleton returns the same way without any change occurring. A solution to this problem could be a flag that is set once the swap occurs and according to this boolean value the cross product order changes as well.
+\\
+\\
+When creating the normal vector the left and right hips are used as two points on the plane and a cross product function between them is executed. 
+In the figure below the user is facing their right, having the normal vector (red line) erected and defining the direction the user is facing.
+\\
+\\
+\centerline{\includegraphics[scale=0.5]{skeleton_normal.png}}
+\\
+\centerline{fig.4.6 (Skeleton with a normal vector defining where it is facing)}
+\\
+\\
+The second solution is using Kinect's face detection capabilities, which may be hard and require high processing. More research is needed in this part to better understand it.
+\\
+\\
+It is a basic requirement to have a robust recognition system able to recognize motions even if the user is moving freely or not facing it.
+\\
+\\
+Another basic requirement is to allow the differentiation between two different users infront of the Kinect, one being the coach and the second being the practitioner. This is easily resolved as Kinect's stream sends multiple skeletons of the multiple users. However it is required that the first user be defined as a the practitioner and the second to join in later would be the coach.
+\subsection{Recognition}
+Recognition is the essence of this project. Recognition needs to be in real time, but most importantly how will the recognition occur. We discussed in the previous section the resolve of the normal vector. However, why is it needed? In recognition we want to be able to translate the skeleton of the person in order to always recognize from the same direction, facing the Kinect. In the coming sections we will discuss the different ways for recognition.
+\subsubsection{Templated Gesture and Posture method (Glyphs)}
+\subsubsection{Frames}
