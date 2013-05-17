@@ -55,6 +55,15 @@
       <Output>C:\Users\Makled\Downloads\GUC\Semester 12\Bachelor Project\Project Impact\Impact\Project Recon\Project_Recon\Project_Recon\Project_Recon\bin\x86\Debug\Content\richt.xnb</Output>
       <Time>2013-04-25T16:08:52.6340108+02:00</Time>
     </Item>
+    <Item>
+      <Source>kady.png</Source>
+      <Name>kady</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Makled\Downloads\GUC\Semester 12\Bachelor Project\Project Impact\Impact\Project Recon\Project_Recon\Project_Recon\Project_Recon\bin\x86\Debug\Content\kady.xnb</Output>
+      <Time>2013-05-17T21:23:34.9569501+02:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <ContentProjectGUID>{9C3AEFDE-1C64-44F1-B697-D7B57E8F7572}</ContentProjectGUID>
