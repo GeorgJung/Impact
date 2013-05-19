@@ -10,4 +10,3 @@ C:\Users\Makled\Downloads\GUC\Semester 12\Bachelor Project\Project Impact\Impact
 C:\Users\Makled\Downloads\GUC\Semester 12\Bachelor Project\Project Impact\Impact\Project Recon\Project_Recon\Project_Recon\Project_Recon\bin\x86\Debug\Content\4KWjQR.xnb
 C:\Users\Makled\Downloads\GUC\Semester 12\Bachelor Project\Project Impact\Impact\Project Recon\Project_Recon\Project_Recon\Project_Recon\bin\x86\Debug\Content\links.xnb
 C:\Users\Makled\Downloads\GUC\Semester 12\Bachelor Project\Project Impact\Impact\Project Recon\Project_Recon\Project_Recon\Project_Recon\bin\x86\Debug\Content\richt.xnb
-C:\Users\Makled\Downloads\GUC\Semester 12\Bachelor Project\Project Impact\Impact\Project Recon\Project_Recon\Project_Recon\Project_Recon\bin\x86\Debug\Content\kady.xnb

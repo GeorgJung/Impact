@@ -4,4 +4,3 @@ Content\4KWjQ.xnb
 Content\4KWjQR.xnb
 Content\links.xnb
 Content\richt.xnb
-Content\kady.xnb
