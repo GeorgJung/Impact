@@ -20,10 +20,15 @@ namespace Project_Recon
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        client Client;
+
         KinectSensor kinect;
 
         byte[] colorData;
         Texture2D colorTex;
+
+
+        String thetaYString;
 
         SpriteFont font;
 
@@ -41,6 +46,9 @@ namespace Project_Recon
             littleguy_cshoulder, littleguy_lshoulder,
             littleguy_rshoulder, littleguy_spine,
             littleguy_lwrist, littleguy_rwrist;
+        SkeletonPoint Normal_joint;
+        SkeletonPoint Normal2_joint;
+
 
         SkeletonPoint[] littleGuy;
         SkeletonPoint[] prevPositions;
@@ -53,7 +61,12 @@ namespace Project_Recon
 
         Vector3 TransValue;
 
-        double thetaz; // angle between normal vector and Z axis
+        Matrix rotY;
+        Matrix rotX;
+        Matrix rotPoint;
+        Matrix totalRot;
+
+        double thetax; // angle between normal vector and Z axis
         double thetay; // angle between normal vector and Y axis
 
         Boolean keepcover, flip;
@@ -99,6 +112,8 @@ namespace Project_Recon
 
             keepcover = true;
             flip = false;
+
+            thetaYString = "";
 
             base.Initialize();
         }
@@ -171,7 +186,7 @@ namespace Project_Recon
                         transGuy[14] = littleGuy[14];
                         transGuy[14].X = (float)((decimal)(littleGuy[14].X) + (decimal)(TransValue.X));
                         transGuy[14].Y = (float)((decimal)(littleGuy[14].Y) + (decimal)(TransValue.Y));
-                        transGuy[14].Z = (float)((decimal)(littleGuy[14].Z) + (decimal)(TransValue.Z));
+                        transGuy[14].Z = (float)((decimal)(littleGuy[14].Z));
 
                         prevPositions[14] = joint.Position;
                     }
@@ -183,7 +198,7 @@ namespace Project_Recon
                         transGuy[18] = littleGuy[18];
                         transGuy[18].X = (float)((decimal)(littleGuy[18].X) + (decimal)(TransValue.X));
                         transGuy[18].Y = (float)((decimal)(littleGuy[18].Y) + (decimal)(TransValue.Y));
-                        transGuy[18].Z = (float)((decimal)(littleGuy[18].Z) + (decimal)(TransValue.Z));
+                        transGuy[18].Z = (float)((decimal)(littleGuy[18].Z));
 
                         prevPositions[18] = joint.Position;
                     }
@@ -197,7 +212,7 @@ namespace Project_Recon
                         transGuy[5] = littleGuy[5];
                         transGuy[5].X = (float)((decimal)(littleGuy[5].X) + (decimal)(TransValue.X));
                         transGuy[5].Y = (float)((decimal)(littleGuy[5].Y) + (decimal)(TransValue.Y));
-                        transGuy[5].Z = (float)((decimal)(littleGuy[5].Z) + (decimal)(TransValue.Z));
+                        transGuy[5].Z = (float)((decimal)(littleGuy[5].Z));
 
                         prevPositions[5] = joint.Position;
                     }
@@ -209,7 +224,7 @@ namespace Project_Recon
                         transGuy[9] = littleGuy[9];
                         transGuy[9].X = (float)((decimal)(littleGuy[9].X) + (decimal)(TransValue.X));
                         transGuy[9].Y = (float)((decimal)(littleGuy[9].Y) + (decimal)(TransValue.Y));
-                        transGuy[9].Z = (float)((decimal)(littleGuy[9].Z) + (decimal)(TransValue.Z));
+                        transGuy[9].Z = (float)((decimal)(littleGuy[9].Z));
 
                         prevPositions[9] = joint.Position;
                     }
@@ -223,7 +238,7 @@ namespace Project_Recon
                         transGuy[15] = littleGuy[15];
                         transGuy[15].X = (float)((decimal)(littleGuy[15].X) + (decimal)(TransValue.X));
                         transGuy[15].Y = (float)((decimal)(littleGuy[15].Y) + (decimal)(TransValue.Y));
-                        transGuy[15].Z = (float)((decimal)(littleGuy[15].Z) + (decimal)(TransValue.Z));
+                        transGuy[15].Z = (float)((decimal)(littleGuy[15].Z));
 
                         prevPositions[15] = joint.Position;
                     }
@@ -235,7 +250,7 @@ namespace Project_Recon
                         transGuy[19] = littleGuy[19];
                         transGuy[19].X = (float)((decimal)(littleGuy[19].X) + (decimal)(TransValue.X));
                         transGuy[19].Y = (float)((decimal)(littleGuy[19].Y) + (decimal)(TransValue.Y));
-                        transGuy[19].Z = (float)((decimal)(littleGuy[19].Z) + (decimal)(TransValue.Z));
+                        transGuy[19].Z = (float)((decimal)(littleGuy[19].Z));
 
                         prevPositions[19] = joint.Position;
                     }
@@ -249,7 +264,7 @@ namespace Project_Recon
                         transGuy[7] = littleGuy[17];
                         transGuy[7].X = (float)((decimal)(littleGuy[7].X) + (decimal)(TransValue.X));
                         transGuy[7].Y = (float)((decimal)(littleGuy[7].Y) + (decimal)(TransValue.Y));
-                        transGuy[7].Z = (float)((decimal)(littleGuy[7].Z) + (decimal)(TransValue.Z));
+                        transGuy[7].Z = (float)((decimal)(littleGuy[7].Z));
 
                         prevPositions[7] = joint.Position;
                     }
@@ -261,7 +276,7 @@ namespace Project_Recon
                         transGuy[11] = littleGuy[11];
                         transGuy[11].X = (float)((decimal)(littleGuy[11].X) + (decimal)(TransValue.X));
                         transGuy[11].Y = (float)((decimal)(littleGuy[11].Y) + (decimal)(TransValue.Y));
-                        transGuy[11].Z = (float)((decimal)(littleGuy[11].Z) + (decimal)(TransValue.Z));
+                        transGuy[11].Z = (float)((decimal)(littleGuy[11].Z));
 
                         prevPositions[11] = joint.Position;
                     }
@@ -275,7 +290,7 @@ namespace Project_Recon
                         transGuy[3] = littleGuy[3];
                         transGuy[3].X = (float)((decimal)(littleGuy[3].X) + (decimal)(TransValue.X));
                         transGuy[3].Y = (float)((decimal)(littleGuy[3].Y) + (decimal)(TransValue.Y));
-                        transGuy[3].Z = (float)((decimal)(littleGuy[3].Z) + (decimal)(TransValue.Z));
+                        transGuy[3].Z = (float)((decimal)(littleGuy[3].Z));
 
                         prevPositions[3] = joint.Position;
                     }
@@ -286,14 +301,14 @@ namespace Project_Recon
                         littleguy_chip = skeleton.Joints[JointType.HipCenter].Position;
                         littleGuy[0] = littleguy_chip;
 
-                        TransValue.X = littleguy_chip.X * (- 1.0f);
-                        TransValue.Y = littleguy_chip.Y * (- 1.0f);
-                        //TransValue.Z = -littleguy_chip.Z;
+                        TransValue.X = littleguy_chip.X * (-1.0f);
+                        TransValue.Y = littleguy_chip.Y * (-1.0f);
+                        TransValue.Z = littleguy_chip.Z * (-1.0f);
 
                         transGuy[0] = littleGuy[0];
                         transGuy[0].X = (float)((decimal)(littleGuy[0].X) + (decimal)(TransValue.X));
                         transGuy[0].Y = (float)((decimal)(littleGuy[0].Y) + (decimal)(TransValue.Y));
-                        transGuy[0].Z = (float)((decimal)(littleGuy[0].Z) + (decimal)(TransValue.Z));
+                        transGuy[0].Z = (float)((decimal)(littleGuy[0].Z));
 
                         prevPositions[0] = joint.Position;
                     }
@@ -306,7 +321,7 @@ namespace Project_Recon
                         transGuy[12] = littleGuy[12];
                         transGuy[12].X = (float)((decimal)(littleGuy[12].X) + (decimal)(TransValue.X));
                         transGuy[12].Y = (float)((decimal)(littleGuy[12].Y) + (decimal)(TransValue.Y));
-                        transGuy[12].Z = (float)((decimal)(littleGuy[12].Z) + (decimal)(TransValue.Z));
+                        transGuy[12].Z = (float)((decimal)(littleGuy[12].Z));
 
                         prevPositions[12] = joint.Position;
                     }
@@ -318,7 +333,7 @@ namespace Project_Recon
                         transGuy[16] = littleGuy[16];
                         transGuy[16].X = (float)((decimal)(littleGuy[16].X) + (decimal)(TransValue.X));
                         transGuy[16].Y = (float)((decimal)(littleGuy[16].Y) + (decimal)(TransValue.Y));
-                        transGuy[16].Z = (float)((decimal)(littleGuy[16].Z) + (decimal)(TransValue.Z));
+                        transGuy[16].Z = (float)((decimal)(littleGuy[16].Z));
 
                         prevPositions[16] = joint.Position;
                     }
@@ -332,7 +347,7 @@ namespace Project_Recon
                         transGuy[13] = littleGuy[13];
                         transGuy[13].X = (float)((decimal)(littleGuy[13].X) + (decimal)(TransValue.X));
                         transGuy[13].Y = (float)((decimal)(littleGuy[13].Y) + (decimal)(TransValue.Y));
-                        transGuy[13].Z = (float)((decimal)(littleGuy[13].Z) + (decimal)(TransValue.Z));
+                        transGuy[13].Z = (float)((decimal)(littleGuy[13].Z));
 
                         prevPositions[13] = joint.Position;
                     }
@@ -344,7 +359,7 @@ namespace Project_Recon
                         transGuy[17] = littleGuy[17];
                         transGuy[17].X = (float)((decimal)(littleGuy[17].X) + (decimal)(TransValue.X));
                         transGuy[17].Y = (float)((decimal)(littleGuy[17].Y) + (decimal)(TransValue.Y));
-                        transGuy[17].Z = (float)((decimal)(littleGuy[17].Z) + (decimal)(TransValue.Z));
+                        transGuy[17].Z = (float)((decimal)(littleGuy[17].Z));
 
                         prevPositions[17] = joint.Position;
                     }
@@ -358,7 +373,7 @@ namespace Project_Recon
                         transGuy[2] = littleGuy[2];
                         transGuy[2].X = (float)((decimal)(littleGuy[2].X) + (decimal)(TransValue.X));
                         transGuy[2].Y = (float)((decimal)(littleGuy[2].Y) + (decimal)(TransValue.Y));
-                        transGuy[2].Z = (float)((decimal)(littleGuy[2].Z) + (decimal)(TransValue.Z));
+                        transGuy[2].Z = (float)((decimal)(littleGuy[2].Z));
 
                         prevPositions[2] = joint.Position;
                     }
@@ -370,7 +385,7 @@ namespace Project_Recon
                         transGuy[4] = littleGuy[4];
                         transGuy[4].X = (float)((decimal)(littleGuy[4].X) + (decimal)(TransValue.X));
                         transGuy[4].Y = (float)((decimal)(littleGuy[4].Y) + (decimal)(TransValue.Y));
-                        transGuy[4].Z = (float)((decimal)(littleGuy[4].Z) + (decimal)(TransValue.Z));
+                        transGuy[4].Z = (float)((decimal)(littleGuy[4].Z));
 
                         prevPositions[4] = joint.Position;
                     }
@@ -382,7 +397,7 @@ namespace Project_Recon
                         transGuy[8] = littleGuy[8];
                         transGuy[8].X = (float)((decimal)(littleGuy[8].X) + (decimal)(TransValue.X));
                         transGuy[8].Y = (float)((decimal)(littleGuy[8].Y) + (decimal)(TransValue.Y));
-                        transGuy[8].Z = (float)((decimal)(littleGuy[8].Z) + (decimal)(TransValue.Z));
+                        transGuy[8].Z = (float)((decimal)(littleGuy[8].Z));
 
                         prevPositions[8] = joint.Position;
                     }
@@ -396,7 +411,7 @@ namespace Project_Recon
                         transGuy[1] = littleGuy[1];
                         transGuy[1].X = (float)((decimal)(littleGuy[1].X) + (decimal)(TransValue.X));
                         transGuy[1].Y = (float)((decimal)(littleGuy[1].Y) + (decimal)(TransValue.Y));
-                        transGuy[1].Z = (float)((decimal)(littleGuy[1].Z) + (decimal)(TransValue.Z));
+                        transGuy[1].Z = (float)((decimal)(littleGuy[1].Z));
 
                         prevPositions[1] = joint.Position;
                     }
@@ -410,7 +425,7 @@ namespace Project_Recon
                         transGuy[6] = littleGuy[6];
                         transGuy[6].X = (float)((decimal)(littleGuy[6].X) + (decimal)(TransValue.X));
                         transGuy[6].Y = (float)((decimal)(littleGuy[6].Y) + (decimal)(TransValue.Y));
-                        transGuy[6].Z = (float)((decimal)(littleGuy[6].Z) + (decimal)(TransValue.Z));
+                        transGuy[6].Z = (float)((decimal)(littleGuy[6].Z));
 
                         prevPositions[6] = joint.Position;
                     }
@@ -422,11 +437,153 @@ namespace Project_Recon
                         transGuy[10] = littleGuy[10];
                         transGuy[10].X = (float)((decimal)(littleGuy[10].X) + (decimal)(TransValue.X));
                         transGuy[10].Y = (float)((decimal)(littleGuy[10].Y) + (decimal)(TransValue.Y));
-                        transGuy[10].Z = (float)((decimal)(littleGuy[10].Z) + (decimal)(TransValue.Z));
+                        transGuy[10].Z = (float)((decimal)(littleGuy[10].Z));
 
                         prevPositions[10] = joint.Position;
                     }
                 }
+
+                if (!flip)
+                {
+                    ////OLD CODE
+                    //Vector3 rotXAxis = new Vector3(0.5f, 0f, 0f);
+                    //Vector3 rotYAxis = new Vector3(0f, 0.5f, 0f);
+                    ////Calculate Dot Product between two Vectors
+                    //double dotProdZ = Vector3.Dot(Norm, rotXAxis);
+                    //double dotProdY = Vector3.Dot(Norm, rotYAxis);
+                    ////Claculate Magnitude of all Vectors
+                    //double magZAxis = Math.Sqrt(Math.Pow(rotXAxis.X, 2) + Math.Pow(rotXAxis.Y, 2) + Math.Pow(rotXAxis.Z, 2));
+                    //double magYAxis = Math.Sqrt(Math.Pow(rotYAxis.X, 2) + Math.Pow(rotYAxis.Y, 2) + Math.Pow(rotYAxis.Z, 2)); ;
+                    //double magNorm = Math.Sqrt(Math.Pow(Norm.X, 2) + Math.Pow(Norm.Y, 2) + Math.Pow(Norm.Z, 2));
+
+                    //double MagnitudeZ = magZAxis * magNorm;
+                    //double MagnitudeY = magYAxis * magNorm;
+
+                    //thetax = Math.Acos(dotProdZ / MagnitudeZ);
+                    //thetay = Math.Acos(dotProdY / MagnitudeY);
+                    ////OLD CODE END
+
+                    //ROTATION
+                    //NEW CODE
+                    /*
+                    thetay = Math.Atan((transGuy[0].Y - Norm.Y) / (transGuy[0].Z - Norm.Z));
+                    thetax = Math.Atan((transGuy[0].X - Norm.X) / (transGuy[0].Z - Norm.Z));
+                    */
+                    //NEW CODE END
+
+                    /*
+                    u \ Math.Sqrt(Math.Pow(u, 2) + Math.Pow(v, 2)), v/ Math.Sqrt(Math.Pow(u, 2) + Math.Pow(v, 2)), 0 ,0
+
+                    -v\ Math.Sqrt(Math.Pow(u, 2) + Math.Pow(v, 2)), u/ Math.Sqrt(Math.Pow(u, 2) + Math.Pow(v, 2)), 0 ,0
+
+                       0, 0, 1, 0
+                        0, 0, 0, 1
+                    */
+
+                    //totalRot = Matrix.Multiply(rotY, rotX);
+
+
+                    for (int i = 0; i < transGuy.Length; i++)
+                    {
+                        //Translate to Origin
+                        Vector3 temp = new Vector3(transGuy[i].X - TransValue.X
+                            , transGuy[i].Y - TransValue.Y
+                            , transGuy[i].Z - TransValue.Z);
+                        
+                        Vector3 c, l, r;
+
+                        Vector3 unitY = Vector3.UnitY;
+
+                        //Creating The Normal Vector
+
+                        l = new Vector3(transGuy[12].X - TransValue.X
+                            , transGuy[12].Y - TransValue.Y
+                            , transGuy[12].Z - TransValue.Z);
+
+                        r = new Vector3(transGuy[16].X - TransValue.X
+                            , transGuy[16].Y - TransValue.Y
+                            , transGuy[16].Z - TransValue.Z);
+
+                        c = new Vector3(transGuy[0].X - TransValue.X
+                            , transGuy[0].Y - TransValue.Y
+                            , transGuy[0].Z - TransValue.Z);
+
+                        Normal_joint = skeleton.Joints[JointType.HipCenter].Position;
+                        Normal2_joint = Normal_joint;
+
+                        Vector3 a = new Vector3(l.X - r.X, l.Y - r.Y, l.Z - r.Z);
+
+                        Vector3 b = new Vector3(r.X - c.X, r.Y - c.Y, r.Z - c.Z);
+
+                        //Calculating Normal Vector
+                        Vector3 Dir = Vector3.Cross(a, b);
+                        Vector3 Norm = Vector3.Normalize(Dir);
+                        Norm = new Vector3(-1f * Norm.X, -1f * Norm.Y, Norm.Z);
+                        
+                        //Calculate Angel
+                        thetay = 360 - (90 - Math.Atan((Norm.X - c.X) / (Norm.Z - c.Z)));
+                        thetax = Math.Atan((Norm.Y - c.Y) / (Norm.Z - c.Z));
+
+                        rotY = new Matrix((float)Math.Cos(thetay), 0f, (float)(-Math.Sin(thetay)), 0f
+                            , 0f, 1f, 0f, 0f
+                            , ((float)(Math.Sin(thetay))), 0f, (float)Math.Cos(thetay), 0f
+                            , 0f, 0f, 0f, 1f);
+
+                        rotX = new Matrix(1f, 0f, 0f, 0f
+                            , 0f, (float)Math.Cos(thetax), (float)Math.Sin(thetax), 0f
+                            , 0f, (float)(- Math.Sin(thetax)), (float)Math.Cos(thetax), 0f
+                            , 0f, 0f, 0f, 1f);
+
+                        Matrix scale = new Matrix(0.5f, 0f, 0f, 0f
+                            , 0f, 0.5f, 0f, 0f
+                            , 0f, 0f, 0.5f, 0f
+                            , 0f, 0f, 0f, 1f);
+
+                        thetaYString = thetay.ToString();
+
+                        Normal_joint.X = Norm.X;
+                        Normal_joint.Y = Norm.Y;
+                        Normal_joint.Z = Norm.Z;
+                        //Ending Calculation of Normal Vector
+
+                        rotPoint = new Matrix(temp.X, 0, 0, 0,
+                            temp.Y, 0, 0, 0,
+                            temp.Z, 0, 0, 0,
+                            0, 0, 0, 1);
+
+                        rotPoint = Matrix.Multiply(rotPoint, rotY);
+                        //rotPoint = Matrix.Multiply(rotPoint, rotX);
+                        //rotPoint = Matrix.Multiply(rotPoint, scale);
+
+                        temp = new Vector3(rotPoint.M11 + TransValue.X, rotPoint.M21 + TransValue.Y, rotPoint.M31 + TransValue.Z);
+                        
+                        float zOffset = temp.Z - 3f;
+                        temp.Z = temp.Z + zOffset;
+                        //Vector3 temp2 = new Vector3(0f, 0f, 0f);
+
+                        //temp2.X = (float)(temp.X * ((Math.Tan(thetay) * unitY.X * unitY.X) + Math.Cos(thetay))
+                        //    + temp.Y * ((Math.Tan(thetay) * unitY.X * unitY.Y) - (Math.Sin(thetay) * unitY.Z)) 
+                        //    + temp.Z * ((Math.Tan(thetay) * unitY.X * unitY.Z) + (Math.Sin(thetay) * unitY.Y)));
+
+                        //temp2.Y = (float)(temp.X * ((Math.Tan(thetay) * unitY.X * unitY.Y) + (Math.Sin(thetay) * unitY.Z)) 
+                        //    + temp.Y * ((Math.Tan(thetay) * unitY.Y * unitY.Y) + (Math.Cos(thetay))) 
+                        //    + temp.Z * ((Math.Tan(thetay) * unitY.Y * unitY.Z) - (Math.Sin(thetay) * unitY.X)));
+
+                        //temp2.Z = (float)(temp.X * ((Math.Tan(thetay) * unitY.X *unitY.Z) - (Math.Sin(thetay) * unitY.Y)) 
+                        //    + temp.Y * ((Math.Tan(thetay) * unitY.Y * unitY.Z) + (Math.Sin(thetay) * unitY.X))  
+                        //    + temp.Z * ((Math.Tan(thetay) * unitY.Z * unitY.Z) + Math.Cos(thetay)));
+
+                        transGuy[i].X = temp.X;
+                        transGuy[i].Y = temp.Y;
+                        transGuy[i].Z = temp.Z;
+                    }
+                    //Normal2_joint.X = Norm.X;
+                    //Normal2_joint.Y = Norm.Y;
+                    //Normal2_joint.Z = Norm.Z;
+                }
+
+                //Rotation
+
             }
 
             /*
@@ -473,6 +630,8 @@ namespace Project_Recon
             //spriteBatch.Draw(colorTex, new Vector2(80,0), Color.White);
 
             spriteBatch.DrawString(font, "Project Recon v2.0", new Vector2(80, 0), Color.Red);
+            spriteBatch.DrawString(font, thetaYString, new Vector2(80, 20), Color.Red);
+
 
             if (keepcover)
                 //spriteBatch.DrawString(font, "Keep Cover!", new Vector2(150, 80), Color.Red);
@@ -485,14 +644,12 @@ namespace Project_Recon
             //Drawing transGuy
             if (skeleton != null)
             {
-                //Translating transGuy
                 for (int i = 0; i < transGuy.Length; i++)
-                { 
-                    //rotate
+                {
                     var p = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
                                transGuy[i], ColorImageFormat.RgbResolution640x480Fps30);
 
-                    spriteBatch.Draw(circleTex, new Vector2(p.X, p.Y), Color.Green);
+                    spriteBatch.Draw(circleTex, new Vector2(p.X + 75, p.Y - 5), Color.Green);
 
                     for (int j = 0; j < transGuy.Length; j++)
                     {
@@ -501,16 +658,13 @@ namespace Project_Recon
                             || (i == 1 && j == 0))
                         {
                             //spriteBatch.DrawString(font,"I am here" ,new Vector2(200, 300), Color.Red);
-                            
+
                             var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
                                 transGuy[j], ColorImageFormat.RgbResolution640x480Fps30);
-                            /*
-                            p2.X = (int)(p2.X + 2147483648 + 320);
-                            p2.Y = (int)(p2.Y + 2147483648 + 200);
-                            */
-                            spriteBatch.Draw(lineTex, new Vector2(p.X, p.Y),
-                                 null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X) - (p.X)), new Vector2(0f, (float)lineTex.Height / 2),
-                                 new Vector2(Vector2.Distance(new Vector2(p.X, p.Y), new Vector2(p2.X, p2.Y)), 1f), SpriteEffects.None, 0f);
+                          
+                            spriteBatch.Draw(lineTex, new Vector2(p.X + 80, p.Y),
+                                null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
+                                new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
                         }
 
                         if ((i == 0 && j == 12)
@@ -525,16 +679,9 @@ namespace Project_Recon
                             var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
                             transGuy[j], ColorImageFormat.RgbResolution640x480Fps30);
 
-                            String Stringi = j.ToString();
-
-                            if (p2.Y > 500)
-                            {
-                                spriteBatch.DrawString(font, " Joint: " + Stringi, new Vector2(200, 300), Color.Red);
-                            }
-
-                            spriteBatch.Draw(leftTex, new Vector2(p.X, p.Y),
-                                null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X) - (p.X)), new Vector2(0f, (float)lineTex.Height / 2),
-                                new Vector2(Vector2.Distance(new Vector2(p.X, p.Y), new Vector2(p2.X, p2.Y)), 1f), SpriteEffects.None, 0f);
+                            spriteBatch.Draw(leftTex, new Vector2(p.X + 80, p.Y),
+                                null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
+                                new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
                         }
 
                         if ((i == 0 && j == 16)
@@ -549,93 +696,22 @@ namespace Project_Recon
                             var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
                             transGuy[j], ColorImageFormat.RgbResolution640x480Fps30);
 
-                            spriteBatch.Draw(rightTex, new Vector2(p.X, p.Y),
-                                null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X) - (p.X)), new Vector2(0f, (float)lineTex.Height / 2),
-                                new Vector2(Vector2.Distance(new Vector2(p.X, p.Y), new Vector2(p2.X, p2.Y)), 1f), SpriteEffects.None, 0f);
-                        
+                            spriteBatch.Draw(rightTex, new Vector2(p.X + 80, p.Y),
+                                null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
+                                new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
+
                         }
-                    }
-                    //Creating The Normal Vector
+                        //Drawing Normal Vector
+                        if (i == 0)
+                        {
+                            var n = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
+                               Normal_joint, ColorImageFormat.RgbResolution640x480Fps30);
 
-                    SkeletonPoint Normal_joint = skeleton.Joints[JointType.HipCenter].Position;
-                    SkeletonPoint Normal2_joint = Normal_joint;
+                            spriteBatch.Draw(lineTexRed, new Vector2(p.X + 80, p.Y),
+                                null, Color.White, (float)Math.Atan2(n.Y - p.Y, (n.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
+                                new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(n.X + 80, n.Y)), 1f), SpriteEffects.None, 0f);
+                        }
 
-                    Vector3 a = new Vector3((transGuy[12].X) - (transGuy[16].X)
-                        , (transGuy[12].Y) - (transGuy[16].Y),
-                        (transGuy[12].Z) - (transGuy[16].Z));
-
-                    Vector3 b = new Vector3((transGuy[16].X) - (transGuy[0].X)
-                        , (transGuy[16].Y) - (transGuy[0].Y),
-                        (transGuy[16].Z) - (transGuy[0].Z));
-
-                    if (!flip)
-                    {
-                        Vector3 Dir = Vector3.Cross(a, b);
-                        Vector3 Norm = Vector3.Normalize(Dir);
-                        Vector3 rotZAxis = new Vector3(0f, 0f, 0.5f);
-                        Vector3 rotYAxis = new Vector3(0f, 0.5f, 0f);
-                        Vector3 Dir_2 = new Vector3(-10f * Dir.X, -10f * Dir.Y, 10f * Dir.Z);
-
-                        double dotProdZ = Vector3.Dot(Norm, rotZAxis);
-                        double dotProdY = Vector3.Dot(Norm, rotYAxis);
-
-                        double magZAxis = Math.Sqrt(Math.Pow(rotZAxis.X, 2) + Math.Pow(rotZAxis.Y, 2) + Math.Pow(rotZAxis.Z, 2));
-                        double magYAxis = Math.Sqrt(Math.Pow(rotYAxis.X, 2) + Math.Pow(rotYAxis.Y, 2) + Math.Pow(rotYAxis.Z, 2)); ;
-                        double magNorm = Math.Sqrt(Math.Pow(Norm.X, 2) + Math.Pow(Norm.Y, 2) + Math.Pow(Norm.Z, 2));
-
-                        double MagnitudeZ = magZAxis * magNorm;
-                        double MagnitudeY = magYAxis * magNorm;
-
-                        thetaz = Math.Acos(dotProdZ / MagnitudeZ);
-                        thetay = Math.Acos(dotProdY / MagnitudeY);
-
-                        Normal_joint.X = Norm.X;
-                        Normal_joint.Y = Norm.Y;
-                        Normal_joint.Z = Norm.Z;
-
-                        Normal2_joint.X = Norm.X;
-                        Normal2_joint.Y = Norm.Y;
-                        Normal2_joint.Z = Norm.Z;
-
-                        //flipping was here
-                    }
-                    else
-                    {
-                        Vector3 Dir = Vector3.Cross(b, a);
-                        Vector3 Norm = Vector3.Normalize(Dir);
-                        Vector3 rotZAxis = new Vector3(0f, 0f, 0.5f);
-                        Vector3 rotYAxis = new Vector3(0f, 0.5f, 0f);
-                        Vector3 Dir_2 = new Vector3(-10f * Dir.X, -10f * Dir.Y, 10f * Dir.Z);
-
-                        double dotProdZ = Vector3.Dot(Norm, rotZAxis);
-                        double dotProdY = Vector3.Dot(Norm, rotYAxis);
-
-                        double magZAxis = Math.Sqrt(Math.Pow(rotZAxis.X, 2) + Math.Pow(rotZAxis.Y, 2) + Math.Pow(rotZAxis.Z, 2));
-                        double magYAxis = Math.Sqrt(Math.Pow(rotYAxis.X, 2) + Math.Pow(rotYAxis.Y, 2) + Math.Pow(rotYAxis.Z, 2)); ;
-                        double magNorm = Math.Sqrt(Math.Pow(Norm.X, 2) + Math.Pow(Norm.Y, 2) + Math.Pow(Norm.Z, 2));
-
-                        double MagnitudeZ = magZAxis * magNorm;
-                        double MagnitudeY = magYAxis * magNorm;
-
-                        thetaz = Math.Acos(dotProdZ / MagnitudeZ);
-                        thetay = Math.Acos(dotProdY / MagnitudeY);
-
-                        Normal_joint.X = Norm.X;
-                        Normal_joint.Y = Norm.Y;
-                        Normal_joint.Z = Norm.Z;
-
-                        Normal2_joint.X = Norm.X;
-                        Normal2_joint.Y = Norm.Y;
-                        Normal2_joint.Z = Norm.Z;
-                    }
-                    if (i == 0)
-                    {
-                        var n = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
-                           Normal_joint, ColorImageFormat.RgbResolution640x480Fps30);
-
-                        spriteBatch.Draw(lineTexRed, new Vector2(p.X, p.Y),
-                            null, Color.White, (float)Math.Atan2((n.Y) - p.Y, ((n.X)) - (p.X)), new Vector2(0f, (float)lineTex.Height / 2),
-                            new Vector2(Vector2.Distance(new Vector2(p.X, p.Y), new Vector2((n.X), (n.Y))), 1f), SpriteEffects.None, 0f);
                     }
 
                     /*
