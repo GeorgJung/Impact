@@ -1,0 +1,18 @@
+\appendix
+\renewcommand{\appendixtocname}{Appendix}
+\renewcommand{\appendixpagename}{\appendixtocname}
+\addappheadtotoc
+\setboolean{@twoside}{false}
+\appendixpage
+
+\chapter{Lists}
+\addcontentsline{toc}{section}{List of Abbreviations}
+\begin{acronym}[\hspace{3cm}]
+  \acro{ac}[AC]{Acronym Without Citation}
+  \acro{ac2}[AC2]{Acronym With Citation \cite{citeKey2}}
+\end{acronym}
+\clearpage
+\listoffigures
+\addcontentsline{toc}{section}{List of Figures}
+% \listoftables
+% \addcontentsline{toc}{section}{List of Tables}
