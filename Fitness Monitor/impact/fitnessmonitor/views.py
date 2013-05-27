@@ -9,13 +9,24 @@ from datetime import datetime
 from django.shortcuts import get_object_or_404
 
 def test(request):
-    return render_to_response("test.html", RequestContext(request))
+    return render_to_response("home2.html", RequestContext(request))
+
+def edit(request):
+	trainee = Practitioner.objects.get(id=request.user.id)
+	if request.POST['first_name']:
+		trainee.first_name = request.POST['first_name']
+	if request.POST['last_name']:
+		trainee.last_name = request.POST['last_name']
+	if request.POST['about']:
+		trainee.about = request.POST['about']
+	trainee.save()
+	return HttpResponseRedirect('/')
 
 def home(request):
-	if request.user.is_authenticated():
-		return render_to_response("home.html", RequestContext(request))
-	else:
-		return render_to_response("register_login.html", RequestContext(request))
+	practitioners = Practitioner.objects.all()
+	sessions = Session.objects.all()
+	logged_in = Practitioner.objects.get(pk=request.user.id)
+	return render_to_response("home.html", {'practitioners':practitioners, 'sessions':sessions, 'logged_in':logged_in}, RequestContext(request))
 
 def login_user(request):
 	state = ""
@@ -27,7 +38,7 @@ def login_user(request):
 			username = Practitioner.objects.get(username=username)
 		except:
 			state = "please register"
-			return render_to_response("register_login.html", {'state':state}, RequestContext(request))
+			return render_to_response("home.html", {'state':state}, RequestContext(request))
 		password = request.POST['password_login']
 		user = authenticate(username=username, password=password)
 		if user is not None:
@@ -36,7 +47,7 @@ def login_user(request):
 			return HttpResponseRedirect('/')
 		else:
 			state = "username/password incorrect"
-			return render_to_response("register_login.html", {'state':state}, RequestContext(request))
+			return render_to_response("home.html", {'state':state}, RequestContext(request))
 
 def register(request):
 	if request.user.is_authenticated():
@@ -49,12 +60,26 @@ def register(request):
 	practitioner.save()
 	return HttpResponseRedirect('/')
 
+# def new_session(request):
+# 	rounds_num = request.POST['rounds_num']
+# 	rounds_dur = request.POST['rounds_dur']
+# 	breaks_dur = request.POST['breaks_dur']
+# 	# trainee = get_object_or_404(Practitioner, id=request.user.id)
+# 	trainee = Practitioner.objects.get(id=request.user.id)
+# 	TheSession = Session.objects.create(trainee=trainee,rounds_num=rounds_num,rounds_dur=rounds_dur,breaks_dur=breaks_dur)
+# 	for i in range(0, int(rounds_num)):
+# 		Round.objects.create(trainee=trainee,session=TheSession,duration=rounds_dur,number=i+1)
+# 	return render_to_response("session.html", {'session':TheSession}, RequestContext(request))
+
 def new_session(request):
 	rounds_num = request.POST['rounds_num']
 	rounds_dur = request.POST['rounds_dur']
 	breaks_dur = request.POST['breaks_dur']
 	# trainee = get_object_or_404(Practitioner, id=request.user.id)
 	trainee = Practitioner.objects.get(id=request.user.id)
+	num = trainee.session_no + 1
+	trainee.session_no = num
+	trainee.save()
 	TheSession = Session.objects.create(trainee=trainee,rounds_num=rounds_num,rounds_dur=rounds_dur,breaks_dur=breaks_dur)
 	for i in range(0, int(rounds_num)):
 		Round.objects.create(trainee=trainee,session=TheSession,duration=rounds_dur,number=i+1)

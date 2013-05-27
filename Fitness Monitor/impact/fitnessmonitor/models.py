@@ -1,10 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User,UserManager
+from sorl.thumbnail import ImageField
 import datetime
 
 # Create your models here.
 class Practitioner(User):
     level = models.IntegerField(null=True, blank=True,default=0)
+    image = ImageField(upload_to='profile_pictures', max_length=255, blank=True, default='')
+    about = models.TextField(blank=True, max_length=512)
+    session_no = models.IntegerField(null=True, blank=True,default=0)
 
     # def __unicode__(self):
     #     return self.first_name

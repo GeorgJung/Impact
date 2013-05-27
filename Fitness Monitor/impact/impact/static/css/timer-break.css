@@ -53,46 +53,46 @@
 input[name="controls"] {display: none;}
 
 /*Control code*/
-#stop:checked~.timer-break .numbers-break {animation-play-state: paused;}
-#start:checked~.timer-break .numbers-break {animation-play-state: running;}
-#reset:checked~.timer-break .numbers-break {animation: none;}
+#stop:checked~.timer-break .numbers-break {-webkit-animation-play-state: paused;}
+#start:checked~.timer-break .numbers-break {-webkit-animation-play-state: running;}
+#reset:checked~.timer-break .numbers-break {-webkit-animation: none;}
 
 .moveten-break {
 	/*The digits move but dont look good. We will use steps now
 	10 digits = 10 steps. You can now see the digits swapping instead of 
 	moving pixel-by-pixel*/
-	animation: moveten 1s steps(10, end) infinite;
-	/*By default animation should be paused*/
-	animation-play-state: paused;
+	-webkit-animation: moveten 1s steps(10, end) infinite;
+	/*By default -webkit-animation should be paused*/
+	-webkit-animation-play-state: paused;
 }
 .movesix-break {
-	animation: movesix 1s steps(6, end) infinite;
-	animation-play-state: paused;
+	-webkit-animation: movesix 1s steps(6, end) infinite;
+	-webkit-animation-play-state: paused;
 }
 
-/*Now we need to sync the animation speed with time speed*/
+/*Now we need to sync the -webkit-animation speed with time speed*/
 /*One second per digit. 10 digits. Hence 10s*/
-.second-break {animation-duration: 10s;}
-.tensecond-break {animation-duration: 60s;} /*60 times .second*/
+.second-break {-webkit-animation-duration: 10s;}
+.tensecond-break {-webkit-animation-duration: 60s;} /*60 times .second*/
 
-.milisecond-break {animation-duration: 1s;} /*1/10th of .second*/
-.tenmilisecond-break {animation-duration: 0.1s;}
-.hundredmilisecond-break {animation-duration: 0.01s;}
+.milisecond-break {-webkit-animation-duration: 1s;} /*1/10th of .second*/
+.tenmilisecond-break {-webkit-animation-duration: 0.1s;}
+.hundredmilisecond-break {-webkit-animation-duration: 0.01s;}
 
-.minute-break {animation-duration: 600s;} /*60 times .second*/
-.tenminute-break {animation-duration: 3600s;} /*60 times .minute*/
+.minute-break {-webkit-animation-duration: 600s;} /*60 times .second*/
+.tenminute-break {-webkit-animation-duration: 3600s;} /*60 times .minute*/
 
-.hour-break {animation-duration: 36000s;} /*60 times .minute*/
-.tenhour-break {animation-duration: 360000s;} /*10 times .hour*/
+.hour-break {-webkit-animation-duration: 36000s;} /*60 times .minute*/
+.tenhour-break {-webkit-animation-duration: 360000s;} /*10 times .hour*/
 
 /*The stopwatch looks good now. Lets add some styles*/
 
 /*Lets animate the digit now - the main part of this tutorial*/
 /*We are using prefixfree, so no need of vendor prefixes*/
-/*The logic of the animation is to alter the 'top' value of the absolutely
+/*The logic of the -webkit-animation is to alter the 'top' value of the absolutely
 positioned .numbers*/
 /*Minutes and Seconds should be limited to only '60' and not '100'
-Hence we need to create 2 animations. One with 10 steps and 10 digits and
+Hence we need to create 2 -webkit-animations. One with 10 steps and 10 digits and
 the other one with 6 steps and 6 digits*/
 @keyframes moveten-break {
 	0% {top: 0;}
