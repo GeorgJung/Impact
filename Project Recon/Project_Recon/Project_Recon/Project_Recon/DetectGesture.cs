@@ -78,6 +78,7 @@ namespace Project_Recon
             if (PosList.Count == MaxSize)
             {
                 //Punch
+                //r1 spine and r2 shoulder
                 for (int i = 0; i < MaxSize; i++)
                 {
                     float a = PosList[i].Position.Y;
@@ -87,38 +88,41 @@ namespace Project_Recon
                     float diff1 = Math.Abs(a - r1);
                     float diff2 = Math.Abs(a - r2);
 
-                    double magnitude1 = Math.Sqrt(Math.Pow((reference2[i].Position - PosList[i].Position).X, 2) +
+                    float magnitude1 = (float)Math.Sqrt(Math.Pow((reference2[i].Position - PosList[i].Position).X, 2) +
                         Math.Pow((reference2[i].Position - PosList[i].Position).Y, 2) +
                         Math.Pow((reference2[i].Position - PosList[i].Position).Z, 2));
 
-                    double magnitude2 = Math.Sqrt(Math.Pow((reference2[i].Position - reference1[i].Position).X, 2) +
+                    float magnitude2 = (float)Math.Sqrt(Math.Pow((reference2[i].Position - reference1[i].Position).X, 2) +
                         Math.Pow((reference2[i].Position - reference1[i].Position).Y, 2) +
                         Math.Pow((reference2[i].Position - reference1[i].Position).Z, 2));
 
-                    double angle = Math.Acos((Vector3.Dot((reference2[i].Position - PosList[i].Position), (reference2[i].Position - reference1[i].Position))) /
+                    float angle = (float)Math.Acos((Vector3.Dot((reference2[i].Position - PosList[i].Position), (reference2[i].Position - reference1[i].Position))) /
                         magnitude1 * magnitude2);
 
-                    //r1 spine and r2 shoulder
-
-                    if (i < 14 && diff1 < diff2)
+                    if (i < 11 && diff1 < diff2)
                     {
                         punchprob++;
                     }
 
-                    if (i <= 19 && diff1 > diff2)
+                    if (i < 21 && i > 11 && diff1 > diff2)
                     {
                         punchprob++;
                     }
 
-                    if (angle > 0.48 * Math.PI)
+                    if (i > 21 && i < 30 && diff1 < diff2)
                     {
-                        punchprob = 20;
+                        punchprob++;
                     }
+
+                    //if (angle > 0.25f * Math.PI)
+                    //{
+                    //    punchprob = 30;
+                    //}
                 }
 
             }
 
-            if (punchprob > 14)
+            if (punchprob > 20)
             {
                 punchprob = 0;
                 return "punch";

@@ -98,17 +98,17 @@ namespace Project_Recon
             littleGuy = new SkeletonPoint[20];
             transGuy = new SkeletonPoint[20];
 
-            spine = new DetectGesture(20);
-            lshoulder = new DetectGesture(20);
-            rshoulder = new DetectGesture(20);
-            rwrist = new DetectGesture(20);
-            lwrist = new DetectGesture(20);
-            relbow = new DetectGesture(20);
-            lelbow = new DetectGesture(20);
-            rknee = new DetectGesture(20);
-            lknee = new DetectGesture(20);
-            lankle = new DetectGesture(20);
-            rankle = new DetectGesture(20);
+            spine = new DetectGesture(30);
+            lshoulder = new DetectGesture(30);
+            rshoulder = new DetectGesture(30);
+            rwrist = new DetectGesture(30);
+            lwrist = new DetectGesture(30);
+            relbow = new DetectGesture(30);
+            lelbow = new DetectGesture(30);
+            rknee = new DetectGesture(30);
+            lknee = new DetectGesture(30);
+            lankle = new DetectGesture(30);
+            rankle = new DetectGesture(30);
 
             TransValue = new Vector3(0, 0, 0);
 
