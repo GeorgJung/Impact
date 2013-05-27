@@ -1,9 +1,5 @@
 * {margin: 0; padding: 0;}
 
-body{
-	background: url('http://thecodeplayer.com/uploads/media/wood_pattern.png') repeat;
-}
-
 .container {
 	/*padding: 200px;*/
 	text-align: center;
@@ -64,37 +60,37 @@ body{
 input[name="controls"] {display: none;}
 
 /*Control code*/
-#stop:checked~.timer .numbers {animation-play-state: paused;}
-#start:checked~.timer .numbers {animation-play-state: running;}
-#reset:checked~.timer .numbers {animation: none;}
+#stop:checked~.timer .numbers {-webkit-animation-play-state: paused;}
+#start:checked~.timer .numbers {-webkit-animation-play-state: running;-webkit-backface-visibility: hidden;}
+#reset:checked~.timer .numbers {-webkit-animation: none;}
 
 .moveten {
 	/*The digits move but dont look good. We will use steps now
 	10 digits = 10 steps. You can now see the digits swapping instead of 
 	moving pixel-by-pixel*/
-	animation: moveten 1s steps(10, end) infinite;
+	-webkit-animation: moveten 1s steps(10, end) infinite;
 	/*By default animation should be paused*/
-	animation-play-state: paused;
+	-webkit-animation-play-state: paused;
 }
 .movesix {
-	animation: movesix 1s steps(6, end) infinite;
-	animation-play-state: paused;
+	-webkit-animation: movesix 1s steps(6, end) infinite;
+	-webkit-animation-play-state: paused;
 }
 
 /*Now we need to sync the animation speed with time speed*/
 /*One second per digit. 10 digits. Hence 10s*/
-.second {animation-duration: 10s;}
-.tensecond {animation-duration: 60s;} /*60 times .second*/
+.second {-webkit-animation-duration: 10s;}
+.tensecond {-webkit-animation-duration: 60s;} /*60 times .second*/
 
-.milisecond {animation-duration: 1s;} /*1/10th of .second*/
-.tenmilisecond {animation-duration: 0.1s;}
-.hundredmilisecond {animation-duration: 0.01s;}
+.milisecond {-webkit-animation-duration: 1s;} /*1/10th of .second*/
+.tenmilisecond {-webkit-animation-duration: 0.1s;}
+.hundredmilisecond {-webkit-animation-duration: 0.01s;}
 
-.minute {animation-duration: 600s;} /*60 times .second*/
-.tenminute {animation-duration: 3600s;} /*60 times .minute*/
+.minute {-webkit-animation-duration: 600s;} /*60 times .second*/
+.tenminute {-webkit-animation-duration: 3600s;} /*60 times .minute*/
 
-.hour {animation-duration: 36000s;} /*60 times .minute*/
-.tenhour {animation-duration: 360000s;} /*10 times .hour*/
+.hour {-webkit-animation-duration: 36000s;} /*60 times .minute*/
+.tenhour {-webkit-animation-duration: 360000s;} /*10 times .hour*/
 
 /*The stopwatch looks good now. Lets add some styles*/
 

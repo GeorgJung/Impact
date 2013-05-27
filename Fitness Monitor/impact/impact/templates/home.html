@@ -1,7 +1,471 @@
-{% extends "base.html" %}
+{% load thumbnail %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/bootstrap.min.css"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+		<title>Fullscreen Layout with Page Transitions</title>
+		<meta name="description" content="The Amazing Fitness Monitor" />
+		<meta name="keywords" content="fullscreen layout, boxes, responsive, page transitions, css transitions, jquery, portfolio, template" />
+		<meta name="author" content="Banayosi" />
+		<link rel="shortcut icon" href="../favicon.ico"> 
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/component.css" />
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/timer.css"/>
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/timer-round.css"/>
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/timer-break.css"/>
+		<script type="text/javascript" src="{{STATIC_URL}}js/jquery-1.8.0.min.js"></script>
+		<script src="{{STATIC_URL}}js/modernizr.custom.js"></script>
+		<script src="http://thecodeplayer.com/uploads/js/prefixfree.js" type="text/javascript"></SCRIPT>
+		<script src="http://www.amcharts.com/lib/amcharts.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			function newSession() {
+				$.ajax({
+				    type: "POST",
+				    url:"/new_session/",
+				    data: {
+			            "rounds_num" : $("#rounds_num").val(),
+			            "rounds_dur" : $("#rounds_dur").val(),
+			            "breaks_dur" : $("#breaks_dur").val(),
+			        },
+			        success: function(req){
+			        	$("#cover2").toggle();$("#popup2").slideToggle();
+			        	$("#new-session").html(req)
+			        }
+				});
+			}
+		</script>
+		<script type="text/javascript">
+			var chart2;
+			var legend2;
 
-{% block body %}
+			var chartData2 = [{
+			    move: "Front Snap Punch",
+			    value: 260},
+			{
+			    move: "High Parry",
+			    value: 201},
+			{
+			    move: "Side Breakfall",
+			    value: 65},
+			{
+			    move: "Forward Roll",
+			    value: 39},
+			{
+			    move: "Escape Wrist Grab",
+			    value: 17},
+			{
+			    move: "Escape Front Strangle",
+			    value: 12}];
 
-<div>Hello <h5>{{request.user}}</h5> welcome to the fitness monitor</div>
-<div id="test"></div>
-{% endblock body %}
+			AmCharts.ready(function() {
+			    // PIE CHART
+			    chart2 = new AmCharts.AmPieChart();
+			    chart2.dataProvider = chartData2;
+			    chart2.titleField = "move";
+			    chart2.valueField = "value";
+			    chart2.outlineColor = "#FFFFFF";
+			    chart2.outlineAlpha = 0.8;
+			    chart2.outlineThickness = 2;
+			    // this makes the chart 3D
+			    chart2.depth3D = 15;
+			    chart2.angle = 30;
+
+			    // WRITE
+			    chart2.write("chartdiv");
+			});
+		</script>
+
+
+		<script type="text/javascript">
+		var chart;
+
+		var chartData = [{
+		    move: "Front Snap Punch",
+		    times: 260,
+		    color: "#FF0F00"},
+		{
+		    move: "High Parry",
+		    times: 201,
+		    color: "#FF6600"},
+		{
+		    move: "Side Breakfall",
+		    times: 65,
+		    color: "#FF9E01"},
+		{
+		    move: "Forward Roll",
+		    times: 39,
+		    color: "#FCD202"},
+		{
+		    move: "Escape Wrist Grab",
+		    times: 17,
+		    color: "#04D215"},
+		{
+		    move: "Escape Front Strangle",
+		    times: 12,
+		    color: "#000000"}];
+
+
+		AmCharts.ready(function() {
+		    // SERIAL CHART
+		    chart = new AmCharts.AmSerialChart();
+		    chart.dataProvider = chartData;
+		    chart.categoryField = "move";
+		    chart.marginRight = 0;
+		    chart.marginTop = 0;    
+		    chart.autoMarginOffset = 0;
+		    // the following two lines makes chart 3D
+		    chart.depth3D = 20;
+		    chart.angle = 30;
+
+		    // AXES
+		    // category
+		    var categoryAxis = chart.categoryAxis;
+		    categoryAxis.labelRotation = 90;
+		    categoryAxis.dashLength = 5;
+		    categoryAxis.gridPosition = "start";
+
+		    // value
+		    var valueAxis = new AmCharts.ValueAxis();
+		    valueAxis.title = "Visitors";
+		    valueAxis.dashLength = 5;
+		    chart.addValueAxis(valueAxis);
+
+		    // GRAPH            
+		    var graph = new AmCharts.AmGraph();
+		    graph.valueField = "times";
+		    graph.colorField = "color";
+		    graph.balloonText = "[[category]]: [[value]]";
+		    graph.type = "column";
+		    graph.lineAlpha = 0;
+		    graph.fillAlphas = 1;
+		    chart.addGraph(graph);
+
+		    // WRITE
+		    chart.write("chartdiv2");
+		});
+		</script>
+	</head>
+	<body>
+		
+		<div class="container2">
+			{% if request.user.id == None %}
+			<div id ="cover" style = "position:absolute;height:100%;width:100%;background-color:transparent;text-align:center;z-index:800;" ></div>
+			<div class="hero-unit" id ="popup" style = "padding:0;background-color:#d35400;position:absolute;left:25%;top:20%;height:60%;width:50%;text-align:center;z-index:1000;">
+				<div>
+					<form id="register" name="register" method="post" action="/register/">
+						{% csrf_token %}
+						Register
+						</br>
+						username <input id="username_register" type="text" name="username_register" maxlength="32" placeholder="Username" class="input-xlarge" value="">
+						</br>
+						password <input id="password_register" type="password" name="password_register" maxlength="75" placeholder="Password">
+						</br>
+						<button type="submit" id="register_button" class="btn">Register</button>
+					</form>
+				</div>
+				<div>
+					<h5>{{state}}</h5>
+					<form id="login" name="login" method="post" action="/login/">
+						{% csrf_token %}
+						Login
+						</br>
+						username <input id="username_login" type="text" name="username_login" maxlength="32" placeholder="Username" class="input-xlarge" value="">
+						</br>
+						password <input id="password_login" type="password" name="password_login" maxlength="75" placeholder="Password">
+						</br>
+						<button type="submit" id="login_button" class="btn">Login</button>
+					</form>
+				</div>
+			</div>
+			{% else %}
+			<a style="position: absolute;z-index: 20;left: 10px;top: 10px;" href="/signout/">Log out</a>
+			{% endif %}
+			<div id="bl-main" class="bl-main" style= "z-index:1">
+				<section>
+					<div class="bl-box">
+						<h2 onclick="$('#popup2').css('display','block');$('#cover2').css('display','block');" class="bl-icon bl-icon-about2">New Session</h2>
+					</div>
+					<div class="bl-content">
+						<div id ="cover2" style = "position:absolute;height:100%;width:100%;background-color:transparent;text-align:center;z-index:800;" ></div>
+						<div class="hero-unit" id ="popup2" style = "padding:0;background-color:#EE4444;position:absolute;left:25%;top:33%;height:34%;width:50%;text-align:center;z-index:1000;">
+							Session begin input
+							<br>
+							<input type="text" id='rounds_num' name='rounds_num' placeholder="Number of rounds"/>
+							<br>
+							<input type="text" id='rounds_dur' name='rounds_dur' placeholder="Duration of the rounds"/>
+							<br>
+							<input type="text" id='breaks_dur' name='breaks_dur' placeholder="Duration of the breaks"/>
+							<br>
+							<button class="btn" onclick='newSession();'>Create Session</button>
+
+						</div>
+						<div id="new-session">
+						</div>
+						<div class="container" style="width:500px;">
+							<!-- time to add the controls -->
+							<input id="start" name="controls" type="radio" />
+							<input id="stop" name="controls" type="radio" />
+							<input id="reset" name="controls" type="radio" />
+							<div class="timer" id="the-timer">
+								<div class="cell">
+									<div class="numbers tenhour moveten">0 1 2 3 4 5 6 7 8 9</div>
+								</div>
+								<div class="cell">
+									<div class="numbers hour moveten">0 1 2 3 4 5 6 7 8 9</div>
+								</div>
+								<div class="cell divider"><div class="numbers">:</div></div>
+								<div class="cell">
+									<div class="numbers tenminute movesix">0 1 2 3 4 5 6</div>
+								</div>
+								<div class="cell">
+									<div class="numbers minute moveten">0 1 2 3 4 5 6 7 8 9</div>
+								</div>
+								<div class="cell divider"><div class="numbers">:</div></div>
+								<div class="cell">
+									<div class="numbers tensecond movesix">0 1 2 3 4 5 6</div>
+								</div>
+								<div class="cell">
+									<div id="lol"  class="numbers second moveten">0 1 2 3 4 5 6 7 8 9</div>
+								</div>
+								<div class="cell divider"><div class="numbers">:</div></div>
+								<div class="cell">
+									<div class="numbers milisecond moveten">0 1 2 3 4 5 6 7 8 9</div>
+								</div>
+								<div class="cell">
+									<div class="numbers tenmilisecond moveten">0 1 2 3 4 5 6 7 8 9</div>
+								</div>
+								<div class="cell">
+									<div class="numbers hundredmilisecond moveten">0 1 2 3 4 5 6 7 8 9</div>
+								</div>
+							</div>
+							<div class="timer-round" id="the-timer-round">
+								<div class="cell-round">
+									<div class="numbers-round tenhour-round moveten-round">0 1 2 3 4 5 6 7 8 9</div>
+								</div>
+								<div class="cell-round">
+									<div class="numbers-round hour-round moveten-round">0 1 2 3 4 5 6 7 8 9</div>
+								</div>
+								<div class="cell-round divider-round"><div class="numbers-round">:</div></div>
+								<div class="cell-round">
+									<div class="numbers-round tenminute-round movesix-round">0 1 2 3 4 5 6</div>
+								</div>
+								<div class="cell-round">
+									<div class="numbers-round minute-round moveten-round">0 1 2 3 4 5 6 7 8 9</div>
+								</div>
+								<div class="cell-round divider-round"><div class="numbers-round">:</div></div>
+								<div class="cell-round">
+									<div class="numbers-round tensecond-round movesix-round">0 1 2 3 4 5 6</div>
+								</div>
+								<div class="cell-round">
+									<div id="lol"  class="numbers-round second-round moveten-round">0 1 2 3 4 5 6 7 8 9</div>
+								</div>
+								<div class="cell-round divider-round"><div class="numbers-round">:</div></div>
+								<div class="cell-round">
+									<div class="numbers-round milisecond-round moveten-round">0 1 2 3 4 5 6 7 8 9</div>
+								</div>
+								<div class="cell-round">
+									<div class="numbers-round tenmilisecond-round moveten-round">0 1 2 3 4 5 6 7 8 9</div>
+								</div>
+								<div class="cell-round">
+									<div class="numbers-round hundredmilisecond-round moveten-round">0 1 2 3 4 5 6 7 8 9</div>
+								</div>
+							</div>
+							<div class="timer-break" id="the-timer-break">
+								<div class="cell-break">
+									<div class="numbers-break tenhour-break moveten-break">0 1 2 3 4 5 6 7 8 9</div>
+								</div>
+								<div class="cell-break">
+									<div class="numbers-break hour-break moveten-break">0 1 2 3 4 5 6 7 8 9</div>
+								</div>
+								<div class="cell-break divider-break"><div class="numbers-break">:</div></div>
+								<div class="cell-break">
+									<div class="numbers-break tenminute-break movesix-break">0 1 2 3 4 5 6</div>
+								</div>
+								<div class="cell-break">
+									<div class="numbers-break minute-break moveten-break">0 1 2 3 4 5 6 7 8 9</div>
+								</div>
+								<div class="cell-break divider-break"><div class="numbers-break">:</div></div>
+								<div class="cell-break">
+									<div class="numbers-break tensecond-break movesix-break">0 1 2 3 4 5 6</div>
+								</div>
+								<div class="cell-break">
+									<div id="lol"  class="numbers-break second-break moveten-break">0 1 2 3 4 5 6 7 8 9</div>
+								</div>
+								<div class="cell-break divider-break"><div class="numbers-break">:</div></div>
+								<div class="cell-break">
+									<div class="numbers-break milisecond-break moveten-break">0 1 2 3 4 5 6 7 8 9</div>
+								</div>
+								<div class="cell-break">
+									<div class="numbers-break tenmilisecond-break moveten-break">0 1 2 3 4 5 6 7 8 9</div>
+								</div>
+								<div class="cell-break">
+									<div class="numbers-break hundredmilisecond-break moveten-break">0 1 2 3 4 5 6 7 8 9</div>
+								</div>
+							</div>
+							<!-- Lables for the controls -->
+							<div id="timer_controls">
+								<label onclick="driver();" for="">Start</label>
+								<!-- <label onclick='$(".numbers").css("animation", "none");'>Stop</label>
+								<label >Reset</label> -->
+							</div>
+							<h1>Session Status : <div id="session">Session not yet started</div></h1>
+							<!-- chart1 -->
+							<div id="chartdiv" style="width: 100%; height: 362px;"></div>
+							<!-- chart2 -->
+							<div id="chartdiv2" style="width: 100%; height: 355px;"></div>
+						</div>
+					</div>
+					<span id class="bl-icon bl-icon-close"></span>
+				</section>
+				<section id="bl-work-section">
+					<div class="bl-box">
+						<h2 class="bl-icon bl-icon-works2">Trainees</h2>
+					</div>
+					<div class="bl-content">
+						<h2>TRAINEES</h2>
+						<p>All practitioners.</p>
+						<ul id="bl-work-items">
+							{% for practitioner in practitioners %}
+								<li data-panel="panel-{{practitioner.id}}"><a href="#"><img src="{{STATIC_URL}}img/images/1.jpg" /></a></li>
+							{% endfor %}
+						</ul>
+						<!-- <p>Illustrations by <a href="http://dribbble.com/isaac317/click">Isaac Montemayor</a></p> -->
+					</div>
+					<span class="bl-icon bl-icon-close"></span>
+				</section>
+				<section>
+					<div class="bl-box">
+						<h2 class="bl-icon bl-icon-blog2">My Sessions</h2>
+					</div>
+					<div class="bl-content">
+						<h2>My old Sessions will be listed here</h2>
+						<article>
+							<h3>Hey {{request.user}} !</h3>
+							<p>{% if logged_in.session_no != 0 %}
+									{% for session in sessions %}
+										{% if session.trainee.id == request.user.id %}
+											Session no. <b>{{session.id}}</b> {% if session.start and session.end %} started at <b>{{session.start}}</b> and ended at <b>{{session.end}}{% else %} was cancelled. {% endif %}</b>
+											</br>
+										{% endif %}
+									{% endfor %}
+								{% else %}
+									Go have some sessions and come back.
+								{% endif %} <a href="#">Read more</a></p>
+											</div>
+					<span class="bl-icon bl-icon-close"></span>
+				</section>
+				<section>
+					<div class="bl-box">
+						<h2 class="bl-icon bl-icon-contact2">My Profile</h2>
+					</div>
+					<div class="bl-content">
+						<div id ="cover-edit" style = "position:absolute;height:100%;width:100%;background-color:transparent;text-align:center;z-index:800;display:none;" ></div>
+						<div class="hero-unit" id ="popup-edit" style = "padding:0;background-color:#2c3e50;position:absolute;left:25%;top:29%;height:42%;width:50%;text-align:center;z-index:1000;display:none;">
+							<form id="edit" name="edit" method="post" action="/edit/">
+								{% csrf_token %}
+								Edit your profile
+								</br>
+								First name <input id="first_name" type="text" name="first_name" maxlength="32" placeholder="First name" class="input-xlarge" value="{{logged_in.first_name}}">
+								</br>
+								Last name <input id="last_name" type="text" name="last_name" maxlength="75" placeholder="Last name" value="{{logged_in.last_name}}">
+								</br>
+								About <textarea id="about" type="textarea" name="about" maxlength="500" placeholder="About">{{logged_in.about}}</textarea>
+								</br>
+								<button type="submit" id="register_button" class="btn">Save</button><a onClick='$("#cover-edit").toggle();$("#popup-edit").slideToggle();'>cancel</a>
+							</form>
+						</div>
+						<h2>{{request.user.first_name}} {{request.user.last_name}} <b>{{request.user}}</b> <a onClick='$("#cover-edit").toggle();$("#popup-edit").slideToggle();'>[EDIT]</a></h2>
+						<p><img src="{{STATIC_URL}}img/images/1.jpg" /><br>
+							{% if logged_in.about %}
+								{{logged_in.about}}
+							{% else %}
+								Tell me more about yourself.
+							{% endif %}
+						</p>
+						<b>My Previous sessions: ({{logged_in.session_no}}) session(s)</b>
+						<br>
+						{% if logged_in.session_no != 0 %}
+							{% for session in sessions %}
+								{% if session.trainee.id == request.user.id %}
+									Session no. <b>{{session.id}}</b> {% if session.start and session.end %} started at <b>{{session.start}}</b> and ended at <b>{{session.end}}{% else %} was cancelled. {% endif %}</b>
+									</br>
+								{% endif %}
+							{% endfor %}
+						{% else %}
+							Go have some sessions and come back.
+						{% endif %}
+					</div>
+					<span class="bl-icon bl-icon-close"></span>
+				</section>
+				<!-- Panel items for the works -->
+				<div class="bl-panel-items" id="bl-panel-work-items">
+					{% for practitioner in practitioners %}
+						<div data-panel="panel-{{practitioner.id}}">
+							<div>
+								<img src="{{STATIC_URL}}img/images/1.jpg" />
+								<h3>{{practitioner}} </h3>
+								<p>
+									{{logged_in.about}}
+									<br>
+									{{practitioner}} had {{practitioner.session_no}} session(s).
+								</p>
+								{% for session in sessions %}
+									{% if session.trainee == practitioner %}
+										Session no. <b>{{session.id}}</b> {% if session.start and session.end %}<br> started at <b>{{session.start}}</b> <br>and ended at <b>{{session.end}}{% else %} was cancelled. {% endif %}</b>
+										</br>
+										</br>
+									{% endif %}
+								{% endfor %}
+							</div>
+						</div>
+					{% endfor %}
+					<nav>
+						<span class="bl-next-work">&gt; Next</span>
+						<span class="bl-icon bl-icon-close"></span>
+					</nav>
+				</div>
+			</div>
+		</div><!-- /container -->
+		<script src="{{STATIC_URL}}js/boxlayout.js"></script>
+		<script>
+			$(function() {
+				Boxlayout.init();
+			});
+
+
+		</script>
+		<script type="text/javascript">
+var csrftoken = getCookie('csrftoken');
+                    function getCookie(name) {
+                        var cookieValue = null;
+                        if (document.cookie && document.cookie != '') {
+                            var cookies = document.cookie.split(';');
+                            for (var i = 0; i < cookies.length; i++) {
+                                var cookie = jQuery.trim(cookies[i]);
+                                // Does this cookie string begin with the name we want?
+                                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                    break;
+                                }
+                            }
+                        }
+                        return cookieValue;
+                    }
+                
+                    function csrfSafeMethod(method) {
+                        // these HTTP methods do not require CSRF protection
+                        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+                    }
+                    $.ajaxSetup({
+                        crossDomain: false, // obviates need for sameOrigin test
+                        beforeSend: function(xhr, settings) {
+                            if (!csrfSafeMethod(settings.type)) {
+                                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                            }
+                        }
+                    });
+</script>
+	</body>
+</html>
