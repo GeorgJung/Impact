@@ -14,7 +14,7 @@ namespace Project_Recon
         {
             try
             {
-                //create a new client socket ...
+                //create a new client socket
                 m_socClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 String szIPSelected = ipAddress;
                 String szPort = port;
@@ -75,3 +75,4 @@ namespace Project_Recon
     }
 
 }
+// Double check the method of establishing a connection
