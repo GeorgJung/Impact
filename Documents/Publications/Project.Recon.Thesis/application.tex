@@ -6,7 +6,7 @@ from this plane in order to allow the program to recognize where the person is
 facing. 
 \\
 \\
-\centerline{\includegraphics[scale=0.5]{skeleton_frame3.png}}
+\centerline{\includegraphics[scale=0.5]{images/skeleton_frame3.png}}
 \centerline{fig.4.6 (In the figure the three joints are pointed out and named)}
 \\
 \\
@@ -15,7 +15,7 @@ the center hip joint and then we calculate the cross product of the two
 subtractions.
 \\
 \\
-\N = ($\vec{r}$ - $\vec{c}$) X ($\vec{l} - \vec{c}$)
+$\vec{N}$ = ($\vec{r}$ - $\vec{c}$) $\times$ ($\vec{l}$ - $\vec{c}$)
 \\
 \\
 We then calculate the normal by using the Normalize method.
@@ -44,16 +44,18 @@ In the figure below the user is facing their right, having the normal vector (re
 line) erected and defining the direction the user is facing.
 \\
 \\
-\centerline{\includegraphics[scale=0.5]{skeleton_normal.png}}
+\centerline{\includegraphics[scale=0.5]{images/skeleton_normal.png}}
 \\
 \centerline{fig.4.6 (Skeleton with a normal vector defining where it is facing)}
 \\
 \\
-%talk about the problem in the kinect sensor and recognizing the different side of the skeleton 
-The second solution is using Kinect's face detection capabilities, which may be 
-hard and require high processing. More research is needed in this part to better 
-understand it.
-%here talk about the final way and discuss how you will use the recognition to solve the issue with robustness
+The translation and rotation of the skeleton occurs in the Skeleton Space. The algorithm translates littleGuy to the origin point where it calculates the \N. Rotation occurs in the origin and then the new manipulated littleGuy translates back to a fixed point in the Z axis, the Y axis and X axis however remain in the origin. After this Project Recon stores the translated littleGuy in a new avatar skeleton called transGuy. The program then renders transGuy to the 2D Color Space. 
+\\
+The second step is using Kinect's face detection capabilities, which may be 
+hard and require high processing. Errors may occur when Kinect re-swaps the joints to their right place. For this we will use the face dectetion capabilities of Kinect to create a sanity check. That is if the swap did occur and the user's face was visible, then the swap is a mistake and it will re-swap again to the correct state.
+\\
+When it came to testing the normalization of the skeleton using the Kinect, a problem emerges. When the user has a joint not facing the Kinect, then the Kinect does not have the position value of this joint. The reason for this is that no infrared rays are reflected from this joint. In turn, when the rotation occurs the some joints have false space(X, Y, and Z) values. This error will question the validity of the rendered and final translated values of the joints. This error made us discard this method and resort a different one that will also aims to maintain the robustness of the system.
+%here talk about the final way and discuss how you will use the recognition to solve the issue with robustness 
 \section{Recognition}
 Recognition is the essence of this project. Recognition needs to be in real time, but most importantly how will the recognition occur. We discussed in the previous section the resolve of the normal vector. However, why is it needed? In recognition we want to be able to translate the skeleton of the person in order to always recognize from the same direction, facing the Kinect. In the coming sections we will discuss the different ways for recognition.
 \subsection{Glyphs Method}
