@@ -4,21 +4,22 @@ The architectures shown below describes how communication between Project Recon 
 \\
 \\
 As shown in figure~\ref{projectrecondiagram}, Project Recon main inputs are the Kinect sensor and Thai Pad Sensor. The Kinect sensor sends the Image stream and skeleton stream to Project Recon's Technique recognizer which in turn would take the skeleton of the user and keep track of its joints' position in time. When the practitioner moves the technique recognizer would compare the current movement with the database of reference moves. From this, it would associate the detected move with its respectful reference. The sensor equipped Thai Pads would measure the impact and send the value to Project Recon. The impact is then linked to its respectful technique and compared with reference impact. All this data is sent to the client which is responsible for the connection between the interface and Project Recon.
-\begin{figure}[htb]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=1\textwidth]{images/project_Recon_diagram.png}
 \caption{Internal architecture and design of Project Recon}
 \label{projectrecondiagram}
 \end{figure}
-\\
-\\
+
 In figure~\ref{generaloverview}, an overview of the project is shown. Where it shows the linking between the Main Interface and Project Recon. As previously said, the client is responsible for the connection between both by communicating and connecting to a socket specified for it by the Main Interface.
-\begin{figure}[ht]
+
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=1\textwidth]{images/general_overview.png}
 \caption{Overall architecture of Project Recon and its connection to the interface}
 \label{generaloverview}
 \end{figure}
+
 \section{Development Tools and Technologies}
 When it came to developing with Kinect, two choices were on the table. Whether to use the official Microsoft Kinect SDK or use other unofficial SDK's. The official Kinect SDK may have slightly less capabilities, and we will be talking about them later and exploring them more. However, it is easier to use the official Microsoft SDK. The environment that was chosen for development (XNA) would also support our choice of using the official SDK. The programing language possible to use are Visual Basic and C\#. The chosen language was C\# as it was easier for me to develop for.
 
@@ -72,21 +73,20 @@ There is also an \emph{UnloadContent()} method that is used to unload the conten
 The \emph{Update()} method takes the gameTime as an argument, which is a snapshot of the game timing state. This method is called every interval. Updating all variables and values that have changed from previous frames. In our case, the positions of the joints of the skeleton. Later, the draw method would take care in rendering the images and displaying them. The two figures below show two different frames in time with the skeleton in a position and in the other time in another position.
 \\
 \\
-In the following images, two frames are shown where the skeleton first is standing regularly and then, later in time standing on one foot and leaning slightly to its left. As said before the update method updated the data from the previous method in terms of each joint's location in space and then the draw method rendered the skeleton with the new joints' locations.
-\\
-\\
-\begin{figure}[ht]
+In the following figures~\ref{skeletonframe1} and~\ref{skeletonframe2}, two frames are shown where the skeleton first is standing regularly and then, later in time standing on one foot and leaning slightly to its left. As said before the update method updated the data from the previous method in terms of each joint's location in space and then the draw method rendered the skeleton with the new joints' locations.
+
+\begin{figure}[!htbp]
 \centering
-\includegraphics[scale=1]{images/skeleton_frame1.png}
+\includegraphics[width=1\textwidth]{images/skeleton_frame1.png}
 \caption{initial frame}
-\label{4.1}
+\label{skeletonframe1}
 \end{figure}
-\\
-\begin{figure}[ht]
+
+\begin{figure}[!htbp]
 \centering
-\includegraphics[scale=1]{images/skeleton_frame2.png}
+\includegraphics[width=1\textwidth]{images/skeleton_frame2.png}
 \caption{few seconds later from initial frame}
-\label{4.2}
+\label{skeletonframe2}
 \end{figure}
 
 \subsection{Kinect}
@@ -96,56 +96,74 @@ What makes Kinect sensor a good choice for this project is its ability to recogn
 The Kinect sensor consists of three major parts. A regular camera used mostly for video chat on the XBox and the Kinect and sometimes visualization (e.g adding the user inside the scene of the game). The other two major parts are the ones that detect the user and their motion. The first is an infrared emitter and the other is an infrared sensor. The way the Kinect works is that the infrared emitter emits a mesh of infrared rays that would reflect back to the Kinect off from the user and then are detected by the sensor.
 \\
 \\
-The Kinect sensor has sends as an output three streams, an audio stream, a depth image stream and a color image stream. In the image below the color image stream is used to render the regular image captured by the Kinect camera.
-\\
-\begin{figure}[ht]
+The Kinect sensor has sends as an output three streams, an audio stream, a depth image stream and a color image stream. In figure~\ref{colordata} the color image stream is used to render the regular image captured by the Kinect camera.
+
+\begin{figure}[!htbp]
 \centering
-\includegraphics[scale=1]{images/color_data.png}
+\includegraphics[width=1\textwidth]{images/color_data.png}
 \caption{Color stream data visualization}
-\label{4.3}
+\label{colordata}
 \end{figure}
-\\
-\\
-Other streams that the Kinect provides as output are the skeleton stream, Kinect provides an array of skeletons (having skeletons of all available users). So far the array has a maximum of four users at a time. The skeleton stream can be used to acquire information regarding the skeleton of a certain user. In the next image, a circle was used to identify the places of the joints and was drawn on its respective joint. Different shades of grey were used in this image to show the system's differentiation of the joints.
-\\
-\begin{figure}[ht]
+
+Other streams that the Kinect provides as output are the skeleton stream, Kinect provides an array of skeletons (having skeletons of all available users). So far the array has a maximum of four users at a time. The skeleton stream can be used to acquire information regarding the skeleton of a certain user. In figure~\ref{colorjoints}, a circle was used to identify the places of the joints and was drawn on its respective joint. Different shades of grey were used in this image to show the system's differentiation of the joints.
+
+\begin{figure}[!htbp]
 \centering
-\includegraphics[scale=1]{images/color_joints.png}
+\includegraphics[width=1\textwidth]{images/color_joints.png}
 \caption{Color stream data visualization with a visualization of the joints that is provided from the skeleton stream}
-\label{4.4}
+\label{colorjoints}
 \end{figure}
-\\
+
 There is a total of 20 joints recognized by the Kinect sensor. The head, the center shoulder, right shoulder, left shoulder, right and left elbows, right and left wrists, right and left hands, right and left hips, right and left knees, right and left ankles, right and left feet, a center hip and a spine.
 \\
 \\
 After visualizing the joints, the next step was to link the joints with a line to show the skeleton itself. By simple line equations and using the two points as the joints, the skeleton was drawn in the following manner:
-\\
-\\
-%\includefig{color_skeleton.png}
-\begin{figure}[ht]
+
+\begin{figure}[!htbp]
 \centering
-\includegraphics[scale=1]{images/color_skeleton.png}
+\includegraphics[width=1\textwidth]{images/color_skeleton.png}
 \caption{Color stream data visualization and skeleton visualization}
-\label{4.5}
+\label{colorskeleton}
 \end{figure}
-%\centerline{fig.4.5 (Color stream data visualization and skeleton visualization)}
-\\
-\\
 
 %here discuss that there are different space systems
 Kinect uses three different coordinate systems. Each one is different to the other, however have relations to one another. Those spaces are Skeleton Space, Color Space and Depth Space. Kinect streams information on those three spaces during each frame.
 %Color Space
 \\
 \\
-The Color Space is a 2D space having only X and Y as its coordinates. During each frame, the color sensor (camera) captures an image of everything in the visibility box of the camera itself. The frame of the Color Space is made up of pixels, where the size is determined by the specified NUI\_IMAGE\_RESOLUTION. Resolution could be either 80 x 60, 320 x 240, 640 x 480, or 1280 x 960. Every pixel contains the three values of red, green and blue at the particular coordinate.
-
-%Picture of a Color Space here
+The Color Space is a 2D space having only X and Y as its coordinates. During each frame, the color sensor (camera) captures an image of everything in the visibility box of the camera itself. The frame of the Color Space is made up of pixels, where the size is determined by the specified NUI\_IMAGE\_RESOLUTION. Resolution could be either 80 x 60, 320 x 240, 640 x 480, or 1280 x 960. Every pixel contains the three values of red, green and blue at the particular coordinate. Figure~\ref{colorjoints} shows the data of received from the Color Space.
 
 %Depth Space
-Similar to the Color Space, the Depth Space is a 2D space with X and Y as its coordinates. Each frame is represented as a gray scale image of the visibil objects to the camera. The frame size is also determined by the specified NUI\_IMAGE\_RESOLUTION, where each pixel contains the Cartesian distance between the camera plane and the nearest body. The distance is measured in millimeters.
+Similar to the Color Space, the Depth Space is a 2D space with X and Y as its coordinates. Each frame is represented as a gray scale image of the visibil objects to the camera. The frame size is also determined by the specified NUI\_IMAGE\_RESOLUTION, where each pixel contains the Cartesian distance between the camera plane and the nearest body. The distance is measured in millimeters. Figure~\ref{depthspace} shows how the Kinect measures the depth from the camera plane.
 
+\begin{figure}[!htbp]
+\centering
+\includegraphics{images/depthspace.png}
+\caption{Visualization of the Kinect depth measurement}
+\label{depthspace}
+\end{figure}
+
+There are three different values that decide whether or not the object's location could be measured. The three values are, too near, too far, or unknown. Too near means that the object is detected, however is too near to the camera for the sensor to measure the distance acurately. Too far is similar to the too near value, however the reliablity of measuring the distance is affected by the object being too far from the sensor. Finally, the unknown value means that the sensor does not detect any object. There are two different ranges for depth. Default range, which is found on Kinect for Windows sensor and the Kinect for Xbox 360 sensor. The second is the near range which is found only in the Kinect for Windows sensor. The reason for this, is that the Kinect for Windows is connected on the PC, and most of the time PC users will be sitting close to the PC and hence close to the Kinect for Windows sensor.
+
+%image of depth
 
 %Skeleton Space
+Skeleton Space, unlike the Color and Depth spaces is 3D (X, Y, Z). The Skeleton Space gets its data from the frames of the captured depth image. Where the Kinect processes the data and creates skeleton data that contains 3D position for the user's skeleton. This data is stored in the 3D space coordinate system which is expressed in meters.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics{images/skeletoncoord.png}
+\caption{Skeleton Space coordinates}
+\label{skeltoncoord}
+\end{figure}
+
+In figure~\ref{skeletoncoord} the coordinate system of the Skeleton Space is visualized. The Kinect is set as the origin of the coordinate system, having its view pointed towards the positive z-axis. The y and x axis extend upwards and to the left respectively.
+
+The skeleton data is a mirrored image from the user. The reason for this is that the visualization of the user's avatar during a game or any sort of application will be facing the user himself out from the screen. Making it very similar to look into a mirror allowing users to have an easier experience controlling their avatars. This mirroring effect can be changed according by using a transfromation matrix to flip the z-coordinates, but this depends on the nature of the application and its scope.
+%Talk about conversion between the three spaces
+\\
+\\
+The Kinect system has different API's (Application Programming Interface) that are used to convert between the three different spaces. Some of the available conversions are from Skeleton to Depth and vic versa, and from Depth to Color.
 \subsection{Connections and Communications}
 The communication between Project Recon and the interface is seen as a client-server communication. When browsing the possible technologies to use, socket programming came at the top of the list.
 \\
