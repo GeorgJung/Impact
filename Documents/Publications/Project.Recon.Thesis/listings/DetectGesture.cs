@@ -1,49 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using Microsoft.Kinect;
-
-namespace Project_Recon
-{
-    public class DetectGesture
-    {
-        public int MinimalPeriodBetweenGestures { get; set; }
-        int punchprob = 0;
-
-        readonly List<StoreGesture> posList = new List<StoreGesture>();
-
-        public event Action<string> OnDetected;
-
-        DateTime lastGestureDate = DateTime.Now;
-
-        // Number of recorded positions
-        private int maxSize;
-
-        public DetectGesture(int maxSize)
-        {
-            // TODO: Complete member initialization
-            this.maxSize = maxSize; ;
-            MinimalPeriodBetweenGestures = 0;
-        }
-
-        public List<StoreGesture> PosList
-        {
-            get { return posList; }
-        }
-
-        public int MaxSize
-        {
-            get { return maxSize; }
-        }
-
-        public virtual void addPosition(SkeletonPoint position, KinectSensor sensor)
+public virtual void addPosition(SkeletonPoint position, KinectSensor sensor)
         {
             StoreGesture newEntry = new StoreGesture { Position = new Vector3(position.X, position.Y, position.Z), Time = DateTime.Now };
 
@@ -55,25 +10,9 @@ namespace Project_Recon
             }
             // Add new position
             posList.Add(newEntry);
-
-            //LookForGesture();
         }
-        //protected void LookForGesture();
-
-        protected void RaiseGestureDetected(string gesture)
-        {
-            // Too close?
-            if (DateTime.Now.Subtract(lastGestureDate).TotalMilliseconds > MinimalPeriodBetweenGestures)
-            {
-                if (OnDetected != null)
-                    OnDetected(gesture);
-
-                lastGestureDate = DateTime.Now;
-            }
-            PosList.Clear();
-        }
-
-        public String Detect(List<StoreGesture> reference1, List<StoreGesture> reference2)
+		
+		public String Detect(List<StoreGesture> reference1, List<StoreGesture> reference2)
         {
             if (PosList.Count == MaxSize)
             {
@@ -133,5 +72,3 @@ namespace Project_Recon
                 return "No Move Detected";
             }
         }
-    }
-}

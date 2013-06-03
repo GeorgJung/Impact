@@ -37,36 +37,12 @@ XNA makes it easier for developers to organize their code in many ways as it tak
 \\
 \\
 Code:
-\begin{verbatim}
-protected override void Initialize()
-{
-// TODO: Add your initialization logic here
-kinect = KinectSensor.KinectSensors[0];
-kinect.ColorStream.Enable(ColorImageFormat.RgbResolution640x480Fps30);
-kinect.DepthStream.Enable(DepthImageFormat.Resolution320x240Fps30);
-kinect.SkeletonStream.Enable();
-kinect.Start();
-kinect.ElevationAngle = 0;
-colorData = new byte[640 * 480 * 4];
-colorTex = new Texture2D(GraphicsDevice, 640, 480);
-rawSkeletons = new Skeleton[kinect.SkeletonStream.FrameSkeletonArrayLength];
-keepcover = true;
-base.Initialize();
-}
-\end{verbatim}
+\lstinputlisting[language=C, firstline=0, lastline=47]{listings/xna.cs} 
 The \emph{LoadContent()} method as its name specifies is responsible for loading the content required for the game. These contents range from images to audio or even video content that will be used in game as textures or in game music.
 \\
 \\
 Code:
-\begin{verbatim}
-// Create a new SpriteBatch, which can be used to draw textures.
-spriteBatch = new SpriteBatch(GraphicsDevice);
-circleTex = Content.Load<Texture2D>("circle");
-lineTex = Content.Load<Texture2D>("4KWjQ");
-lineTexRed = Content.Load<Texture2D>("4KWjQR");
-font = Content.Load<SpriteFont>("MainFont");
-// TODO: use this.Content to load your game content here
-\end{verbatim}
+\lstinputlisting[language=C, firstline=49, lastline=62]{listings/xna.cs} 
 There is also an \emph{UnloadContent()} method that is used to unload the content once the game is done using them. This method is helpful with multi level games as loading all the game content unto the gpu will be impossible so items will be loaded when needed and unloaded when they are no longer needed during the gameplay to give space for more items to be loaded. In our project we will not need the Unload method as there aren't any high processing going on the graphics level.
 \\
 \\
