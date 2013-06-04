@@ -1,3 +1,14 @@
 \chapter{Conclusion}\label{chap:concl}
+%Project Fast in Recognition in real time
+%Robust and Dynamic in terms of Motion Recognition
+%Be able to plugin to different systems
+%be able to send data to the interface ad monitor in order to make it visibe to the user playing
+The purpose of Project Recon as stated earlier is to create an application that recognizes Ju-Jutsu moves during a practice session in real time. The application has to give feedback on technique executions in terms of body movement, speed, and impact. To fulfill this purpose the application requires to be robust and dynamic in recognizing techniques. Another requirement was to recognize multiple users, a coach and trainee. Finally, the project should be able to plugin to the interface and be able to establish a bi-directional communication stream between it and the interface.
 
-Conclusion
+Using the Kinect sensor, XNA, and Kinect SDK we were able to create a robust system that will be able to recognize a technique executed. Also we were able to establish a connection using Socket programming to define a connection between the two applications, Project Recon and the interface.
+
+Due to various limitations of Kinect, the complete project requirements were not reached. The scope of the project was beyond the capabilities of the Kinect.
+
+The complete robustness of the project when it comes to recognition is not acheived. As well as the accuracy regarding the Kinect to recognize minor motion that could determine the technique quality of execution. Hence, the feedback that is required from the project to deliver is not achieved.
+
+To better understand the limitation, let us take a punching technique as an example. To execute a proper punch, the trainee twists his hip to the direction of the punch as his arm gives the blow. The trainee's palm begins by being close to the torso facing upwards and ends by being completely stretched and facing downards. The reason for this limitation is that Kinect will not be sensitive enough to recognize these minor moves of the palm facing downwards or upwards or the hips twisting with the punch. Another reason is that Kinect recognize only 20 joints of the human body, which makes it hard for it to acquire accurate values of a specific motion.

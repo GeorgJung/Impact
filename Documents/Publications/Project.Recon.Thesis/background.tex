@@ -1,9 +1,9 @@
 \chapter{Background}\label{chap:background}
 \section{Architecture}
 The architectures shown below describes how communication between Project Recon and the general interface would look like. Figure 3.1 shows more details regarding the internal architecture and design of Project Recon itself.
-\\
-\\
+
 As shown in figure~\ref{projectrecondiagram}, Project Recon main inputs are the Kinect sensor and Thai Pad Sensor. The Kinect sensor sends the Image stream and skeleton stream to Project Recon's Technique recognizer which in turn would take the skeleton of the user and keep track of its joints' position in time. When the practitioner moves the technique recognizer would compare the current movement with the database of reference moves. From this, it would associate the detected move with its respectful reference. The sensor equipped Thai Pads would measure the impact and send the value to Project Recon. The impact is then linked to its respectful technique and compared with reference impact. All this data is sent to the client which is responsible for the connection between the interface and Project Recon.
+
 \begin{figure}[!htbp]
 \centering
 \includegraphics[width=1\textwidth]{images/project_Recon_diagram.png}
@@ -25,30 +25,23 @@ When it came to developing with Kinect, two choices were on the table. Whether t
 
 \subsection{Microsoft XNA}
 XNA is an IDE (Integrated Development Environment) created by Microsoft to help game development for their systems to be easier. XNA is based on .NET Framework and it creates applications for platforms like XBox 360, Zun, Windows Phone and Microsoft Windows. Since its release there are 4 versions with the final version being XNA Game Studio 4.0. The framework was released on March of 2004 and the latest update released on September 16th 2010.
-\\
-\\
+
 XNA is mostly used for XBox 360 video game development, which of course in turn is compatible with Kinect development, since Kinect is a Microsoft XBox 360 device. Making it easier to integrate the device within the code and collect data sent from the device and being able to read this data.
-\\
-\\
+
 XNA makes it easier for developers to organize their code in many ways as it takes care of low level technologies related in game development. Helping developers to focus more on the gameplay and game detail itself. To make it more clear, when creating a class using XNA. Certain methods are created under a class titled \emph{Game1} this class inherits from \emph{Microsoft.XNA.Framework.Game}. This class includes several methods that help in organizing the code.
-\\
-\\
-\emph{Initialize()}, in this method every single variable is initialized. In our case since we use the Kinect, several initialization took place. For example, initializing the variable kinect to a connected Kinect Sensor. As well as initializing the elevation angle of the Kinect itself. Every other variable is initialized in this method.
-\\
-\\
-Code:
-\lstinputlisting[language=C, firstline=0, lastline=47]{listings/xna.cs} 
-The \emph{LoadContent()} method as its name specifies is responsible for loading the content required for the game. These contents range from images to audio or even video content that will be used in game as textures or in game music.
-\\
-\\
-Code:
-\lstinputlisting[language=C, firstline=49, lastline=62]{listings/xna.cs} 
-There is also an \emph{UnloadContent()} method that is used to unload the content once the game is done using them. This method is helpful with multi level games as loading all the game content unto the gpu will be impossible so items will be loaded when needed and unloaded when they are no longer needed during the gameplay to give space for more items to be loaded. In our project we will not need the Unload method as there aren't any high processing going on the graphics level.
-\\
-\\
+
+\emph{Initialize()}, in this method every single variable is initialized. In our case since we use the Kinect, several initialization took place. For example, initializing the variable kinect to a connected Kinect Sensor. As well as initializing the elevation angle of the Kinect itself. Every other variable is initialized in this method. Code snippet~\ref{lst:initialize} shows the Initialize method.
+
+\lstinputlisting[style=csharp, firstline = 0, lastline = 47, caption ={Initialize Method},label={lst:initialize},float={tbp}]{listings/xna.cs}
+
+The \emph{LoadContent()} method as its name specifies is responsible for loading the content required for the game. These contents range from images to audio or even video content that will be used in game as textures or in game music. Code snippet~\ref{lst:loadcontent} shows the method.
+
+\lstinputlisting[style=csharp, firstline = 49, lastline = 62, caption ={LoadContent Method},label={lst:loadcontent},float={tbp}]{listings/xna.cs}
+
+There is also an \emph{UnloadContent()} method that is used to unload the content once the game is done using them. This method is helpful with multi level games as loading all the game content unto the gpu will be impossible so items will be loaded when needed and unloaded when they are no longer needed during the gameplay to give space for more items to be loaded. In our project we will not need the Unload method as there are no high processing going on the graphics level.
+
 The \emph{Update()} method takes the gameTime as an argument, which is a snapshot of the game timing state. This method is called every interval. Updating all variables and values that have changed from previous frames. In our case, the positions of the joints of the skeleton. Later, the draw method would take care in rendering the images and displaying them. The two figures below show two different frames in time with the skeleton in a position and in the other time in another position.
-\\
-\\
+
 In the following figures~\ref{skeletonframe1} and~\ref{skeletonframe2}, two frames are shown where the skeleton first is standing regularly and then, later in time standing on one foot and leaning slightly to its left. As said before the update method updated the data from the previous method in terms of each joint's location in space and then the draw method rendered the skeleton with the new joints' locations.
 
 \begin{figure}[!htbp]
@@ -67,11 +60,9 @@ In the following figures~\ref{skeletonframe1} and~\ref{skeletonframe2}, two fram
 
 \subsection{Kinect}
 What makes Kinect sensor a good choice for this project is its ability to recognize and keep track of a person's movement through creating a virtual skeleton that matches the user and makes the skeleton move with the user. There are few constraints unfortunately when it comes to incorporating it with the Jiu Jitsu training. One of which would be the fact that Kinect does not differentiate between a user who is facing the Kinect from a user who is giving his back to the Kinect sensor.
-\\
-\\
+
 The Kinect sensor consists of three major parts. A regular camera used mostly for video chat on the XBox and the Kinect and sometimes visualization (e.g adding the user inside the scene of the game). The other two major parts are the ones that detect the user and their motion. The first is an infrared emitter and the other is an infrared sensor. The way the Kinect works is that the infrared emitter emits a mesh of infrared rays that would reflect back to the Kinect off from the user and then are detected by the sensor.
-\\
-\\
+
 The Kinect sensor has sends as an output three streams, an audio stream, a depth image stream and a color image stream. In figure~\ref{colordata} the color image stream is used to render the regular image captured by the Kinect camera.
 
 \begin{figure}[!htbp]
@@ -91,8 +82,7 @@ Other streams that the Kinect provides as output are the skeleton stream, Kinect
 \end{figure}
 
 There is a total of 20 joints recognized by the Kinect sensor. The head, the center shoulder, right shoulder, left shoulder, right and left elbows, right and left wrists, right and left hands, right and left hips, right and left knees, right and left ankles, right and left feet, a center hip and a spine.
-\\
-\\
+
 After visualizing the joints, the next step was to link the joints with a line to show the skeleton itself. By simple line equations and using the two points as the joints, the skeleton was drawn in the following manner:
 
 \begin{figure}[!htbp]
@@ -105,8 +95,7 @@ After visualizing the joints, the next step was to link the joints with a line t
 %here discuss that there are different space systems
 Kinect uses three different coordinate systems. Each one is different to the other, however have relations to one another. Those spaces are Skeleton Space, Color Space and Depth Space. Kinect streams information on those three spaces during each frame.
 %Color Space
-\\
-\\
+
 The Color Space is a 2D space having only X and Y as its coordinates. During each frame, the color sensor (camera) captures an image of everything in the visibility box of the camera itself. The frame of the Color Space is made up of pixels, where the size is determined by the specified NUI\_IMAGE\_RESOLUTION. Resolution could be either 80 x 60, 320 x 240, 640 x 480, or 1280 x 960. Every pixel contains the three values of red, green and blue at the particular coordinate. Figure~\ref{colorjoints} shows the data of received from the Color Space.
 
 %Depth Space
@@ -130,23 +119,20 @@ Skeleton Space, unlike the Color and Depth spaces is 3D (X, Y, Z). The Skeleton 
 \centering
 \includegraphics{images/skeletoncoord.png}
 \caption{Skeleton Space coordinates}
-\label{skeltoncoord}
+\label{skeletoncoord}
 \end{figure}
 
 In figure~\ref{skeletoncoord} the coordinate system of the Skeleton Space is visualized. The Kinect is set as the origin of the coordinate system, having its view pointed towards the positive z-axis. The y and x axis extend upwards and to the left respectively.
 
 The skeleton data is a mirrored image from the user. The reason for this is that the visualization of the user's avatar during a game or any sort of application will be facing the user himself out from the screen. Making it very similar to look into a mirror allowing users to have an easier experience controlling their avatars. This mirroring effect can be changed according by using a transfromation matrix to flip the z-coordinates, but this depends on the nature of the application and its scope.
 %Talk about conversion between the three spaces
-\\
-\\
+
 The Kinect system has different API's (Application Programming Interface) that are used to convert between the three different spaces. Some of the available conversions are from Skeleton to Depth and vic versa, and from Depth to Color.
 \subsection{Connections and Communications}
 The communication between Project Recon and the interface is seen as a client-server communication. When browsing the possible technologies to use, socket programming came at the top of the list.
-\\
-\\
+
 Socket Programming uses the client server model of network communication, in which a server (in this case the interface) would listen on different ports for data arriving from any of the devices that are supposed to connect to it. When Project Recon starts and is ready it will take the part of the client, as it will send its data stream to the specified socket. When ready, a handshake will occur to initialize connection between starting to send the data stream. In which the interface will receive the data of gestures and delivers the proper output.
-\\
-\\
+
 There are three different data streams, a data stream responsible for system-related gestures, like a gesture to start the session or end it. The other stream consists of technique details. Finally, the third stream is contains the impact of the technique. All of the three streams have a timestamp in order to associate each impact with the proper technique used.
 
 %Project Fast in Recognition in real time
@@ -157,9 +143,7 @@ There are three different data streams, a data stream responsible for system-rel
 \section{Project Requirements}
 %In order to ensure best performance, certain constraints need to be handled. 
 The practice that is targeted by the project is fast paced, which means the system needs to be performant enough to handle fast motion and recognize the technique in real time. Also, for it being a dynamic practice, which means rapid movement takes place during practice and the user will not necessiraly be always facing the Kinect as he will be moving freely around the practice room and most of the times will be giving his back to the Kinect. We need to make the system robust enough to be able to recognize different motions.
-\\
-\\
+
 Another basic requirement is to allow the differentiation between two different users infront of the Kinect, one being the coach and the second being the practitioner. This is easily resolved as Kinect's stream sends multiple skeletons of the multiple users. However it is required that the first user be defined as a the practitioner and the second to join in later would be the coach.
-\\
-\\
+
 Finally, the project should be able to plugin to a different system, the fitness monitor. The fitness monitor is an interface that shows the user's current stats, technique executed, and more. A connection should be established between Project Recon and the fitness monitor, where Project Recon should be able to send information regarding the technique executed by the user for the fitnes monitor display.

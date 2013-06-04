@@ -40,23 +40,6 @@ class client
             }
         }
 
-        public void receive(object sender, System.EventArgs e)
-        {
-            try
-            {
-                byte[] buffer = new byte[1024];
-                int iRx = m_socClient.Receive(buffer);
-                char[] chars = new char[iRx];
-
-                System.Text.Decoder d = System.Text.Encoding.UTF8.GetDecoder();
-                int charLen = d.GetChars(buffer, 0, iRx, chars, 0);
-                System.String szData = new System.String(chars);
-            }
-            catch (SocketException se)
-            {
-                Console.WriteLine(se.Message);
-            }
-        }
 
         public void close(object sender, System.EventArgs e)
         {
@@ -64,5 +47,3 @@ class client
         }
 
     }
-
-}
