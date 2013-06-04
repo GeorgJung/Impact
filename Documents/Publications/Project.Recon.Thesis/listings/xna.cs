@@ -60,3 +60,8 @@ protected override void Initialize()
             font = Content.Load<SpriteFont>("MainFont");
             // TODO: use this.Content to load your game content here
         }
+
+var dir = Vector3.Cross(rhip - chip, lhip - chip);
+var norm = Vector3.Normalize(dir);
+		
+		

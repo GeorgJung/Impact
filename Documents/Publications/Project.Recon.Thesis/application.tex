@@ -20,10 +20,7 @@ $\vec{N}$ = ($\vec{r}$ - $\vec{c}$) $\times$ ($\vec{l}$ - $\vec{c}$)
 
 We then calculate the normal by using the Normalize method.
 
-\begin{verbatim}
-var dir = Vector3.Cross(rhip - chip, lhip - chip);
-var norm = Vector3.Normalize(dir);
-\end{verbatim}
+\lstinputlisting[style=csharp, firstline = 64, lastline = 65, caption ={Calculating the Normal Vector},label={lst:normalvector},float={tbp}]{listings/xna.cs}
 
 As the person turns, the normal vector will be used as a reference to calculate the angle between it and the Z axis. This will allow us to rotate the skeleton so that it will be always facing the Kinect. Recognition will then take place.
 
@@ -64,10 +61,21 @@ Recognition is the essence of this project. Recognition needs to be in real time
 \subsection{Glyphs Method}
 This is the proposed method in the case of recognition taking place after rotation by the help of \N as discussed earlier in this chapter. The idea behind it is to create a path taken by each joint from the skeleton and store it in an image. Creating a single image with the overall motion is and comparing it with the reference image, would be more optimal than taking a number of frames and comparing them with other reference frames.
 
-As a joint moves, it creates a path shadowing its past movements. Each joint has its own exclusive color in order to differentiate if lines intersect. When the user moves the system will draw the paths taken by the joints creating some sort of a glyph image depicting the overall motion of the skeleton. An example of how a glyph would like is in both figures below. Figure 1 shows the user as he executes a move with each joint creating a path. Figure 2 shows the final glyph as it would be stored.
+As a joint moves, it creates a path shadowing its past movements. Each joint has its own exclusive color in order to differentiate if lines intersect. When the user moves the system will draw the paths taken by the joints creating some sort of a glyph image depicting the overall motion of the skeleton. An example of how a glyph would like is in both figures below. Figure~\ref{glyph} shows the user as he executes a move with each joint creating a path. Figure~\ref{glyph2} shows the final glyph as it would be stored.
 
-%image of a person with a glyph
-%image with a glyph
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=1\textwidth]{images/glyphfinal.png}
+\caption{A user creating a glyph with his hands}
+\label{glyph}
+\end{figure}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=1\textwidth]{images/glyph.png}
+\caption{The final glyph image}
+\label{glyph2}
+\end{figure}
 
 After storing the glyph image, a process of image processing would take place where comparisons between the captured glyph image and the reference glyph images would begin. When a match is found, the technique would be recognized, if a match was not found the glyph image is discarded. Recognition when comparing two glyph images would of course have some sort of threshold as users are different in their executions of a technique.
 
@@ -78,8 +86,15 @@ It should be clear as to when the program should record the path patterns and st
 Since we will be unable to use the method of normalizing the skeleton due to the limitations of the Kinect sensor, this method would be obsolete in our application as the user is mobil and active around the room. Making it hard to have standard glyph patterns.
 
 \subsection{Joint Position Lists}
-This method focuses on creating a list of the last 30 positions of a joint. Where the system stores the newest position to an already full list, the last position(the earliest element on the list) is dicarded and replaced by the newest, see figure %put figure here describing the stack. 
-Since the application's frame-rate is 30 frames per second. The system takes every 30 positions each second and between each two frames it has inbetween lists, see figure  %put figure here describing the 30 and 30
+This method focuses on creating a list of the last 30 positions of a joint. Where the system stores the newest position to an already full list, the last position(the earliest element on the list) is dicarded and replaced by the newest, see figure~\ref{stack}
+Since the application's frame-rate is 30 frames per second. The system takes every 30 positions each second and between each two frames it has inbetween lists.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=1\textwidth]{images/stack.png}
+\caption{List showing how adding a joint position occurs}
+\label{stack}
+\end{figure}
 
 We create a class, StoreGesture, that describes the element of the list. StoreGesture has two attributes. Position, which is a 3D vector describing the joint's position. The second is Time, which is the specific time on which that specific position takes place. The code~\ref{lst:storegesture}shows the class StoreGesture.
 
@@ -99,8 +114,15 @@ As the code updates, we update this list by adding the new position of the joint
 
 As discussed earlier, the system needs to be robust enough to recognize gestures done at any angle the user is facing from or away of the Kinect. In order to acheive this, gesture detection needs to be exclude relations with the z and x axis as they will be dynamically changing with the time. Instead, a good way to tackle this is to detect a gesture through analyzing relations between joints and each other. For example, in a specific kick (known as the forward thrust) the knee will be higher than the hips in most cases. So taking advantage of this relation will help in acheiving the robustness of the system that is required.
 
-The Detect method in DetectGesutre, takes two arguments, reference1 and reference 2. Those arguments resemble two different position lists of reference joints that will be used in order to aquire relationship between them and the main joint. In order to recognize a gesture, we take divide a gesture into three different parts. Let us take a punch for example. In figure %punch figure
+The Detect method in DetectGesutre, takes two arguments, reference1 and reference 2. Those arguments resemble two different position lists of reference joints that will be used in order to aquire relationship between them and the main joint. In order to recognize a gesture, we take divide a gesture into three different parts. Let us take a punch for example. In figure~\ref{punch}
 we divide the punch into three main motion frames. By observing the frames one can simply find a relation between the joints and each other. In this example the elbow is closer to the spine in the first and third frame in terms of the y axis, however closer to the shoulder in the second frame. Overall, another added information is that the angle between the elbow-shoulder and shoulder spine in a punch is more than 45$^\circ$. 
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=1\textwidth]{images/punch.png}
+\caption{Three different parts of a punch gesture}
+\label{punch}
+\end{figure}
 
 Similarly, the Detect method divides the frames into 3 different parts, each with 10 elements in them. A loop goes through them and whenever one element fits the criteria of one of the parts, a value that is responsible for calculating the probability is incremented. After the loop goes through the whole 30 frames. The probability value is checked, where 30 is 100 percent match. A threshold is given that is 25. Depending on the probability value either passing or not passing the threshold the gesture will be detected or not detected. Listing~\ref{lst:detect} shows the Detect method.
 
@@ -179,13 +201,13 @@ Now that the connection is established, we send the first confirmation data. Whi
 
 The method send takes three arguments two of which are the sender and the data. The method encodes the data to byte and then sends the data.
 
-After the Kinect Sensor is connected to Project Recon, Project Recon will directly attempt to connect to the interface. Once connection is established, Project Recon will run regularly. Once a gesture or technique is recognized Project Recon will use the client method send to send a string of a certain format. The format is as shown in figure~\ref{format}.
-
-\begin{figure}[!htb]
+\begin{figure}[!htbp]
 \centering
-\includegraphics[width=1\textwidth]{images/format.png}
+\includegraphics[width=0.5\textwidth]{images/format.png}
 \caption{Format of the data stream sent to the interface}
 \label{format}
 \end{figure}
+
+After the Kinect Sensor is connected to Project Recon, Project Recon will directly attempt to connect to the interface. Once connection is established, Project Recon will run regularly. Once a gesture or technique is recognized Project Recon will use the client method send to send a string of a certain format. The format is as shown in figure~\ref{format}.
 
 The interface will take the byte data stream and decod it to a string. It will take the time of the gesture or motion execution and from the data the interface will take certain actions.

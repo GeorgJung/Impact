@@ -517,7 +517,7 @@ namespace Project_Recon
 
             spriteBatch.Begin();
 
-            //spriteBatch.Draw(colorTex, new Vector2(80,0), Color.White);
+            spriteBatch.Draw(colorTex, new Vector2(80,0), Color.White);
 
             spriteBatch.DrawString(font, "Project Recon v3.0", new Vector2(80, 0), Color.Red);
             spriteBatch.DrawString(font, lpunch, new Vector2(80, 20), Color.Red);
@@ -533,80 +533,80 @@ namespace Project_Recon
                 }
 
             //Drawing transGuy
-            if (skeleton != null)
-            {
-                for (int i = 0; i < transGuy.Length; i++)
-                {
-                    var p = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
-                               transGuy[i], ColorImageFormat.RgbResolution640x480Fps30);
+            //if (skeleton != null)
+            //{
+            //    for (int i = 0; i < transGuy.Length; i++)
+            //    {
+            //        var p = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
+            //                   transGuy[i], ColorImageFormat.RgbResolution640x480Fps30);
 
-                    spriteBatch.Draw(circleTex, new Vector2(p.X + 75, p.Y - 5), Color.Green);
+            //        spriteBatch.Draw(circleTex, new Vector2(p.X + 75, p.Y - 5), Color.Green);
 
-                    for (int j = 0; j < transGuy.Length; j++)
-                    {
-                        if ((i == 3 && j == 2)
-                            || (i == 2 && j == 1)
-                            || (i == 1 && j == 0))
-                        {
-                            //spriteBatch.DrawString(font,"I am here" ,new Vector2(200, 300), Color.Red);
+            //        for (int j = 0; j < transGuy.Length; j++)
+            //        {
+            //            if ((i == 3 && j == 2)
+            //                || (i == 2 && j == 1)
+            //                || (i == 1 && j == 0))
+            //            {
+            //                //spriteBatch.DrawString(font,"I am here" ,new Vector2(200, 300), Color.Red);
 
-                            var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
-                                transGuy[j], ColorImageFormat.RgbResolution640x480Fps30);
+            //                var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
+            //                    transGuy[j], ColorImageFormat.RgbResolution640x480Fps30);
 
-                            spriteBatch.Draw(lineTex, new Vector2(p.X + 80, p.Y),
-                                null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
-                                new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
-                        }
+            //                spriteBatch.Draw(lineTex, new Vector2(p.X + 80, p.Y),
+            //                    null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
+            //                    new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
+            //            }
 
-                        if ((i == 0 && j == 12)
-                            || (i == 12 && j == 13)
-                            || (i == 13 && j == 14)
-                            || (i == 14 && j == 15)
-                            || (i == 2 && j == 4)
-                            || (i == 4 && j == 5)
-                            || (i == 5 && j == 6)
-                            || (i == 6 && j == 7))
-                        {
-                            var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
-                            transGuy[j], ColorImageFormat.RgbResolution640x480Fps30);
+            //            if ((i == 0 && j == 12)
+            //                || (i == 12 && j == 13)
+            //                || (i == 13 && j == 14)
+            //                || (i == 14 && j == 15)
+            //                || (i == 2 && j == 4)
+            //                || (i == 4 && j == 5)
+            //                || (i == 5 && j == 6)
+            //                || (i == 6 && j == 7))
+            //            {
+            //                var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
+            //                transGuy[j], ColorImageFormat.RgbResolution640x480Fps30);
 
-                            spriteBatch.Draw(leftTex, new Vector2(p.X + 80, p.Y),
-                                null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
-                                new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
-                        }
+            //                spriteBatch.Draw(leftTex, new Vector2(p.X + 80, p.Y),
+            //                    null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
+            //                    new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
+            //            }
 
-                        if ((i == 0 && j == 16)
-                            || (i == 16 && j == 17)
-                            || (i == 17 && j == 18)
-                            || (i == 18 && j == 19)
-                            || (i == 2 && j == 8)
-                            || (i == 8 && j == 9)
-                            || (i == 9 && j == 10)
-                            || (i == 10 && j == 11))
-                        {
-                            var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
-                            transGuy[j], ColorImageFormat.RgbResolution640x480Fps30);
+            //            if ((i == 0 && j == 16)
+            //                || (i == 16 && j == 17)
+            //                || (i == 17 && j == 18)
+            //                || (i == 18 && j == 19)
+            //                || (i == 2 && j == 8)
+            //                || (i == 8 && j == 9)
+            //                || (i == 9 && j == 10)
+            //                || (i == 10 && j == 11))
+            //            {
+            //                var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
+            //                transGuy[j], ColorImageFormat.RgbResolution640x480Fps30);
 
-                            spriteBatch.Draw(rightTex, new Vector2(p.X + 80, p.Y),
-                                null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
-                                new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
+            //                spriteBatch.Draw(rightTex, new Vector2(p.X + 80, p.Y),
+            //                    null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
+            //                    new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
 
-                        }
+            //            }
 
-                    }
+            //        }
 
-                    //Drawing Joints
-                    foreach (Joint joint in skeleton.Joints)
-                    {
-                        var p3 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
-                            joint.Position, ColorImageFormat.RgbResolution640x480Fps30);
+            //        //Drawing Joints
+            //        foreach (Joint joint in skeleton.Joints)
+            //        {
+            //            var p3 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
+            //                joint.Position, ColorImageFormat.RgbResolution640x480Fps30);
 
-                        var shade = (float)joint.JointType / 20f;
-                        spriteBatch.Draw(circleTex, new Vector2(p3.X + 75, p3.Y - 5), new Color(shade, shade, shade, 1));
-                    }
-                }
+            //            var shade = (float)joint.JointType / 20f;
+            //            spriteBatch.Draw(circleTex, new Vector2(p3.X + 75, p3.Y - 5), new Color(shade, shade, shade, 1));
+            //        }
+            //    }
 
-            }
+            //}
 
 
             //NOTHING TO DO HERE!
