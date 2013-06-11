@@ -8,6 +8,8 @@ namespace Project_Recon
 {
     class client
     {
+        public Boolean connected = false;
+
         Socket m_socClient;
 
         public void connect(object sender, System.EventArgs e, String ipAddress, String port)
@@ -26,6 +28,8 @@ namespace Project_Recon
                 String szData = "Connection Established, Kinect Ready!";
                 byte[] byData = System.Text.Encoding.ASCII.GetBytes(szData);
                 m_socClient.Send(byData);
+
+                connected = true;
             }
             catch (SocketException se)
             {
@@ -69,6 +73,7 @@ namespace Project_Recon
 
         public void close(object sender, System.EventArgs e)
         {
+            connected = false;
             m_socClient.Close();
         }
 

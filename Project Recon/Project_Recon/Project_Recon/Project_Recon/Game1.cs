@@ -21,6 +21,9 @@ namespace Project_Recon
         SpriteBatch spriteBatch;
 
         client Client;
+        System.EventArgs e;
+
+        GestureController gestureController;
 
         KinectSensor kinect;
 
@@ -28,6 +31,7 @@ namespace Project_Recon
         Texture2D colorTex;
 
         String lpunch, rpunch, lshin, rshin, lforward, rforward, lastMove;
+        String FinalGesture;
 
         SpriteFont font;
 
@@ -47,7 +51,6 @@ namespace Project_Recon
             littleguy_lwrist, littleguy_rwrist;
 
         SkeletonPoint[] littleGuy;
-        SkeletonPoint[] prevPositions;
         SkeletonPoint[] transGuy;
 
         Texture2D circleTex;
@@ -77,6 +80,9 @@ namespace Project_Recon
         {
             // TODO: Add your initialization logic here
 
+            //Client.connect("kinect", e, "8080","8080");
+
+
             kinect = KinectSensor.KinectSensors[0];
 
             kinect.ColorStream.Enable(ColorImageFormat.RgbResolution640x480Fps30);
@@ -94,7 +100,6 @@ namespace Project_Recon
 
             rawSkeletons = new Skeleton[kinect.SkeletonStream.FrameSkeletonArrayLength];
 
-            prevPositions = new SkeletonPoint[20];
             littleGuy = new SkeletonPoint[20];
             transGuy = new SkeletonPoint[20];
 
@@ -115,8 +120,30 @@ namespace Project_Recon
             lpunch = "";
             rpunch = "";
             lastMove = "";
+            FinalGesture = "";
+
+            gestureController = new GestureController();
+            gestureController.GestureRecognized += OnGestureRecognized;
 
             keepcover = true;
+
+            //--------------Gestures
+            //--WaveLeft
+            //this is the array of segments which defines the gesture
+            IRelativeGestureSegment[] waveLeftSegments = new IRelativeGestureSegment[6];
+            //this is the first segment of the gesture you already implemented that implement the Irelativegestuesegment interface
+            WaveLeftSegment1 waveLeftSegment1 = new WaveLeftSegment1();
+            WaveLeftSegment2 waveLeftSegment2 = new WaveLeftSegment2();
+            //we define the wave gesture as moving hand from right to left in order 3 times consecutively
+            waveLeftSegments[0] = waveLeftSegment1;
+            waveLeftSegments[1] = waveLeftSegment2;
+            waveLeftSegments[2] = waveLeftSegment1;
+            waveLeftSegments[3] = waveLeftSegment2;
+            waveLeftSegments[4] = waveLeftSegment1;
+            waveLeftSegments[5] = waveLeftSegment2;
+            //add the gesture to the gesture controller to check for recognition
+            this.gestureController.AddGesture("WaveLeft", waveLeftSegments);
+
 
             base.Initialize();
         }
@@ -166,6 +193,7 @@ namespace Project_Recon
             }
 
             var skelFrame = kinect.SkeletonStream.OpenNextFrame(0);
+
             if (skelFrame != null)
             {
                 skelFrame.CopySkeletonDataTo(rawSkeletons);
@@ -173,6 +201,8 @@ namespace Project_Recon
 
                 skeleton = rawSkeletons.FirstOrDefault(s => s.TrackingState == SkeletonTrackingState.Tracked);
                 coachSkeleton = rawSkeletons.LastOrDefault(s => s.TrackingState == SkeletonTrackingState.Tracked && coachSkeleton != skeleton);
+
+                gestureController.UpdateAllGestures(skeleton);
             }
 
             if (skeleton != null)
@@ -193,7 +223,6 @@ namespace Project_Recon
 
                         lankle.addPosition(littleguy_lankle, kinect);
 
-                        prevPositions[14] = joint.Position;
                     }
                     if (joint.JointType == JointType.AnkleRight)
                     {
@@ -206,8 +235,6 @@ namespace Project_Recon
                         transGuy[18].Z = (float)((decimal)(littleGuy[18].Z));
 
                         rankle.addPosition(littleguy_rankle, kinect);
-
-                        prevPositions[18] = joint.Position;
                     }
 
                     //Elbow
@@ -222,8 +249,6 @@ namespace Project_Recon
                         transGuy[5].Z = (float)((decimal)(littleGuy[5].Z));
 
                         lelbow.addPosition(littleguy_lelbow, kinect);
-
-                        prevPositions[5] = joint.Position;
                     }
                     if (joint.JointType == JointType.ElbowRight)
                     {
@@ -236,8 +261,6 @@ namespace Project_Recon
                         transGuy[9].Z = (float)((decimal)(littleGuy[9].Z));
 
                         relbow.addPosition(littleguy_relbow, kinect);
-
-                        prevPositions[9] = joint.Position;
                     }
 
                     //Foot
@@ -250,8 +273,6 @@ namespace Project_Recon
                         transGuy[15].X = (float)((decimal)(littleGuy[15].X) + (decimal)(TransValue.X));
                         transGuy[15].Y = (float)((decimal)(littleGuy[15].Y) + (decimal)(TransValue.Y));
                         transGuy[15].Z = (float)((decimal)(littleGuy[15].Z));
-
-                        prevPositions[15] = joint.Position;
                     }
                     if (joint.JointType == JointType.FootRight)
                     {
@@ -262,8 +283,6 @@ namespace Project_Recon
                         transGuy[19].X = (float)((decimal)(littleGuy[19].X) + (decimal)(TransValue.X));
                         transGuy[19].Y = (float)((decimal)(littleGuy[19].Y) + (decimal)(TransValue.Y));
                         transGuy[19].Z = (float)((decimal)(littleGuy[19].Z));
-
-                        prevPositions[19] = joint.Position;
                     }
 
                     //Hand
@@ -276,8 +295,6 @@ namespace Project_Recon
                         transGuy[7].X = (float)((decimal)(littleGuy[7].X) + (decimal)(TransValue.X));
                         transGuy[7].Y = (float)((decimal)(littleGuy[7].Y) + (decimal)(TransValue.Y));
                         transGuy[7].Z = (float)((decimal)(littleGuy[7].Z));
-
-                        prevPositions[7] = joint.Position;
                     }
                     if (joint.JointType == JointType.HandRight)
                     {
@@ -288,8 +305,6 @@ namespace Project_Recon
                         transGuy[11].X = (float)((decimal)(littleGuy[11].X) + (decimal)(TransValue.X));
                         transGuy[11].Y = (float)((decimal)(littleGuy[11].Y) + (decimal)(TransValue.Y));
                         transGuy[11].Z = (float)((decimal)(littleGuy[11].Z));
-
-                        prevPositions[11] = joint.Position;
                     }
 
                     //Head
@@ -302,8 +317,6 @@ namespace Project_Recon
                         transGuy[3].X = (float)((decimal)(littleGuy[3].X) + (decimal)(TransValue.X));
                         transGuy[3].Y = (float)((decimal)(littleGuy[3].Y) + (decimal)(TransValue.Y));
                         transGuy[3].Z = (float)((decimal)(littleGuy[3].Z));
-
-                        prevPositions[3] = joint.Position;
                     }
 
                     //Hip
@@ -320,8 +333,6 @@ namespace Project_Recon
                         transGuy[0].X = (float)((decimal)(littleGuy[0].X) + (decimal)(TransValue.X));
                         transGuy[0].Y = (float)((decimal)(littleGuy[0].Y) + (decimal)(TransValue.Y));
                         transGuy[0].Z = (float)((decimal)(littleGuy[0].Z));
-
-                        prevPositions[0] = joint.Position;
                     }
 
                     if (joint.JointType == JointType.HipLeft)
@@ -333,8 +344,6 @@ namespace Project_Recon
                         transGuy[12].X = (float)((decimal)(littleGuy[12].X) + (decimal)(TransValue.X));
                         transGuy[12].Y = (float)((decimal)(littleGuy[12].Y) + (decimal)(TransValue.Y));
                         transGuy[12].Z = (float)((decimal)(littleGuy[12].Z));
-
-                        prevPositions[12] = joint.Position;
                     }
                     if (joint.JointType == JointType.HipRight)
                     {
@@ -345,8 +354,6 @@ namespace Project_Recon
                         transGuy[16].X = (float)((decimal)(littleGuy[16].X) + (decimal)(TransValue.X));
                         transGuy[16].Y = (float)((decimal)(littleGuy[16].Y) + (decimal)(TransValue.Y));
                         transGuy[16].Z = (float)((decimal)(littleGuy[16].Z));
-
-                        prevPositions[16] = joint.Position;
                     }
 
                     //Knee
@@ -361,8 +368,6 @@ namespace Project_Recon
                         transGuy[13].Z = (float)((decimal)(littleGuy[13].Z));
 
                         lknee.addPosition(littleguy_lknee, kinect);
-
-                        prevPositions[13] = joint.Position;
                     }
                     if (joint.JointType == JointType.KneeRight)
                     {
@@ -375,8 +380,6 @@ namespace Project_Recon
                         transGuy[17].Z = (float)((decimal)(littleGuy[17].Z));
 
                         rknee.addPosition(littleguy_rknee, kinect);
-
-                        prevPositions[17] = joint.Position;
                     }
 
                     //Shoulder
@@ -389,8 +392,6 @@ namespace Project_Recon
                         transGuy[2].X = (float)((decimal)(littleGuy[2].X) + (decimal)(TransValue.X));
                         transGuy[2].Y = (float)((decimal)(littleGuy[2].Y) + (decimal)(TransValue.Y));
                         transGuy[2].Z = (float)((decimal)(littleGuy[2].Z));
-
-                        prevPositions[2] = joint.Position;
                     }
                     if (joint.JointType == JointType.ShoulderLeft)
                     {
@@ -403,8 +404,6 @@ namespace Project_Recon
                         transGuy[4].Z = (float)((decimal)(littleGuy[4].Z));
 
                         lshoulder.addPosition(littleguy_lshoulder, kinect);
-
-                        prevPositions[4] = joint.Position;
                     }
                     if (joint.JointType == JointType.ShoulderRight)
                     {
@@ -417,8 +416,6 @@ namespace Project_Recon
                         transGuy[8].Z = (float)((decimal)(littleGuy[8].Z));
 
                         rshoulder.addPosition(littleguy_rshoulder, kinect);
-
-                        prevPositions[8] = joint.Position;
                     }
 
                     //Spine
@@ -433,8 +430,6 @@ namespace Project_Recon
                         transGuy[1].Z = (float)((decimal)(littleGuy[1].Z));
 
                         spine.addPosition(littleguy_spine, kinect);
-
-                        prevPositions[1] = joint.Position;
                     }
 
                     //Wrist
@@ -449,8 +444,6 @@ namespace Project_Recon
                         transGuy[6].Z = (float)((decimal)(littleGuy[6].Z));
 
                         lwrist.addPosition(littleguy_lwrist, kinect);
-
-                        prevPositions[6] = joint.Position;
                     }
                     if (joint.JointType == JointType.WristRight)
                     {
@@ -463,8 +456,6 @@ namespace Project_Recon
                         transGuy[10].Z = (float)((decimal)(littleGuy[10].Z));
 
                         rwrist.addPosition(littleguy_rwrist, kinect);
-
-                        prevPositions[10] = joint.Position;
                     }
                 }
 
@@ -520,9 +511,7 @@ namespace Project_Recon
             spriteBatch.Draw(colorTex, new Vector2(80,0), Color.White);
 
             spriteBatch.DrawString(font, "Project Recon v3.0", new Vector2(80, 0), Color.Red);
-            spriteBatch.DrawString(font, lpunch, new Vector2(80, 20), Color.Red);
-            spriteBatch.DrawString(font, rpunch, new Vector2(80, 40), Color.Red);
-            spriteBatch.DrawString(font, lastMove, new Vector2(700, 20), Color.Blue);
+            spriteBatch.DrawString(font, FinalGesture, new Vector2(80, 20), Color.Red);
 
             if (keepcover)
                 //spriteBatch.DrawString(font, "Keep Cover!", new Vector2(150, 80), Color.Red);
@@ -533,80 +522,80 @@ namespace Project_Recon
                 }
 
             //Drawing transGuy
-            //if (skeleton != null)
-            //{
-            //    for (int i = 0; i < transGuy.Length; i++)
-            //    {
-            //        var p = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
-            //                   transGuy[i], ColorImageFormat.RgbResolution640x480Fps30);
+            if (skeleton != null)
+            {
+                for (int i = 0; i < transGuy.Length; i++)
+                {
+                    var p = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
+                               transGuy[i], ColorImageFormat.RgbResolution640x480Fps30);
 
-            //        spriteBatch.Draw(circleTex, new Vector2(p.X + 75, p.Y - 5), Color.Green);
+                    spriteBatch.Draw(circleTex, new Vector2(p.X + 75, p.Y - 5), Color.Green);
 
-            //        for (int j = 0; j < transGuy.Length; j++)
-            //        {
-            //            if ((i == 3 && j == 2)
-            //                || (i == 2 && j == 1)
-            //                || (i == 1 && j == 0))
-            //            {
-            //                //spriteBatch.DrawString(font,"I am here" ,new Vector2(200, 300), Color.Red);
+                    for (int j = 0; j < transGuy.Length; j++)
+                    {
+                        if ((i == 3 && j == 2)
+                            || (i == 2 && j == 1)
+                            || (i == 1 && j == 0))
+                        {
+                            spriteBatch.DrawString(font,"I am here" ,new Vector2(200, 300), Color.Red);
 
-            //                var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
-            //                    transGuy[j], ColorImageFormat.RgbResolution640x480Fps30);
+                            var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
+                                transGuy[j], ColorImageFormat.RgbResolution640x480Fps30);
 
-            //                spriteBatch.Draw(lineTex, new Vector2(p.X + 80, p.Y),
-            //                    null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
-            //                    new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
-            //            }
+                            spriteBatch.Draw(lineTex, new Vector2(p.X + 80, p.Y),
+                                null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
+                                new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
+                        }
 
-            //            if ((i == 0 && j == 12)
-            //                || (i == 12 && j == 13)
-            //                || (i == 13 && j == 14)
-            //                || (i == 14 && j == 15)
-            //                || (i == 2 && j == 4)
-            //                || (i == 4 && j == 5)
-            //                || (i == 5 && j == 6)
-            //                || (i == 6 && j == 7))
-            //            {
-            //                var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
-            //                transGuy[j], ColorImageFormat.RgbResolution640x480Fps30);
+                        if ((i == 0 && j == 12)
+                            || (i == 12 && j == 13)
+                            || (i == 13 && j == 14)
+                            || (i == 14 && j == 15)
+                            || (i == 2 && j == 4)
+                            || (i == 4 && j == 5)
+                            || (i == 5 && j == 6)
+                            || (i == 6 && j == 7))
+                        {
+                            var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
+                            transGuy[j], ColorImageFormat.RgbResolution640x480Fps30);
 
-            //                spriteBatch.Draw(leftTex, new Vector2(p.X + 80, p.Y),
-            //                    null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
-            //                    new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
-            //            }
+                            spriteBatch.Draw(leftTex, new Vector2(p.X + 80, p.Y),
+                                null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
+                                new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
+                        }
 
-            //            if ((i == 0 && j == 16)
-            //                || (i == 16 && j == 17)
-            //                || (i == 17 && j == 18)
-            //                || (i == 18 && j == 19)
-            //                || (i == 2 && j == 8)
-            //                || (i == 8 && j == 9)
-            //                || (i == 9 && j == 10)
-            //                || (i == 10 && j == 11))
-            //            {
-            //                var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
-            //                transGuy[j], ColorImageFormat.RgbResolution640x480Fps30);
+                        if ((i == 0 && j == 16)
+                            || (i == 16 && j == 17)
+                            || (i == 17 && j == 18)
+                            || (i == 18 && j == 19)
+                            || (i == 2 && j == 8)
+                            || (i == 8 && j == 9)
+                            || (i == 9 && j == 10)
+                            || (i == 10 && j == 11))
+                        {
+                            var p2 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
+                            transGuy[j], ColorImageFormat.RgbResolution640x480Fps30);
 
-            //                spriteBatch.Draw(rightTex, new Vector2(p.X + 80, p.Y),
-            //                    null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
-            //                    new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
+                            spriteBatch.Draw(rightTex, new Vector2(p.X + 80, p.Y),
+                                null, Color.White, (float)Math.Atan2(p2.Y - p.Y, (p2.X + 80) - (p.X + 80)), new Vector2(0f, (float)lineTex.Height / 2),
+                                new Vector2(Vector2.Distance(new Vector2(p.X + 80, p.Y), new Vector2(p2.X + 80, p2.Y)), 1f), SpriteEffects.None, 0f);
 
-            //            }
+                        }
 
-            //        }
+                    }
 
-            //        //Drawing Joints
-            //        foreach (Joint joint in skeleton.Joints)
-            //        {
-            //            var p3 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
-            //                joint.Position, ColorImageFormat.RgbResolution640x480Fps30);
+                    //Drawing Joints
+                    foreach (Joint joint in skeleton.Joints)
+                    {
+                        var p3 = kinect.CoordinateMapper.MapSkeletonPointToColorPoint(
+                            joint.Position, ColorImageFormat.RgbResolution640x480Fps30);
 
-            //            var shade = (float)joint.JointType / 20f;
-            //            spriteBatch.Draw(circleTex, new Vector2(p3.X + 75, p3.Y - 5), new Color(shade, shade, shade, 1));
-            //        }
-            //    }
+                        var shade = (float)joint.JointType / 20f;
+                        spriteBatch.Draw(circleTex, new Vector2(p3.X + 75, p3.Y - 5), new Color(shade, shade, shade, 1));
+                    }
+                }
 
-            //}
+            }
 
 
             //NOTHING TO DO HERE!
@@ -672,6 +661,41 @@ namespace Project_Recon
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private void OnGestureRecognized(object sender, GestureEventArgs e)
+        {
+            switch (e.GestureName)
+            {
+                //case "Menu":
+                //    FinalGesture = "Menu";
+                //    //Client.send("kinect", e, FinalGesture);
+                //    break;
+                //case "WaveRight":
+                //    FinalGesture = "Wave Right";
+                //    break;
+                case "WaveLeft":
+                    FinalGesture = "Wave Left";
+                    break;
+                //case "JoinedHands":
+                //    FinalGesture = "Joined Hands";
+                //    break;
+                //case "SwipeLeft":
+                //    FinalGesture = "Swipe Left";
+                //    break;
+                //case "SwipeRight":
+                //    FinalGesture = "Swipe Right";
+                //    break;
+                //case "ZoomIn":
+                //    FinalGesture = "Zoom In";
+                //    break;
+                //case "ZoomOut":
+                //    FinalGesture = "Zoom Out";
+                //    break;
+
+                default:
+                    break;
+            }
         }
     }
 }
