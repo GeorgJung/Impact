@@ -30,4 +30,5 @@ urlpatterns += patterns('fitnessmonitor.views',
     url(r'^my_sessions/$', "my_sessions", name="my_sessions"),
     url(r'^session/(?P<session_id>\d+)/$', "rounds", name="rounds"),
     url(r'^edit/$', "edit", name="edit"),
+    url(r'^get_session_info/$', "get_session_info", name="get_session_info"),
 )

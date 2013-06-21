@@ -11,6 +11,14 @@ from django.shortcuts import get_object_or_404
 def test(request):
     return render_to_response("home2.html", RequestContext(request))
 
+def get_session_info(request):
+	print 'test'
+	session_num = request.POST['session_id']
+	session = Session.objects.get(id=session_num)
+	rounds = Round.objects.filter(session=session)
+	num_of_rounds = len(rounds)
+	return render_to_response("session_info.html", {'rounds':rounds, 'num':num_of_rounds}, RequestContext(request))
+
 def edit(request):
 	trainee = Practitioner.objects.get(id=request.user.id)
 	if request.POST['first_name']:
@@ -25,7 +33,10 @@ def edit(request):
 def home(request):
 	practitioners = Practitioner.objects.all()
 	sessions = Session.objects.all()
-	logged_in = Practitioner.objects.get(pk=request.user.id)
+	if request.user.is_authenticated():
+		logged_in = Practitioner.objects.get(pk=request.user.id)
+	else:
+		logged_in = ""
 	return render_to_response("home.html", {'practitioners':practitioners, 'sessions':sessions, 'logged_in':logged_in}, RequestContext(request))
 
 def login_user(request):

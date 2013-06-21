@@ -1,1 +1,8 @@
-loooool
+This session consisted of {{num}} rounds.
+<br>
+{% for round in rounds %}
+A round that started at {{round.start}} and ended at {{round.end}}.
+<br>
+{% endfor %}
+
+<a onClick='$("#cover-session").toggle();$("#popup-session").slideToggle();'>CANCEL</a>

@@ -37,7 +37,7 @@ function startRound() {
     			$(".numbers-round").css("animation", "");
 				$(".numbers-round").css("animation-play-state", "running");
 				$(".numbers-break").css("animation", "none");
-				$('#the-timer').css('border', '7px solid #00EEEE')
+				$('#the-timer').css('border', '7px solid #CD2626')
 				$('#the-timer-break').css('opacity', '0.4');
 				$('#the-timer-round').css('opacity', '1.0');
 	        }
@@ -81,7 +81,7 @@ function startBreak() {
     			$(".numbers-break").css("animation", "");
 				$(".numbers-break").css("animation-play-state", "running");
 				$(".numbers-round").css("animation", "none");
-				$('#the-timer').css('border', '7px solid #CD2626');
+				$('#the-timer').css('border', '7px solid #00EEEE');
 				$('#the-timer-round').css('opacity', '0.4');
 				$('#the-timer-break').css('opacity', '1.0');
 	        }
@@ -103,7 +103,7 @@ function startBreak() {
                 "session_id" : "{{session.id}}",
             },
 	        success: function(req){
-	        	window.location.assign("/")
+	        	alert("Session finished.");
 	        }
     	});
 	}
