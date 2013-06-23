@@ -144,6 +144,87 @@ namespace Project_Recon
             //add the gesture to the gesture controller to check for recognition
             this.gestureController.AddGesture("WaveLeft", waveLeftSegments);
 
+            //SwipeLeft
+            //this is the array of segments which defines the gesture
+            IRelativeGestureSegment[] swipeLeftSegments = new IRelativeGestureSegment[2];
+            //this is the first segment of the gesture you already implemented that implement the Irelativegestuesegment interface
+            SwipeLeftSegment1 swipeLeftSegment1 = new SwipeLeftSegment1();
+            SwipeLeftSegment2 swipeLeftSegment2 = new SwipeLeftSegment2();
+            //we define the wave gesture as moving hand from right to left in order 3 times consecutively
+            swipeLeftSegments[0] = swipeLeftSegment1;
+            swipeLeftSegments[1] = swipeLeftSegment2;
+            //add the gesture to the gesture controller to check for recognition
+            this.gestureController.AddGesture("SwipeLeft", swipeLeftSegments);
+
+            //SwipeRight
+            //this is the array of segments which defines the gesture
+            IRelativeGestureSegment[] swipeRightSegments = new IRelativeGestureSegment[3];
+            //this is the first segment of the gesture you already implemented that implement the Irelativegestuesegment interface
+            SwipeLeftSegment1 swipeRightSegment1 = new SwipeLeftSegment1();
+            SwipeLeftSegment2 swipeRightSegment2 = new SwipeLeftSegment2();
+            SwipeLeftSegment3 swipeRightSegment3 = new SwipeLeftSegment3();
+            //we define the wave gesture as moving hand from right to left in order 3 times consecutively
+            swipeRightSegments[0] = swipeRightSegment3;
+            swipeRightSegments[1] = swipeRightSegment2;
+            swipeRightSegments[2] = swipeRightSegment1;
+            //add the gesture to the gesture controller to check for recognition
+            this.gestureController.AddGesture("SwipeRight", swipeRightSegments);
+
+            //SwipeUp
+            //this is the array of segments which defines the gesture
+            IRelativeGestureSegment[] swipeUpSegments = new IRelativeGestureSegment[3];
+            //this is the first segment of the gesture you already implemented that implement the Irelativegestuesegment interface
+            SwipeUpSegment1 swipeUpSegment1 = new SwipeUpSegment1();
+            SwipeUpSegment2 swipeUpSegment2 = new SwipeUpSegment2();
+            SwipeUpSegment3 swipeUpSegment3 = new SwipeUpSegment3();
+            //we define the wave gesture as moving hand from right to left in order 3 times consecutively
+            swipeUpSegments[0] = swipeUpSegment1;
+            swipeUpSegments[1] = swipeUpSegment2;
+            swipeUpSegments[2] = swipeUpSegment3;
+            //add the gesture to the gesture controller to check for recognition
+            this.gestureController.AddGesture("SwipeUp", swipeUpSegments);
+
+            //SwipeDown
+            //this is the array of segments which defines the gesture
+            IRelativeGestureSegment[] swipeDownSegments = new IRelativeGestureSegment[3];
+            //this is the first segment of the gesture you already implemented that implement the Irelativegestuesegment interface
+            SwipeUpSegment1 swipeDownSegment1 = new SwipeUpSegment1();
+            SwipeUpSegment2 swipeDownSegment2 = new SwipeUpSegment2();
+            SwipeUpSegment3 swipeDownSegment3 = new SwipeUpSegment3();
+            //we define the wave gesture as moving hand from right to left in order 3 times consecutively
+            swipeDownSegments[2] = swipeDownSegment1;
+            swipeDownSegments[1] = swipeDownSegment2;
+            swipeDownSegments[0] = swipeDownSegment3;
+            //add the gesture to the gesture controller to check for recognition
+            this.gestureController.AddGesture("SwipeDown", swipeDownSegments);
+
+            //Choose Move Forward
+            //this is the array of segments which defines the gesture
+            IRelativeGestureSegment[] chooseSegments = new IRelativeGestureSegment[3];
+            //this is the first segment of the gesture you already implemented that implement the Irelativegestuesegment interface
+            ZoomSegment1 chooseSegment1 = new ZoomSegment1();
+            ZoomSegment2 chooseSegment2 = new ZoomSegment2();
+            ZoomSegment3 chooseSegment3 = new ZoomSegment3();
+            //we define the wave gesture as moving hand from right to left in order 3 times consecutively
+            chooseSegments[0] = chooseSegment1;
+            chooseSegments[1] = chooseSegment2;
+            chooseSegments[2] = chooseSegment3;
+            //add the gesture to the gesture controller to check for recognition
+            this.gestureController.AddGesture("Choose", chooseSegments);
+
+            //Choose Move Forward
+            //this is the array of segments which defines the gesture
+            IRelativeGestureSegment[] backSegments = new IRelativeGestureSegment[3];
+            //this is the first segment of the gesture you already implemented that implement the Irelativegestuesegment interface
+            ZoomSegment1 backSegment1 = new ZoomSegment1();
+            ZoomSegment2 backSegment2 = new ZoomSegment2();
+            ZoomSegment3 backSegment3 = new ZoomSegment3();
+            //we define the wave gesture as moving hand from right to left in order 3 times consecutively
+            backSegments[2] = backSegment1;
+            backSegments[1] = backSegment2;
+            backSegments[0] = backSegment3;
+            //add the gesture to the gesture controller to check for recognition
+            this.gestureController.AddGesture("Back", backSegments);
 
             base.Initialize();
         }
@@ -671,28 +752,33 @@ namespace Project_Recon
                 //    FinalGesture = "Menu";
                 //    //Client.send("kinect", e, FinalGesture);
                 //    break;
-                //case "WaveRight":
-                //    FinalGesture = "Wave Right";
-                //    break;
+                case "WaveRight":
+                    FinalGesture = "Wave Right";
+                    break;
                 case "WaveLeft":
                     FinalGesture = "Wave Left";
                     break;
                 //case "JoinedHands":
                 //    FinalGesture = "Joined Hands";
                 //    break;
-                //case "SwipeLeft":
-                //    FinalGesture = "Swipe Left";
-                //    break;
-                //case "SwipeRight":
-                //    FinalGesture = "Swipe Right";
-                //    break;
-                //case "ZoomIn":
-                //    FinalGesture = "Zoom In";
-                //    break;
-                //case "ZoomOut":
-                //    FinalGesture = "Zoom Out";
-                //    break;
-
+                case "Choose":
+                    FinalGesture = "Choice Made";
+                    break;
+                case "Back":
+                    FinalGesture = "Back";
+                    break;
+                case "SwipeLeft":
+                    FinalGesture = "Swipe Left";
+                    break;
+                case "SwipeRight":
+                    FinalGesture = "Swipe Right";
+                    break;
+                case "SwipeUp":
+                    FinalGesture = "Swipe Up";
+                    break;
+                case "SwipeDown":
+                    FinalGesture = "Swipe Down";
+                    break;
                 default:
                     break;
             }

@@ -88,7 +88,7 @@ Since we will be unable to use the method of normalizing the skeleton due to the
 \subsection{Joint Position Lists}
 This method focuses on creating a list of the last 30 positions of a joint. Where the system stores the newest position to an already full list, the last position(the earliest element on the list) is dicarded and replaced by the newest, see figure~\ref{stack}
 Since the application's frame-rate is 30 frames per second. The system takes every 30 positions each second and between each two frames it has inbetween lists.
-
+%creates a list 
 \begin{figure}[!htbp]
 \centering
 \includegraphics[width=1\textwidth]{images/stack.png}

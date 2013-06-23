@@ -14,22 +14,24 @@ namespace Project_Recon
         /// <returns>GesturePartResult based on if the gesture part has been completed</returns>
         public GesturePartResult CheckGesture(Skeleton skeleton)
         {
-
-            // right hand in front of right shoulder
-            if (skeleton.Joints[JointType.HandRight].Position.Z < skeleton.Joints[JointType.ElbowRight].Position.Z && skeleton.Joints[JointType.HandLeft].Position.Y < skeleton.Joints[JointType.ShoulderCenter].Position.Y)
+            if (skeleton != null)
             {
-                // right hand below shoulder height but above hip height
-                if (skeleton.Joints[JointType.HandRight].Position.Y < skeleton.Joints[JointType.Head].Position.Y && skeleton.Joints[JointType.HandRight].Position.Y > skeleton.Joints[JointType.HipCenter].Position.Y)
+                if (skeleton.Joints[JointType.HandRight].Position.Z < skeleton.Joints[JointType.ElbowRight].Position.Z && skeleton.Joints[JointType.HandLeft].Position.Y < skeleton.Joints[JointType.ShoulderCenter].Position.Y)
                 {
-                    // right hand right of right shoulder
-                    if (skeleton.Joints[JointType.HandRight].Position.X > skeleton.Joints[JointType.ShoulderRight].Position.X)
+                    // right hand below shoulder height but above hip height
+                    if (skeleton.Joints[JointType.HandRight].Position.Y < skeleton.Joints[JointType.Head].Position.Y && skeleton.Joints[JointType.HandRight].Position.Y > skeleton.Joints[JointType.HipCenter].Position.Y)
                     {
-                        return GesturePartResult.Succeed;
+                        // right hand right of right shoulder
+                        if (skeleton.Joints[JointType.HandRight].Position.X > skeleton.Joints[JointType.ShoulderRight].Position.X)
+                        {
+                            return GesturePartResult.Succeed;
+                        }
+                        return GesturePartResult.Pausing;
                     }
-                    return GesturePartResult.Pausing;
+                    return GesturePartResult.Fail;
                 }
-                return GesturePartResult.Fail;
             }
+            // right hand in front of right shoulder
             return GesturePartResult.Fail;
         }
     }
@@ -46,20 +48,23 @@ namespace Project_Recon
         /// <returns>GesturePartResult based on if the gesture part has been completed</returns>
         public GesturePartResult CheckGesture(Skeleton skeleton)
         {
-            // right hand in front of right shoulder
-            if (skeleton.Joints[JointType.HandRight].Position.Z < skeleton.Joints[JointType.ElbowRight].Position.Z && skeleton.Joints[JointType.HandLeft].Position.Y < skeleton.Joints[JointType.ShoulderCenter].Position.Y)
+            if (skeleton != null)
             {
-                // right hand below shoulder height but above hip height
-                if (skeleton.Joints[JointType.HandRight].Position.Y < skeleton.Joints[JointType.Head].Position.Y && skeleton.Joints[JointType.HandRight].Position.Y > skeleton.Joints[JointType.HipCenter].Position.Y)
+                // right hand in front of right shoulder
+                if (skeleton.Joints[JointType.HandRight].Position.Z < skeleton.Joints[JointType.ElbowRight].Position.Z && skeleton.Joints[JointType.HandLeft].Position.Y < skeleton.Joints[JointType.ShoulderCenter].Position.Y)
                 {
-                    // right hand left of right shoulder & right of left shoulder
-                    if (skeleton.Joints[JointType.HandRight].Position.X < skeleton.Joints[JointType.ShoulderRight].Position.X && skeleton.Joints[JointType.HandRight].Position.X > skeleton.Joints[JointType.ShoulderLeft].Position.X)
+                    // right hand below shoulder height but above hip height
+                    if (skeleton.Joints[JointType.HandRight].Position.Y < skeleton.Joints[JointType.Head].Position.Y && skeleton.Joints[JointType.HandRight].Position.Y > skeleton.Joints[JointType.HipCenter].Position.Y)
                     {
-                        return GesturePartResult.Succeed;
+                        // right hand left of right shoulder & right of left shoulder
+                        if (skeleton.Joints[JointType.HandRight].Position.X < skeleton.Joints[JointType.ShoulderRight].Position.X && skeleton.Joints[JointType.HandRight].Position.X > skeleton.Joints[JointType.ShoulderLeft].Position.X)
+                        {
+                            return GesturePartResult.Succeed;
+                        }
+                        return GesturePartResult.Pausing;
                     }
-                    return GesturePartResult.Pausing;
+                    return GesturePartResult.Fail;
                 }
-                return GesturePartResult.Fail;
             }
             return GesturePartResult.Fail;
         }
@@ -77,24 +82,26 @@ namespace Project_Recon
         /// <returns>GesturePartResult based on if the gesture part has been completed</returns>
         public GesturePartResult CheckGesture(Skeleton skeleton)
         {
-            // //Right hand in front of right Shoulder
-            if (skeleton.Joints[JointType.HandRight].Position.Z < skeleton.Joints[JointType.ElbowRight].Position.Z && skeleton.Joints[JointType.HandLeft].Position.Y < skeleton.Joints[JointType.ShoulderCenter].Position.Y)
+            if (skeleton != null)
             {
-                // //right hand below shoulder height but above hip height
-                if (skeleton.Joints[JointType.HandRight].Position.Y < skeleton.Joints[JointType.ShoulderCenter].Position.Y && skeleton.Joints[JointType.HandRight].Position.Y > skeleton.Joints[JointType.HipCenter].Position.Y)
+                // //Right hand in front of right Shoulder
+                if (skeleton.Joints[JointType.HandRight].Position.Z < skeleton.Joints[JointType.ElbowRight].Position.Z && skeleton.Joints[JointType.HandLeft].Position.Y < skeleton.Joints[JointType.ShoulderCenter].Position.Y)
                 {
-                    // //right hand left of center hip
-                    if (skeleton.Joints[JointType.HandRight].Position.X < skeleton.Joints[JointType.ShoulderLeft].Position.X)
+                    // //right hand below shoulder height but above hip height
+                    if (skeleton.Joints[JointType.HandRight].Position.Y < skeleton.Joints[JointType.ShoulderCenter].Position.Y && skeleton.Joints[JointType.HandRight].Position.Y > skeleton.Joints[JointType.HipCenter].Position.Y)
                     {
-                        return GesturePartResult.Succeed;
+                        // //right hand left of center hip
+                        if (skeleton.Joints[JointType.HandRight].Position.X < skeleton.Joints[JointType.ShoulderLeft].Position.X)
+                        {
+                            return GesturePartResult.Succeed;
+                        }
+
+                        return GesturePartResult.Pausing;
                     }
 
-                    return GesturePartResult.Pausing;
+                    return GesturePartResult.Fail;
                 }
-
-                return GesturePartResult.Fail;
             }
-
             return GesturePartResult.Fail;
         }
     }
