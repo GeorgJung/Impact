@@ -81,7 +81,7 @@
 % is a graphic format that can be processed by latex or pdflatex,
 % resp., then you can add a logo as follows:
 
-\pgfdeclareimage[height=0.5cm]{university-logo}{GUC-logo-ss.pdf}
+\pgfdeclareimage[height=0.5cm]{university-logo}{Da.png}
 \logo{\pgfuseimage{university-logo}}
 
 %\pgfdeclareimage[height=0.5 cm]{project-logo}{Da.png}
@@ -137,7 +137,10 @@
 \subsection{Motivation}
 
 \begin{frame}{Ju-Jutsu}
-  % - A title should summarize the slide in an understandable fashion
+\begin{columns}[T]
+    \begin{column}{.5\textwidth}
+% Your text here
+ % - A title should summarize the slide in an understandable fashion
   %   for anyone how does not follow everything on the slide itself.
 
   \begin{itemize}
@@ -146,6 +149,12 @@
   \item
     Like most martail arts, it includes Thai Pad training.
   \end{itemize}
+    \end{column}
+    \begin{column}{.5\textwidth}  
+% Your image included here
+    \includegraphics[scale=0.075]{mma-thai-pads-big.jpg}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}{Increase of Ubiquitous Technology}
@@ -187,6 +196,7 @@
     Multiple inputs from a practitioner during a workout session through different input sources
    \item
     Main monitor will be used as the interface and to display sessions
+   \item Website: http://georgjung.github.io/Impact/
   \end{itemize}
  \end{frame}
 
@@ -214,6 +224,11 @@
  \includegraphics[scale = 0.3] {project_Recon_diagram.png}
 \end{frame}
 
+\begin{frame}{Project Recon Architecture}
+\centerline{ \includegraphics[scale = 0.4] {partner.png}}
+\end{frame}
+
+
 \begin{frame}{Kinect}
 \begin{columns}[T]
     \begin{column}{.5\textwidth}
@@ -221,7 +236,7 @@
  \begin{itemize}
   \item Four components
    \begin{itemize}
-    \item Infrared emitter
+    \item Infrared grid projector
     \item Infrared sensor
     \item Color camera
     \item Microphone
@@ -230,9 +245,11 @@
   \begin{itemize}
    \item Depth stream
    \item Color stream
-   \item Skeleton stream
    \item Audio stream
-  \end{itemize}
+   \end{itemize}
+   \begin{itemize}
+   \item Skeleton stream
+    \end{itemize}
  \end{itemize}
     \end{column}
     \begin{column}{.5\textwidth}  
@@ -275,7 +292,7 @@
 \begin{frame}{Project Requirements}
  \begin{itemize}
   \item Real time recognition
-  \item Robust and Dynamic
+  \item Robust and dynamic
   \item Plug in to interface
  \end{itemize}
 \end{frame}
@@ -356,8 +373,8 @@
 \centerline{Please Hold for a \texttt{Demonstration}!}
 
 \centerline{[this will only take few minutes]}
-\pause
-\centerline{\dots I lied}
+
+\only<2->{\centerline{\dots I lied}}
 
 \end{frame}
 \section*{Summary}
@@ -368,7 +385,7 @@
   \item
     \alert{Real time recognition} was accomplished by Kinect's fast streaming.
   \item
-    The \alert{Robust and Dynamic} requirement was not fully possible was Kinect has a lot of limitations.
+    The \alert{Robust and Dynamic} requirement was not fully possible as Kinect has a lot of limitations.
   \item
     \alert{Plugging in to the interface}, was possible through Socket programming.
   \end{itemize}

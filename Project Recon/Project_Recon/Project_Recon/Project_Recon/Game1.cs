@@ -146,13 +146,15 @@ namespace Project_Recon
 
             //SwipeLeft
             //this is the array of segments which defines the gesture
-            IRelativeGestureSegment[] swipeLeftSegments = new IRelativeGestureSegment[2];
+            IRelativeGestureSegment[] swipeLeftSegments = new IRelativeGestureSegment[3];
             //this is the first segment of the gesture you already implemented that implement the Irelativegestuesegment interface
             SwipeLeftSegment1 swipeLeftSegment1 = new SwipeLeftSegment1();
             SwipeLeftSegment2 swipeLeftSegment2 = new SwipeLeftSegment2();
+            SwipeLeftSegment3 swipeLeftSegment3 = new SwipeLeftSegment3();
             //we define the wave gesture as moving hand from right to left in order 3 times consecutively
             swipeLeftSegments[0] = swipeLeftSegment1;
             swipeLeftSegments[1] = swipeLeftSegment2;
+            swipeLeftSegments[2] = swipeLeftSegment3;
             //add the gesture to the gesture controller to check for recognition
             this.gestureController.AddGesture("SwipeLeft", swipeLeftSegments);
 
@@ -225,6 +227,33 @@ namespace Project_Recon
             backSegments[0] = backSegment3;
             //add the gesture to the gesture controller to check for recognition
             this.gestureController.AddGesture("Back", backSegments);
+
+            //Punch Gesture
+            //this is the array of segments which defines the gesture
+            IRelativeGestureSegment[] punchSegments = new IRelativeGestureSegment[2];
+            //this is the first segment of the gesture you already implemented that implement the Irelativegestuesegment interface
+            PunchSegment1 punchSegment1 = new PunchSegment1();
+            //PunchSegment2 punchSegment2 = new PunchSegment2();
+            PunchSegment3 punchSegment3 = new PunchSegment3();
+            //we define the wave gesture as moving hand from right to left in order 3 times consecutively
+            punchSegments[0] = punchSegment1;
+            //punchSegments[1] = punchSegment2;
+            punchSegments[1] = punchSegment3;
+            //add the gesture to the gesture controller to check for recognition
+            this.gestureController.AddGesture("Punch", punchSegments);
+
+            //Thrust Gesture
+            //this is the array of segments which defines the gesture
+            IRelativeGestureSegment[] thrustSegments = new IRelativeGestureSegment[3];
+            //this is the first segment of the gesture you already implemented that implement the Irelativegestuesegment interface
+            ThrustSegment1 thrustSegment1 = new ThrustSegment1();
+            ThrustSegment2 thrustSegment2 = new ThrustSegment2();
+            //we define the wave gesture as moving hand from right to left in order 3 times consecutively
+            thrustSegments[0] = thrustSegment1;
+            thrustSegments[1] = thrustSegment2;
+            thrustSegments[2] = thrustSegment1;
+            //add the gesture to the gesture controller to check for recognition
+            this.gestureController.AddGesture("Thrust", thrustSegments);
 
             base.Initialize();
         }
@@ -752,6 +781,12 @@ namespace Project_Recon
                 //    FinalGesture = "Menu";
                 //    //Client.send("kinect", e, FinalGesture);
                 //    break;
+                case "Punch":
+                    FinalGesture = "Punch";
+                    break;
+                case "Thrust":
+                    FinalGesture = "Thrust";
+                    break;
                 case "WaveRight":
                     FinalGesture = "Wave Right";
                     break;

@@ -89,9 +89,11 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Segments\JoinedHandsSegment.cs" />
     <Compile Include="Segments\MenuSegments.cs" />
+    <Compile Include="Segments\PunchSegments.cs" />
     <Compile Include="Segments\SwipeLeftSegments.cs" />
     <Compile Include="Segments\SwipeRightSegments.cs" />
     <Compile Include="Segments\SwipeUpSegments.cs" />
+    <Compile Include="Segments\ThrustSegments.cs" />
     <Compile Include="Segments\WaveLeftSegments.cs" />
     <Compile Include="Segments\WaveRightSegments.cs" />
     <Compile Include="Segments\ZoomSegments.cs" />
